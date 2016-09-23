@@ -1,6 +1,6 @@
 import requests
 
-class PVDBread:
+class PvdbRead:
     "Read NVDB data"
     
     def __init__(self):
@@ -10,36 +10,40 @@ class PVDBread:
         self.srid = '32633'
         
     
-    def checkResponse(self, resp):
+    def check_response(self, resp):
         if True:
             return resp
 
-    def getRoadObjects(self,obj,params):
+    def get_road_objects(self, obj, params):
         self.paramUpdate = {'segmentering':self.segmentation,'srid':self.srid}
         urlAdd = 'vegobjekter'
-        url = '{baseUrl}/{urlAdd}/{obj}'.format(baseUrl=self.baseUrl,urlAdd=urlAdd,obj=obj)
+        url = '{baseUrl}/{urlAdd}/{obj}'.format(baseUrl=self.baseUrl, urlAdd=urlAdd, obj=obj)
         params.update(self.paramUpdate)
         print(params)
         data = requests.get(url, params = params, headers=self.headers).json()
         return self.checkResponse(data)
     
-    def getRoadObject(self,obj,objectID):
+    def get_road_object(self, obj, objectID):
         urlAdd = 'vegobjekter'
         url = '{baseUrl}/{urlAdd}/{obj}/{objectID}'.format(baseUrl=self.baseUrl,
-            urlAdd=urlAdd,obj=obj,objectID=objectID)
+            urlAdd=urlAdd, obj=obj, objectID=objectID)
         data = requests.get(url).json()
         return self.checkResponse(data)
 
 
-    def getRoadObjectTypes():
+    def get_road_objectTypes():
         pass
-    def getRoadLinks():
+    def get_road_links():
         pass
-    def getAreas():
+    def get_areas():
         pass
-    def getPosition():
+    def get_position():
         pass
-    def GetRoad():
+    def Get_road():
         pass
-    def GetStatus():
+    def Get_status():
         pass
+
+class PvdbWrite:
+        def __init__(self):
+            pass

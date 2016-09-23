@@ -1,2 +1,3 @@
-from .PVDB import PVDBread
+from .pvdb import PvdbRead
+from .pvdb import PvdbWrite
 
