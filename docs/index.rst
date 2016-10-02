@@ -1,18 +1,10 @@
-.. include:: ../README.rst
+pvdb
+========
 
-Table of Contents
------------------
+A python wrapper for the [NVDB Rest API](https://www.vegvesen.no/nvdb/apidokumentasjon/)
 
-.. toctree::
-   :maxdepth: 1
+Data pulled from the API is licensed under
+[Norsk lisens for offentlige data (NLOD)](http://data.norge.no/nlod/no/1.0)
 
-   pages/getting_started
-   pages/changelog
-   pages/code_overview
-   pages/contributor_guidelines
-
-
-Other Relevant Pages
---------------------
-
-* `pvdb's Source Code <https://github.com/acurus/pvdb>`_
+Currently working on a initial prototype in the "Dev" branch.
+Will push to master once I have something that sortof works.
