@@ -1,5 +1,5 @@
 import requests
-
+from pvdb_exceptions import ResponseError
 class PvdbRead:
     "Read NVDB data"
     
@@ -10,8 +10,21 @@ class PvdbRead:
         self.srid = '32633'
     
     def check_response(self, resp):
-        if True:
-            return resp
+        '''Function verifes that a 200 code was returned from the API
+        and returns the data as Json.
+
+        If a 200 code was not returned, it tries to return the error recived 
+        from the API.'''
+        
+        if resp.status_code == requests.codes.ok:
+            return resp.json()
+        else:
+            try:
+                resp = resp.json()[0]
+                raise ResponseError(resp['message'])
+            
+            except:
+                raise
 
     def get_road_objects(self, obj, params):
         ''' Function for finding road objects based on type.
@@ -43,7 +56,7 @@ class PvdbRead:
         urlAdd = 'vegobjekter'
         url = '{baseUrl}/{urlAdd}/{obj}'.format(baseUrl=self.baseUrl, urlAdd=urlAdd, obj=obj)
         
-        data = requests.get(url, params = params, headers=self.headers).json()
+        data = requests.get(url, params = params, headers=self.headers)
         
         return self.check_response(data)
     
@@ -61,14 +74,14 @@ class PvdbRead:
         url = '{baseUrl}/{urlAdd}/{obj}/{objectID}'.format(baseUrl=self.baseUrl,
             urlAdd=urlAdd, obj=obj, objectID=objectID)
         
-        data = requests.get(url).json()
+        data = requests.get(url)
         
         return self.check_response(data)
 
     def get_road_objectTypes(self, params):
         '''
         Function for getting objects metadata from the NVDB data catalog.
-            include : 
+            parmas : 
                     egenskapstyper
                     relasjonstyper
                     styringsparametere
@@ -78,7 +91,7 @@ class PvdbRead:
         url = '{baseUrl}/{urlAdd}/'.format(baseUrl=self.baseUrl,
             urlAdd=urlAdd, include=include)
         
-        data = requests.get(url).json()
+        data = requests.get(url)
         
         return self.check_response(data)
 
@@ -94,7 +107,7 @@ class PvdbRead:
         urlAdd = 'vegobjekttyper'
         url = '{baseUrl}/{urlAdd}/{obj}'.format(baseUrl=self.baseUrl,
             urlAdd=urlAdd, obj=obj)
-        data = requests.get(url).json()
+        data = requests.get(url)
         
         return self.check_response(data)
 
@@ -105,7 +118,7 @@ class PvdbRead:
         urlAdd = 'vegnett/lenker'
         url = '{baseUrl}/{urlAdd}/'.format(baseUrl=self.baseUrl,
             urlAdd=urlAdd)
-        data = requests.get(url).json()
+        data = requests.get(url)
         return self.check_response(data)
 
     def get_areas(self,area_type, params):
@@ -128,7 +141,7 @@ class PvdbRead:
         urlAdd = 'omrader'
         url = '{baseUrl}/{urlAdd}/{area_type}/'.format(baseUrl=self.baseUrl,
             urlAdd=urlAdd, area_type=area_type)
-        data = requests.get(url, params = params, headers=self.headers).json()
+        data = requests.get(url, params = params, headers=self.headers)
         return self.check_response(data)
     
     def get_position(self,params):
@@ -159,7 +172,7 @@ class PvdbRead:
         urlAdd = 'posisjon'
         url = '{baseUrl}/{urlAdd}/'.format(baseUrl=self.baseUrl,
             urlAdd=urlAdd)
-        data = requests.get(url, params = params, headers=self.headers).json()
+        data = requests.get(url, params = params, headers=self.headers)
         return self.check_response(data)
     
     def get_road(self, params):
@@ -180,7 +193,7 @@ class PvdbRead:
         urlAdd = 'veg'
         url = '{baseUrl}/{urlAdd}/'.format(baseUrl=self.baseUrl,
             urlAdd=urlAdd)
-        data = requests.get(url, params = params, headers=self.headers).json()
+        data = requests.get(url, params = params, headers=self.headers)
         return self.check_response(data)
 
     def get_status(self):
@@ -190,9 +203,18 @@ class PvdbRead:
         urlAdd = 'status'
         url = '{baseUrl}/{urlAdd}/'.format(baseUrl=self.baseUrl,
             urlAdd=urlAdd)
-        data = requests.get(url, headers=self.headers).json()
+        data = requests.get(url, headers=self.headers)
         return self.check_response(data)
         
 class PvdbWrite:
         def __init__(self):
             pass
+
+
+
+r = PvdbRead()
+resp = requests.get("https://www.vegvesen.no/nvdb/api/v2/vegobjekter/87888/")
+a = r.check_response(resp)
+
+print(a)
+

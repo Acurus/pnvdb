@@ -1,15 +1,19 @@
-"""import requests
+import requests
 
-baseUrl = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/45'
+class pvdb_exeption(Exception):
+    """'dette er en beskrivelse av feilen'"""
+    def __init__(self, message, *args):
+        self.message = 'Objekt ble ikke funnet.'
 
-payload = {'inkluder':'metadata,egenskaper'}
 
-r = requests.get(baseUrl,params=payload)
-print(r.url)"""
-segmentation = 'true'
-srid = '32633'
-params = {'antall':'2'}
 
-b = {'segmentering':segmentation,'srid':srid}
-params.update(b)
-print(params)
+
+a =     {
+        "code" : 4013,
+        "message" : "Ukjent parameter: vegvdeling",
+        "help_url" : "https://www.vegvesen.no/nvdb/api/dokumentasjon/api/page/3"
+    }
+
+http = requests.get("https://www.vegvesen.no/nvdb/api/v2/vegobjekter/87/")
+for i in requests.codes:
+    print(i)
