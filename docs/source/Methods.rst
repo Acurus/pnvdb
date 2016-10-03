@@ -1,0 +1,6 @@
+Methods
+=======
+
+::
+
+    get_object()

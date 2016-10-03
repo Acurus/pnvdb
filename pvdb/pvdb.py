@@ -1,5 +1,5 @@
 import requests
-from pvdb_exceptions import ResponseError
+from .pvdb_exceptions import ResponseError
 class PvdbRead:
     "Read NVDB data"
     
@@ -9,7 +9,11 @@ class PvdbRead:
         self.segmentation = 'true'
         self.srid = '32633'
     
-    def check_response(self, resp):
+    def _update_params(self, params):
+        params.update({'srid':self.srid, 'segmentering':self.segmentation})
+        return params
+
+    def _check_response(self, resp):
         '''Function verifes that a 200 code was returned from the API
         and returns the data as Json.
 
@@ -26,7 +30,20 @@ class PvdbRead:
             except:
                 raise
 
-    def get_road_objects(self, obj, params):
+    def get_object_list(self):
+        
+        urlAdd = 'vegobjekter/'
+        url = '{baseUrl}/{urlAdd}'.format(baseUrl=self.baseUrl, urlAdd=urlAdd)
+        
+        data = requests.get(url, headers=self.headers)
+        data = self.check_response(data)
+
+        for i in data:
+            i['id'] = i['href'].split('/')[-1]
+
+        return data
+
+    def get_road_objects(self, obj, **kwargs):
         ''' Function for finding road objects based on type.
             obj : 
                 The object type id. 
@@ -51,16 +68,14 @@ class PvdbRead:
                 default = true
         '''
 
-        params.update(self.headers,self.segmentation,self.srid)
-
         urlAdd = 'vegobjekter'
         url = '{baseUrl}/{urlAdd}/{obj}'.format(baseUrl=self.baseUrl, urlAdd=urlAdd, obj=obj)
-        
+        params = self._update_params(kwargs)
         data = requests.get(url, params = params, headers=self.headers)
-        
-        return self.check_response(data)
+        print(data.url)
+        return self._check_response(data)
     
-    def get_road_object(self, obj, objectID, params):
+    def get_road_object(self, obj, objectID, **kwargs):
         '''
         Function for finding objects based on unique id.
             obj : 
@@ -68,17 +83,16 @@ class PvdbRead:
             objectID : 
                 unique object id for the object type.
         '''
-        params.update(self.paramUpdate)
-
+        params = self._update_params(kwargs)
         urlAdd = 'vegobjekter'
         url = '{baseUrl}/{urlAdd}/{obj}/{objectID}'.format(baseUrl=self.baseUrl,
-            urlAdd=urlAdd, obj=obj, objectID=objectID)
+            urlAdd=urlAdd, obj=obj, objectID=objectID, params = params)
         
         data = requests.get(url)
         
         return self.check_response(data)
 
-    def get_road_objectTypes(self, params):
+    def get_road_objectTypes(self, **kwargs):
         '''
         Function for getting objects metadata from the NVDB data catalog.
             parmas : 
@@ -87,15 +101,16 @@ class PvdbRead:
                     styringsparametere
                     alle
         '''
+        params = self._update_params(kwargs)
         urlAdd = 'vegobjekttyper'
         url = '{baseUrl}/{urlAdd}/'.format(baseUrl=self.baseUrl,
-            urlAdd=urlAdd, include=include)
+            urlAdd=urlAdd, params=params)
         
         data = requests.get(url)
         
         return self.check_response(data)
 
-    def get_road_objectType(self, obj, params):
+    def get_road_objectType(self, obj, **kwargs):
         '''
         Function for getting objects metadata from the NVDB data catalog.
             params : 
@@ -104,24 +119,26 @@ class PvdbRead:
                     styringsparametere
                     alle
         '''
+        params = self._update_params(kwargs)
         urlAdd = 'vegobjekttyper'
         url = '{baseUrl}/{urlAdd}/{obj}'.format(baseUrl=self.baseUrl,
-            urlAdd=urlAdd, obj=obj)
+            urlAdd=urlAdd, obj=obj, params=params)
         data = requests.get(url)
         
         return self.check_response(data)
 
-    def get_road_links(self, params):
+    def get_road_links(self, **kwargs):
         '''
         Function for getting the topological road network from NVDB
         '''
+        params = self._update_params(kwargs)
         urlAdd = 'vegnett/lenker'
         url = '{baseUrl}/{urlAdd}/'.format(baseUrl=self.baseUrl,
             urlAdd=urlAdd)
         data = requests.get(url)
         return self.check_response(data)
 
-    def get_areas(self,area_type, params):
+    def get_areas(self,area_type, **kwargs):
         '''
         Function for getting areas defined in NVDB based on type.
         area_type : 
@@ -137,14 +154,14 @@ class PvdbRead:
             vegobjekttyper
             alle
         '''
-        params.update({'srid':self.srid})
+        params = self._update_params(kwargs)
         urlAdd = 'omrader'
         url = '{baseUrl}/{urlAdd}/{area_type}/'.format(baseUrl=self.baseUrl,
             urlAdd=urlAdd, area_type=area_type)
         data = requests.get(url, params = params, headers=self.headers)
         return self.check_response(data)
     
-    def get_position(self,params):
+    def get_position(self, **Kwargs):
         '''
         Function for getting closest road to position.
         
@@ -168,14 +185,14 @@ class PvdbRead:
                                             Default: 32633
 
         '''
-        params.update({'srid':self.srid})
+        params = self._update_params(kwargs)
         urlAdd = 'posisjon'
         url = '{baseUrl}/{urlAdd}/'.format(baseUrl=self.baseUrl,
             urlAdd=urlAdd)
         data = requests.get(url, params = params, headers=self.headers)
         return self.check_response(data)
     
-    def get_road(self, params):
+    def get_road(self, **kwargs):
         '''
         TODO : Add batch functionallity
 
@@ -189,7 +206,7 @@ class PvdbRead:
                 srid            srid            Angir hvilket geografisk referansesystem geometrien skal returneres i.
                                                 Default: 32633
         '''
-        params.update({'srid':self.srid})
+        params = self._update_params(kwargs)
         urlAdd = 'veg'
         url = '{baseUrl}/{urlAdd}/'.format(baseUrl=self.baseUrl,
             urlAdd=urlAdd)
@@ -207,14 +224,6 @@ class PvdbRead:
         return self.check_response(data)
         
 class PvdbWrite:
-        def __init__(self):
-            pass
-
-
-
-r = PvdbRead()
-resp = requests.get("https://www.vegvesen.no/nvdb/api/v2/vegobjekter/87888/")
-a = r.check_response(resp)
-
-print(a)
-
+    "Write NVDB data"
+    def __init__(self):
+        pass

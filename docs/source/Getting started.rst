@@ -9,4 +9,3 @@ code::
     r.getobject(87,19)
     print(r)
 
-easy peezy
