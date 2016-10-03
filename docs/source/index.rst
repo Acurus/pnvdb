@@ -1,6 +1,10 @@
 pvdb
 ================================
 
+.. warning:: **This is still a work in progress, and documentation is only a placeholder shell as of now. Will update once the code is working.**
+
+
+
 pvdb stands for "python veg database" and is a python wrapper for the `NVDB Rest API <https://www.vegvesen.no/nvdb/apidokumentasjon/>`_
 
 

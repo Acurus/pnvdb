@@ -6,3 +6,5 @@ Data pulled from the API is licensed under
 
 Currently working on a initial prototype in the "Dev" branch.
 Will push to master once I have something that sortof works.
+
+[Read the docs](http://pvdb.readthedocs.io/en/dev/)
