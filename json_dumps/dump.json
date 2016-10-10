@@ -1,0 +1,17 @@
+{'metadata': 
+    {'neste': 
+        {'href': 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96?antall=5&start=AEhZAZAdVuA&srid=32633',
+         'start': 'AEhZAZAdVuA'},
+         'antall': 5,
+         'returnert': 5},
+         
+ 'objekter': [{'id': 78748683, 
+               'href': 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96/78748683'},
+              {'id': 78748685, 
+               'href': 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96/78748685'}, 
+              {'id': 78748687, 
+               'href': 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96/78748687'}, 
+              {'id': 78748689,
+               'href': 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96/78748689'}, 
+              {'id': 78748691, 
+               'href': 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/96/78748691'}]}

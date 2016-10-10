@@ -2,6 +2,13 @@ class NvdbError(Exception):
     """Base class for exceptions in this module."""
     pass
 
-class ResponseError(NvdbError):
-    def __init__(self,message):
+class ApiError(NvdbError):
+    def __init__(self, message):
         self.message = message
+
+
+def read_api_error(resp):
+    try:
+        return resp.json()[0]
+    except:
+        return 'API seems dead : {}'.format(resp)
