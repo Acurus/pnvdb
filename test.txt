@@ -1,0 +1,24 @@
+cat = cataloge()
+
+objcode = cat[0].code
+objnavn = cat[0].navn
+
+
+ob = objekttype(objcode) #Lazy
+
+parents = ob.parents #hent data
+siblings = ob.siblings #hent data
+egen = ob.egenskaper #hent data
+
+påkrevd = egen[0].påkrevd #hent data
+betinget = egen[0].betinget
+egen[0].tillatte_verdier
+
+obj = objekt(objID)
+obj.data
+obj.parents
+obj.siblings
+
+objects = objects(type, area)
+for i in objects:
+	a.append(object(i['code'])

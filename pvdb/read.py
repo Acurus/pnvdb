@@ -1,27 +1,41 @@
+import requests
+from .core import *
+
+class Read(object):
+    'Read NVDB data'
+    
+    def __init__(self, client='PVDB', contact='jankyr@vegvesen.no'):
+        self.baseUrl = 'https://www.vegvesen.no/nvdb/api/v2'
+        self.headers = {'X-Client': client,'X-Kontaktperson': contact}
+        self.srid = '32633'
+
+    @property
+    def status(self):
+        status = requests.get('https://www.vegvesen.no/nvdb/api/v2/status')
+        return check_response(status)
+
     def get_road_objects(self, obj, **kwargs):
         ''' Function for finding road objects based on type.
-            obj : 
-                The object type id. 
+        obj : 
+            The object type id. 
+        
+        params a dictionary of values: 
+            inkluder : Comma seperated list of information elements
+            to return in addtion to the objects unique id.
+            values : [metadata, egenskaper, relasjon, lokasjon, vegsegmenter, geomteri, alle]
             
-            params a dictionary of values: 
-                inkluder : Comma seperated list of information elements
-                to return in addtion to the objects unique id.
-                values : [metadata, egenskaper, relasjon, lokasjon, vegsegmenter, geomteri, alle]
-                
-                srid : geografic refference system. 
-                controlled by class
-                default = 32633
-
-                geometritoleranse : Weather to return simplified geometry. if the paramter
-                is left out, full geometry is returned. The number represent the tollerance for 
-                generating the simplified geometry. 
-                Values : [10, 20, 30]
-
-                segmentering : Wether line objects should be segmented based on search area.
-                Values : [true, false]
-                controlled by class
-                default = true
-        '''
+            srid : geografic refference system. 
+            controlled by class
+            default = 32633
+            geometritoleranse : Weather to return simplified geometry. if the paramter
+            is left out, full geometry is returned. The number represent the tollerance for 
+            generating the simplified geometry. 
+            Values : [10, 20, 30]
+            segmentering : Wether line objects should be segmented based on search area.
+            Values : [true, false]
+            controlled by class
+            default = true
+            '''
 
         urlAdd = 'vegobjekter'
         url = '{baseUrl}/{urlAdd}/{obj}'.format(baseUrl=self.baseUrl, urlAdd=urlAdd, obj=obj)
@@ -46,42 +60,6 @@
         data = requests.get(url)
         
         return self._check_response(data)
-
-    def get_road_objectTypes(self, **kwargs):
-        '''
-        Function for getting objects metadata from the NVDB data catalog.
-            parmas : 
-                    egenskapstyper
-                    relasjonstyper
-                    styringsparametere
-                    alle
-        '''
-        params = self._update_params(kwargs)
-        urlAdd = 'vegobjekttyper'
-        url = '{baseUrl}/{urlAdd}/'.format(baseUrl=self.baseUrl,
-            urlAdd=urlAdd, params=params)
-        
-        data = requests.get(url)
-        
-        return self.check_response(data)
-
-    def get_road_objectType(self, obj, **kwargs):
-        '''
-        Function for getting objects metadata from the NVDB data catalog.
-            params : 
-                    egenskapstyper
-                    relasjonstyper
-                    styringsparametere
-                    alle
-        '''
-        params = self._update_params(kwargs)
-        urlAdd = 'vegobjekttyper'
-        url = '{baseUrl}/{urlAdd}/{obj}'.format(baseUrl=self.baseUrl,
-            urlAdd=urlAdd, obj=obj, params=params)
-        data = requests.get(url)
-        
-        return self.check_response(data)
-
     def get_road_links(self, **kwargs):
         '''
         Function for getting the topological road network from NVDB
@@ -138,7 +116,6 @@
             vegreferanse        vegreferanse    Angi om det kun skal søkes innenfor spesifikke vegreferanser
             srid                srid        Angir hvilket geografisk referansesystem geometrien skal returneres i.
                                             Default: 32633
-
         '''
         params = self._update_params(kwargs)
         urlAdd = 'posisjon'
@@ -150,12 +127,9 @@
     def get_road(self, **kwargs):
         '''
         TODO : Add batch functionallity
-
         This function can be used for doing a query on roadlink or road refferance, 
         and get a coresponding point on the roadnet with coordinate, road refference and road link.
-
         params : 
-
                 vegreferanse    vegreferanse    Angir vegreferanse som punkt på vegnettet.
                 veglenke        veglenke        Angir veglenke som punkt på vegnettet.
                 srid            srid            Angir hvilket geografisk referansesystem geometrien skal returneres i.
@@ -167,18 +141,3 @@
             urlAdd=urlAdd)
         data = requests.get(url, params = params, headers=self.headers)
         return self.check_response(data)
-    
-    def _status(self):
-        ''' Function for getting status parameters about the API.
-
-        '''
-        urlAdd = 'status'
-        url = '{baseUrl}/{urlAdd}/'.format(baseUrl=self.baseUrl,
-            urlAdd=urlAdd)
-        data = requests.get(url, headers=self.headers)
-        return self._check_response(data)
-        
-class PvdbWrite:
-    "Write NVDB data"
-    def __init__(self):
-        pass

@@ -1,23 +1,17 @@
-from pvdb import PvdbRead
+import pvdb
 import json
 import pandas as pd
+from pprint import pprint
 
-r = PvdbRead()
-cat = r.catalogue
-for i in cat
-    print(str(i)+'\n')
+r = pvdb.Read()
+cat = pvdb.Catalogue()
+objects = cat.objects('')
+pprint(r.status)
 
+for obj in objects:
+    print('ID: {}\t{}'.format(obj['id'], obj['navn']))
 
-#with open('json_dumps\dump.json','w') as f:
-#    f.write(str(ol))
+obj = cat.object('25', '')
 
-
-'''
-Sånn vil jeg bruke den: 
-
-r = PvdbRead()
-for entry in r.catalogue:
-    print(entry.id)
-    print(entry.name)
-    print(entry.metadata)
-'''
+print(obj.keys())
+print(obj['egenskapstyper'][2].keys())
