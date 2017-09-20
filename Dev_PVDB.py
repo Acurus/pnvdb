@@ -3,15 +3,13 @@ import json
 import pandas as pd
 from pprint import pprint
 
-r = pvdb.Read()
-cat = pvdb.Catalogue()
-objects = cat.objects('')
-pprint(r.status)
+nvdb = pvdb.Nvdb(client='pvdb', contact='jankyr@vegvesen.no')
+print(nvdb.status)
+lop = nvdb.object(67,89204552)
+for att in lop.attributes:
+	print(att['navn'])
 
-for obj in objects:
-    print('ID: {}\t{}'.format(obj['id'], obj['navn']))
-
-obj = cat.object('25', '')
-
-print(obj.keys())
-print(obj['egenskapstyper'][2].keys())
+print(lop.metadata)
+print(lop.geometry)
+print(lop.relations)
+	

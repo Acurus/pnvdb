@@ -1,4 +1,4 @@
-from .catalogue import Catalogue
-from .read import Read
-from .write import Write
+from .read import Nvdb
+from .read import Object
+
 

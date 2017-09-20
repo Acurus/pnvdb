@@ -9,6 +9,6 @@ class ApiError(NvdbError):
 
 def read_api_error(resp):
     try:
-        return resp.json()[0]
+        return resp.json()[0]['message']
     except:
         return 'API seems dead : {}'.format(resp)
