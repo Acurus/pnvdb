@@ -5,11 +5,17 @@ from pprint import pprint
 
 nvdb = pvdb.Nvdb(client='pvdb', contact='jankyr@vegvesen.no')
 print(nvdb.status)
-lop = nvdb.object(67,89204552)
-for att in lop.attributes:
-	print(att['navn'])
+test = nvdb.objekt(67,86543444)
+#print(test.vegreferanser)
+#print(test.egengeometri)
+#print(test.geometri)
 
-print(lop.metadata)
-print(lop.geometry)
-print(lop.relations)
+for barn in test.barn:
+	try:
+		print(barn.metadata['type']['navn'])
+	except:
+		pass
+
+
+
 	
