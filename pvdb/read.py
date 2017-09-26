@@ -1,6 +1,6 @@
 import requests
 from .pvdb_exceptions import *
-
+import time
 
 class Nvdb(object):
        
@@ -18,6 +18,9 @@ class Nvdb(object):
     def objekt(self, objekt_type, nvdb_id):
         return Objekt(objekt_type, nvdb_id)
 
+    def objekter(self, objekt_type):
+        objekter = []
+        return objekter
 
 class Objekt(Nvdb):
     def __init__(self, objekt_type, nvdb_id):
@@ -25,6 +28,7 @@ class Objekt(Nvdb):
         self.objekt_type = objekt_type
         self.nvdb_id = nvdb_id
         self.fetched = False
+
 
     @property
     def egengeometri(self):
@@ -89,11 +93,13 @@ class Objekt(Nvdb):
         if not self.fetched:
             self._fetch_data()
         barn = []
+        tid=0
         if 'relasjoner' in self.data and 'barn' in self.data['relasjoner']:
             for i in self.data['relasjoner']['barn']:
                 objekt_type = i['type']['id']
                 for nvdb_id in i['vegobjekter']:
                     barn.append(Objekt(objekt_type, nvdb_id))
+                    end = time.time()
         else:
             barn = None
         return barn
