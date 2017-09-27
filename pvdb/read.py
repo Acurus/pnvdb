@@ -4,36 +4,65 @@ import time
 
 class Nvdb(object):
        
-    def __init__(self, client='PVDB', contact='jankyr@vegvesen.no'):
+    def __init__(self, client='pvdb', contact='jankyr@vegvesen.no'):
         self.baseUrl = 'https://www.vegvesen.no/nvdb/api/v2'
         self.headers = {'X-Client': client,'X-Kontaktperson': contact}
         self.srid = ''
+        self.antall = 10
 
 
     @property
     def status(self):
-        status = requests.get('https://www.vegvesen.no/nvdb/api/v2/status')
-        return _check_response(status)
+        return _fetch_data(self.baseUrl, 'status')
 
+    
     def objekt(self, objekt_type, nvdb_id):
         return Objekt(objekt_type, nvdb_id)
 
+    
     def objekter(self, objekt_type):
         objekter = []
         return objekter
+    
+
+    def objekt_type(self, objekt_type):
+        return Objekt_type(objekt_type)
+    
+
+    def objekt_typer(self):
+        data = _fetch_data(self.baseUrl, 'vegobjekttyper')
+        objekt_typer = []
+        for objekt_type in data:
+            objekt_type_id = objekt_type['id']
+            objekt_typer.append(Objekt_type(objekt_type_id, meta=objekt_type))
+        return objekt_typer
+
+    def hent(self, objekt_type, payload={}):
+        payload.update({'antall':self.antall})
+                
+        url = '{baseUrl}/vegobjekter/{objekt_type}'.format(baseUrl=self.baseUrl, objekt_type=objekt_type)
+        data = requests.get(url, params=payload)
+        data = _check_response(data)
+        objekter = []
+        for obj in data['objekter']:
+            objekter.append(Objekt(objekt_type, obj['id']))
+        return objekter
+
+
+
 
 class Objekt(Nvdb):
     def __init__(self, objekt_type, nvdb_id):
         super(Objekt, self).__init__()
         self.objekt_type = objekt_type
         self.nvdb_id = nvdb_id
-        self.fetched = False
+        self.data = None
 
 
     @property
     def egengeometri(self):
-        if not self.fetched:
-            self._fetch_data()
+        if not self.data:
+           self.data = _fetch_data(self.baseUrl, 'vegobjekter', self.objekt_type, self.nvdb_id)
         if 'geometri' in self.data:
             if self.data['geometri']['egengeometri'] == 'true':
                 egengeometri = True
@@ -43,8 +72,8 @@ class Objekt(Nvdb):
 
     @property
     def egenskaper(self):
-        if not self.fetched:
-            self._fetch_data()
+        if not self.data:
+           self.data = _fetch_data(self.baseUrl, 'vegobjekter', self.objekt_type, self.nvdb_id)
         if 'egenskaper' in self.data:
             egenskaper = self.data['egenskaper']
         else:
@@ -54,8 +83,8 @@ class Objekt(Nvdb):
             
     @property
     def metadata(self):
-        if not self.fetched:
-            self._fetch_data()
+        if not self.data:
+           self.data = _fetch_data(self.baseUrl, 'vegobjekter', self.objekt_type, self.nvdb_id)
         if 'metadata' in self.data:
             metadata = self.data['metadata']
         else:
@@ -65,8 +94,8 @@ class Objekt(Nvdb):
 
     @property
     def geometri(self):
-        if not self.fetched:
-            self._fetch_data()
+        if not self.data:
+           self.data = _fetch_data(self.baseUrl, 'vegobjekter', self.objekt_type, self.nvdb_id)
         if 'geometri' in self.data:
             geometri = self.data['geometri']['wkt']
         else:
@@ -76,8 +105,8 @@ class Objekt(Nvdb):
 
     @property
     def foreldre(self):
-        if not self.fetched:
-            self._fetch_data()
+        if not self.data:
+           self.data = _fetch_data(self.baseUrl, 'vegobjekter', self.objekt_type, self.nvdb_id)
         foreldre = []
         if 'relasjoner' in self.data and 'foreldre' in self.data['relasjoner']:
             for i in self.data['relasjoner']['foreldre']:
@@ -90,8 +119,8 @@ class Objekt(Nvdb):
 
     @property
     def barn(self):
-        if not self.fetched:
-            self._fetch_data()
+        if not self.data:
+           self.data = _fetch_data(self.baseUrl, 'vegobjekter',objekt_type, nvdb_id)
         barn = []
         tid=0
         if 'relasjoner' in self.data and 'barn' in self.data['relasjoner']:
@@ -106,8 +135,8 @@ class Objekt(Nvdb):
 
     @property
     def vegreferanser(self):
-        if not self.fetched:
-            self._fetch_data()
+        if not self.data:
+           self.data = _fetch_data(self.baseUrl, 'vegobjekter',objekt_type, nvdb_id)
         vegreferanser = []
         if 'lokasjon' in self.data and 'vegreferanser' in self.data['lokasjon']:
             for i in  self.data['lokasjon']['vegreferanser']:
@@ -116,25 +145,59 @@ class Objekt(Nvdb):
             vegreferanser = None
         return vegreferanser
 
-    def _fetch_data(self):
-        args = {}
-        params = _update_params(args)
-        url = '{baseUrl}/vegobjekter/{objekt_type}/{nvdb_id}'.format(baseUrl=self.baseUrl,
-            objekt_type=self.objekt_type, nvdb_id=self.nvdb_id, params = params)
-        data = requests.get(url)
-        self.data = _check_response(data)
-        self.fetched = True
 
-
-class objekt_type(Nvdb):
-    def __init__(objekt_type):
-        super(objekt_type, self).__init__()
+class Objekt_type(Nvdb):
+    def __init__(self, objekt_type, meta=None):
+        super(Objekt_type, self).__init__()
         self.objekt_type = objekt_type
-        
+        self.data = None
+        self.meta = meta
 
-def _update_params(params):
-    params.update({'antall':5})
-    return params
+       
+    @property
+    def relasjonstyper(self):
+        if not self.data:
+            self.data = _fetch_data(self.baseUrl, 'vegobjekttyper', self.objekt_type)
+        return self.data['relasjonstyper']
+
+    @property
+    def egenskapstyper(self):
+        if not self.data:
+            self.data = _fetch_data(self.baseUrl, 'vegobjekttyper', self.objekt_type)
+        return self.data['egenskapstyper']
+    
+    @property
+    def styringsparametere(self):
+        if not self.data:
+            self.data = _fetch_data(self.baseUrl, 'vegobjekttyper', self.objekt_type)
+        return self.data['styringsparametere']
+
+    @property
+    def metadata(self):
+        if self.meta:
+            return self.meta
+        elif not self.data:
+            self.data = _fetch_data(self.baseUrl, 'vegobjekttyper', self.objekt_type)
+            metadata = self.data.copy()
+            del metadata['egenskapstyper']
+            del metadata['relasjonstyper']
+            del metadata['styringsparametere']
+            self.meta = metadata
+        return self.meta
+    
+    
+def _fetch_data(baseUrl, url_add, objekt_type=None, nvdb_id=None):
+    if nvdb_id:
+        url = '{baseUrl}/{url_add}/{objekt_type}/{nvdb_id}'.format(baseUrl=baseUrl,
+        url_add=url_add, objekt_type=objekt_type, nvdb_id=nvdb_id)
+    elif objekt_type:
+        url = '{baseUrl}/{url_add}/{objekt_type}'.format(baseUrl=baseUrl, url_add=url_add, 
+        objekt_type=objekt_type)
+    else:
+        url = '{baseUrl}/{url_add}'.format(baseUrl=baseUrl, url_add=url_add)
+    data = requests.get(url)
+    data = _check_response(data)
+    return data
 
     
 def _check_response(resp):
@@ -146,6 +209,7 @@ def _check_response(resp):
     if resp.status_code == requests.codes.ok:
         return resp.json()
     else:
+        print(resp.url)
         raise ApiError(read_api_error(resp))
 
 
