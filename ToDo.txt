@@ -1,0 +1,14 @@
+Lage "hent" funkskjonalitet. nvdb.hent(objtype, vegreferanse=ev6hp1m31-13, fylke=2, region=0)
+den skal vere en generator som yelder ut objekter etterhvert som man itterer over.
+
+lag mulighet for å rekursift hente alle barn til et objekt. 
+Samme for alle foreldre?
+
+Lage klasse for objektkatalog objekter.
+
+tilrettelegge for å kunne bruke navn istede for objektnummer?
+  Kan sjekke om objekt er integer, om ikke hente datakatalogen og lete etter navn.
+  Datakatalogen kan ligge i nvdb objektet.
+  nvdb = pvdb.Nvdb()
+  nvdb.datakatalog
+  
