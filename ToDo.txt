@@ -16,3 +16,10 @@ Legge til mulighet til å "dumpe" hele objektet til json og xml
 objekt.dump('json') objekt.dump('xml')
 
 se over mulige endepunkter og legge inn i Nvdb-klassen.
+
+Endre navn på write.py til les.py
+  tenker da å ha filer som 
+    les.py
+    skriv.py
+    datafangst.py
+ en for hvert nvdb-API. 
