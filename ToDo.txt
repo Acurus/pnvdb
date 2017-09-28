@@ -4,8 +4,6 @@ den skal vere en generator som yelder ut objekter etterhvert som man itterer ove
 lag mulighet for å rekursift hente alle barn til et objekt. 
 Samme for alle foreldre?
 
-Lage klasse for objektkatalog objekter.
-
 tilrettelegge for å kunne bruke navn istede for objektnummer?
   Kan sjekke om objekt er integer, om ikke hente datakatalogen og lete etter navn.
   Datakatalogen kan ligge i nvdb objektet.
