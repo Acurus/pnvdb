@@ -21,3 +21,5 @@ Endre navn på write.py til les.py
     skriv.py
     datafangst.py
  en for hvert nvdb-API. 
+
+For objekttype legge til funksjon for å hente alle barn og foreldre som objekttype-objekter.
