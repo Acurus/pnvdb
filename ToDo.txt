@@ -1,6 +1,3 @@
-Lage "hent" funkskjonalitet. nvdb.hent(objtype, vegreferanse=ev6hp1m31-13, fylke=2, region=0)
-den skal vere en generator som yelder ut objekter etterhvert som man itterer over.
-
 lag mulighet for å rekursift hente alle barn til et objekt. 
 Samme for alle foreldre?
 
@@ -10,16 +7,7 @@ tilrettelegge for å kunne bruke navn istede for objektnummer?
   nvdb = pvdb.Nvdb()
   nvdb.datakatalog
   
-Legge til mulighet til å "dumpe" hele objektet til json og xml
-objekt.dump('json') objekt.dump('xml')
+legg til Posisjon endepunkt
+legg til veg endepunkt
 
-se over mulige endepunkter og legge inn i Nvdb-klassen.
 
-Endre navn på write.py til les.py
-  tenker da å ha filer som 
-    les.py
-    skriv.py
-    datafangst.py
- en for hvert nvdb-API. 
-
-For objekttype legge til funksjon for å hente alle barn og foreldre som objekttype-objekter.

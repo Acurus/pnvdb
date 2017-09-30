@@ -10,15 +10,15 @@ nvdb = pvdb.Nvdb(client='pvdb', contact='jankyr@vegvesen.no')
 #	print(i.metadata)
 #	print(i.objekt.metadata)
 
-#for i in  nvdb.fylker():
+#for i in nvdb.fylker():
 #	print(i.metadata)
 #	print(i.objekt.metadata)
 
-#for i in  nvdb.vegavdelinger():
+#for i in nvdb.vegavdelinger():
 #	print(i.metadata)
 #	print(i.objekt.metadata)
 
-#for i in  nvdb.kommuner():
+#for i in nvdb.kommuner():
 #	print(i.metadata)
 #	print(i.objekt.metadata)
 
@@ -37,7 +37,7 @@ nvdb = pvdb.Nvdb(client='pvdb', contact='jankyr@vegvesen.no')
 #[print(i.metadata) for i in objekttyper]
 
 
-#objekttype = nvdb.objekt_type(470)
+objekttype = nvdb.objekt_type(470)
 #print(objekttype.metadata)
 #print(objekttype.relasjonstyper)
 #print(objekttype.styringsparametere)
@@ -45,7 +45,7 @@ nvdb = pvdb.Nvdb(client='pvdb', contact='jankyr@vegvesen.no')
 #print(objekttype.barn.metadata)
 #for i in objekttype.foreldre:
 #	print(i.metadata)
-#print(objekttype.dump(format='xml'))
+print(objekttype.dump(format='xml'))
 
 
 #objekt = nvdb.objekt(67,86543444)
@@ -56,7 +56,8 @@ nvdb = pvdb.Nvdb(client='pvdb', contact='jankyr@vegvesen.no')
 #print(objekt.barn)
 #print(objekt.dump(format='xml'))
 
-#objekter = nvdb.hent(581, {'fylke':'2'})
+omradefilter = {'fylke':'2'}
+#objekter = nvdb.hent(581, omradefilter)
 #for i in objekter:
 	#for egenskap in i.egenskaper:
 	#	if egenskap['id'] == 5225:
