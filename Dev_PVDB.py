@@ -5,7 +5,9 @@ from pprint import pprint
 
 nvdb = pvdb.Nvdb(client='pvdb', contact='jankyr@vegvesen.no')
 #print(nvdb.status())
-#print(nvdb.områder())
+print(nvdb.vegreferanse('1600Ev6hp12m1000'))
+
+#print(nvdb.omrader())
 #for i in nvdb.regioner():
 #	print(i.metadata)
 #	print(i.objekt.metadata)
@@ -37,15 +39,14 @@ nvdb = pvdb.Nvdb(client='pvdb', contact='jankyr@vegvesen.no')
 #[print(i.metadata) for i in objekttyper]
 
 
-objekttype = nvdb.objekt_type(470)
+#objekttype = nvdb.objekt_type(470)
 #print(objekttype.metadata)
 #print(objekttype.relasjonstyper)
 #print(objekttype.styringsparametere)
 #print(objekttype.egenskapstyper)
-#print(objekttype.barn.metadata)
 #for i in objekttype.foreldre:
-#	print(i.metadata)
-print(objekttype.dump(format='xml'))
+	#print(i.metadata)
+#print(objekttype.dump(format='xml'))
 
 
 #objekt = nvdb.objekt(67,86543444)
@@ -56,11 +57,9 @@ print(objekttype.dump(format='xml'))
 #print(objekt.barn)
 #print(objekt.dump(format='xml'))
 
-omradefilter = {'fylke':'2'}
+#omradefilter = {'fylke':'2'}
 #objekter = nvdb.hent(581, omradefilter)
 #for i in objekter:
-	#for egenskap in i.egenskaper:
-	#	if egenskap['id'] == 5225:
-	#		print(egenskap['verdi'])
-	
-
+#	for egenskap in i.egenskaper:
+#		if egenskap['id'] == 5225:
+#			print(egenskap['verdi'])

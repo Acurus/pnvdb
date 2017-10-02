@@ -11,9 +11,28 @@ class Nvdb(object):
         self.srid = ''
         self.antall = 1000
 
+    def _fetch_data(self, url_add, payload={}, format='json'):
+        url = '{baseUrl}/{url_add}'.format(baseUrl=self.baseUrl, url_add=url_add)
+        resp = requests.get(url, params=payload, headers=self.headers)
+        print(resp.headers)
+        data = self._check_response(resp, format)
+        return data
+
+    def _check_response(self, resp, format='json'):
+        '''Function verifes that a 200 code was returned from the API
+        and returns the data as Json.
+        If a 200 code was not returned, it tries to return the error recived 
+        from the API.'''
+        if resp.status_code == requests.codes.ok and format == 'json':
+            return resp.json()
+        elif resp.status_code == requests.codes.ok and format == 'xml':
+            return resp
+        else:
+            print(resp.url)
+            raise ApiError(read_api_error(resp))
 
     def status(self):
-        return _fetch_data(self.baseUrl, 'status')
+        return self._fetch_data('status')
 
     
     def objekt(self, objekt_type, nvdb_id):
@@ -25,7 +44,7 @@ class Nvdb(object):
     
 
     def objekt_typer(self):
-        data = _fetch_data(self.baseUrl, 'vegobjekttyper')
+        data = self._fetch_data('vegobjekttyper')
         objekt_typer = []
         for objekt_type in data:
             objekt_type_id = objekt_type['id']
@@ -35,66 +54,62 @@ class Nvdb(object):
 
     def hent(self, objekt_type, payload={}):
         payload.update({'antall':self.antall})
-        neste = '{baseUrl}/vegobjekter/{objekt_type}'.format(baseUrl=self.baseUrl, objekt_type=objekt_type)
-        data = _check_response(requests.get(neste, params=payload))
+        url = 'vegobjekter/{objekt_type}'.format(objekt_type=objekt_type)
+        data = self._fetch_data(url, payload=payload)
         while True:
             metadata = data['metadata']
             returnert = metadata['returnert']
             if returnert == 0:
                 break
-            neste = metadata['neste']['href']
+            
+            payload.update({'start':metadata['neste']['start']})
             for obj in enumerate(data['objekter']):
                 yield Objekt(objekt_type, obj[1]['id'])
-            data = _check_response(requests.get(neste))
+            data = self._fetch_data(url, payload)
         
 
 
     def omrader(self):
-        url = 'https://www.vegvesen.no/nvdb/api/v2/omrader/{}'.format(area_type)
         payload = {'inkluder':'alle'}
-        return _check_response(requests.get(url, params=payload))
+        return self._fetch_data('omrader', payload)
     
     def regioner(self):
-        url = 'https://www.vegvesen.no/nvdb/api/v2/omrader/regioner'
         payload = {'inkluder':'alle'}
-        data = _check_response(requests.get(url, params=payload))
+        data = self._fetch_data('omrader/regioner', payload)
         return [Area(area_data) for area_data in data]
 
     def fylker(self):
-        url = 'https://www.vegvesen.no/nvdb/api/v2/omrader/fylker'
         payload = {'inkluder':'alle'}
-        data = _check_response(requests.get(url, params=payload))
+        data = self._fetch_data('omrader/fylker', payload)
         return [Area(area_data) for area_data in data]
 
     def vegavdelinger(self):
-        url = 'https://www.vegvesen.no/nvdb/api/v2/omrader/vegavdelinger'
         payload = {'inkluder':'alle'}
-        data = _check_response(requests.get(url, params=payload))
+        data = self._fetch_data('omrader/vegavdelinger', payload)
         return [Area(area_data) for area_data in data]
 
     def kommuner(self):
-        url = 'https://www.vegvesen.no/nvdb/api/v2/omrader/kommuner'
         payload = {'inkluder':'alle'}
-        data = _check_response(requests.get(url, params=payload))
+        data = self._fetch_data('omrader/kommuner', payload)
         return [Area(area_data) for area_data in data]
 
     def kontraktsomrader(self):
-        url = 'https://www.vegvesen.no/nvdb/api/v2/omrader/kontraktsomrader'
         payload = {'inkluder':'alle'}
-        data = _check_response(requests.get(url, params=payload))
+        data = self._fetch_data('omrader/kontraktsomrader', payload)
         return [Area(area_data) for area_data in data]
 
     def riksvegruter(self):
-        url = 'https://www.vegvesen.no/nvdb/api/v2/omrader/riksvegruter'
         payload = {'inkluder':'alle'}
-        data = _check_response(requests.get(url, params=payload))
+        data = self._fetch_data('omrader/riksvegruter', payload)
         return [Area(area_data) for area_data in data]
 
-    def posision(self):
+    def posisjon(self):
         pass
 
-    def veg(self):
-        pass
+    def vegreferanse(self, vegreferanse=None):
+        payload = {'vegreferanse':vegreferanse}
+        data = self._fetch_data('veg', payload=payload)
+        return data
 
 
 class Area(Nvdb):
@@ -147,7 +162,7 @@ class Objekt(Nvdb):
     @property
     def egengeometri(self):
         if not self.data:
-           self.data = _fetch_data(self.baseUrl, 'vegobjekter', self.objekt_type, self.nvdb_id)
+           self.data = self._fetch_data('vegobjekter/{}/{}'.format(self.objekt_type, self.nvdb_id))
         if 'geometri' in self.data:
             if self.data['geometri']['egengeometri'] == 'true':
                 egengeometri = True
@@ -158,7 +173,7 @@ class Objekt(Nvdb):
     @property
     def egenskaper(self):
         if not self.data:
-           self.data = _fetch_data(self.baseUrl, 'vegobjekter', self.objekt_type, self.nvdb_id)
+           self.data = self._fetch_data('vegobjekter/{}/{}'.format(self.objekt_type, self.nvdb_id))
         if 'egenskaper' in self.data:
             egenskaper = self.data['egenskaper']
         else:
@@ -169,7 +184,7 @@ class Objekt(Nvdb):
     @property
     def metadata(self):
         if not self.data:
-           self.data = _fetch_data(self.baseUrl, 'vegobjekter', self.objekt_type, self.nvdb_id)
+           self.data = self._fetch_data('vegobjekter/{}/{}'.format(self.objekt_type, self.nvdb_id))
         if 'metadata' in self.data:
             metadata = self.data['metadata']
         else:
@@ -180,7 +195,7 @@ class Objekt(Nvdb):
     @property
     def geometri(self):
         if not self.data:
-           self.data = _fetch_data(self.baseUrl, 'vegobjekter', self.objekt_type, self.nvdb_id)
+           self.data = self._fetch_data('vegobjekter/{}/{}'.format(self.objekt_type, self.nvdb_id))
         if 'geometri' in self.data:
             geometri = self.data['geometri']['wkt']
         else:
@@ -190,24 +205,16 @@ class Objekt(Nvdb):
     def dump(self, format='json'):
         if format.lower() == 'json':
             if not self.data:
-                self.data = _fetch_data(self.baseUrl, 'vegobjekter', self.objekt_type)
+                self.data = self._fetch_data('vegobjekter/{}/{}'.format(self.objekt_type, self.nvdb_id))
             return self.data
-        
         elif format.lower() == 'xml':
-            url = '{baseUrl}/vegobjekter/{objekt_type}/{nvdb_id}.xml'.format(baseUrl=self.baseUrl,
-                objekt_type=self.objekt_type, nvdb_id=self.nvdb_id)
-            resp = requests.get(url)
-            print(resp.url)
-            if resp.status_code == requests.codes.ok:
-                xml_data = resp.text
-            else:
-                raise ApiError(read_api_error(resp))
+            xml_data = self._fetch_data('vegobjekter/{}/{}.xml'.format(self.objekt_type, self.nvdb_id), format='xml')
             return xml_data
 
     @property
     def foreldre(self):
         if not self.data:
-           self.data = _fetch_data(self.baseUrl, 'vegobjekter', self.objekt_type, self.nvdb_id)
+           self.data = self._fetch_data(self, self.baseUrl, 'vegobjekter', self.objekt_type, self.nvdb_id)
         foreldre = []
         if 'relasjoner' in self.data and 'foreldre' in self.data['relasjoner']:
             for i in self.data['relasjoner']['foreldre']:
@@ -221,7 +228,7 @@ class Objekt(Nvdb):
     @property
     def barn(self):
         if not self.data:
-           self.data = _fetch_data(self.baseUrl, 'vegobjekter',objekt_type, nvdb_id)
+           self.data = self._fetch_data(self, self.baseUrl, 'vegobjekter',objekt_type, nvdb_id)
         barn = []
         tid=0
         if 'relasjoner' in self.data and 'barn' in self.data['relasjoner']:
@@ -237,7 +244,7 @@ class Objekt(Nvdb):
     @property
     def vegreferanser(self):
         if not self.data:
-           self.data = _fetch_data(self.baseUrl, 'vegobjekter',objekt_type, nvdb_id)
+           self.data = self._fetch_data(self, self.baseUrl, 'vegobjekter',objekt_type, nvdb_id)
         vegreferanser = []
         if 'lokasjon' in self.data and 'vegreferanser' in self.data['lokasjon']:
             for i in  self.data['lokasjon']['vegreferanser']:
@@ -245,7 +252,6 @@ class Objekt(Nvdb):
         else:
             vegreferanser = None
         return vegreferanser
-
 
 class Objekt_type(Nvdb):
     def __init__(self, objekt_type, meta=None):
@@ -257,38 +263,29 @@ class Objekt_type(Nvdb):
     def dump(self, format='json'):
         if format.lower() == 'json':
             if not self.data:
-                self.data = _fetch_data(self.baseUrl, 'vegobjekttyper', self.objekt_type)
+                self.data = self._fetch_data('vegobjekttyper/{}'.format(self.objekt_type))
             return self.data
         
         elif format.lower() == 'xml':
-            url = '{baseUrl}/vegobjekttyper/{objekt_type}.xml'.format(baseUrl=self.baseUrl, 
-                objekt_type=self.objekt_type)
-            resp = requests.get(url)
-            print(resp.url)
-            if resp.status_code == requests.codes.ok:
-                xml_data = resp.text
-            else:
-                raise ApiError(read_api_error(resp))
+            xml_data =self._fetch_data('vegobjekttyper/{}.xml'.format(self.objekt_type), format='xml')
             return xml_data
 
-            
-       
     @property
     def relasjonstyper(self):
         if not self.data:
-            self.data = _fetch_data(self.baseUrl, 'vegobjekttyper', self.objekt_type)
+            self.data = self._fetch_data('vegobjekttyper/{}'.format(self.objekt_type))
         return self.data['relasjonstyper']
 
     @property
     def egenskapstyper(self):
         if not self.data:
-            self.data = _fetch_data(self.baseUrl, 'vegobjekttyper', self.objekt_type)
+            self.data = self._fetch_data('vegobjekttyper/{}'.format(self.objekt_type))
         return self.data['egenskapstyper']
     
     @property
     def styringsparametere(self):
         if not self.data:
-            self.data = _fetch_data(self.baseUrl, 'vegobjekttyper', self.objekt_type)
+            self.data = self._fetch_data('vegobjekttyper/{}'.format(self.objekt_type))
         return self.data['styringsparametere']
 
     @property
@@ -296,7 +293,7 @@ class Objekt_type(Nvdb):
         if self.meta:
             return self.meta
         elif not self.data:
-            self.data = _fetch_data(self.baseUrl, 'vegobjekttyper', self.objekt_type)
+            self.data = self._fetch_data('vegobjekttyper/{}'.format(self.objekt_type))
             metadata = self.data.copy()
             del metadata['egenskapstyper']
             del metadata['relasjonstyper']
@@ -307,41 +304,13 @@ class Objekt_type(Nvdb):
     @property
     def barn(self):
         if not self.data:
-            self.data = _fetch_data(self.baseUrl, 'vegobjekttyper', self.objekt_type)
+            self.data = self._fetch_data(self, self.baseUrl, 'vegobjekttyper', self.objekt_type)
         realasjoner = self.data['relasjonstyper']
         return [Objekt_type(i['type']['id']) for i in realasjoner['barn']]
     @property
     def foreldre(self):
         if not self.data:
-            self.data = _fetch_data(self.baseUrl, 'vegobjekttyper', self.objekt_type)
+            self.data = self._fetch_data(self, self.baseUrl, 'vegobjekttyper', self.objekt_type)
         realasjoner = self.data['relasjonstyper']
         return [Objekt_type(i['type']['id']) for i in realasjoner['foreldre']]
-                
     
-def _fetch_data(baseUrl, url_add, objekt_type=None, nvdb_id=None):
-    if nvdb_id:
-        url = '{baseUrl}/{url_add}/{objekt_type}/{nvdb_id}'.format(baseUrl=baseUrl,
-        url_add=url_add, objekt_type=objekt_type, nvdb_id=nvdb_id)
-    elif objekt_type:
-        url = '{baseUrl}/{url_add}/{objekt_type}'.format(baseUrl=baseUrl, url_add=url_add, 
-        objekt_type=objekt_type)
-    else:
-        url = '{baseUrl}/{url_add}'.format(baseUrl=baseUrl, url_add=url_add)
-
-    data = requests.get(url)
-    data = _check_response(data)
-
-    return data
-
-    
-def _check_response(resp):
-    '''Function verifes that a 200 code was returned from the API
-    and returns the data as Json.
-    If a 200 code was not returned, it tries to return the error recived 
-    from the API.'''
-    
-    if resp.status_code == requests.codes.ok:
-        return resp.json()
-    else:
-        print(resp.url)
-        raise ApiError(read_api_error(resp))
