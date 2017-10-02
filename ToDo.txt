@@ -10,4 +10,10 @@ tilrettelegge for å kunne bruke navn istede for objektnummer?
 legg til Posisjon endepunkt
 legg til veg endepunkt
 
+Legge til headers i requests kallene
 
+Sjekke encoding jeg får fra requests og muligens sette den selv. resp.encoding.
+
+Kommentere det som er hardkodet, og vurdere om jeg kan unngå det.
+
+Vurdere refactor av _fetch_data funksjonen. Spørs om det er bedre å lage URL'n "lokalt". 
