@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import requests
 from .pvdb_exceptions import *
-import time
+
 
 class Nvdb(object):
        
@@ -14,7 +14,7 @@ class Nvdb(object):
     def _fetch_data(self, url_add, payload={}, format='json'):
         url = '{baseUrl}/{url_add}'.format(baseUrl=self.baseUrl, url_add=url_add)
         resp = requests.get(url, params=payload, headers=self.headers)
-        print(resp.headers)
+        #print(resp.headers)
         data = self._check_response(resp, format)
         return data
 
@@ -67,8 +67,13 @@ class Nvdb(object):
                 yield Objekt(objekt_type, obj[1]['id'])
             data = self._fetch_data(url, payload)
         
-
-
+    def vegreferanse(self, vegreferanse):
+        if type(vegreferanse) == list:
+            payload = {'vegreferanser':','.join(vegreferanse)}
+            result = self._fetch_data('veg/batch', payload)
+            return [Vegreferanse(vegref, meta=result[vegref]) for vegref in vegreferanse]
+        return Vegreferanse(vegreferanse)
+        
     def omrader(self):
         payload = {'inkluder':'alle'}
         return self._fetch_data('omrader', payload)
@@ -103,14 +108,8 @@ class Nvdb(object):
         data = self._fetch_data('omrader/riksvegruter', payload)
         return [Area(area_data) for area_data in data]
 
-    def posisjon(self):
-        pass
-
-    def vegreferanse(self, vegreferanse=None):
-        payload = {'vegreferanse':vegreferanse}
-        data = self._fetch_data('veg', payload=payload)
-        return data
-
+    def posisjon(self, payload):
+        return Posisjon(payload)
 
 class Area(Nvdb):
     def __init__(self, area_data):
@@ -214,7 +213,7 @@ class Objekt(Nvdb):
     @property
     def foreldre(self):
         if not self.data:
-           self.data = self._fetch_data(self, self.baseUrl, 'vegobjekter', self.objekt_type, self.nvdb_id)
+           self.data = self._fetch_data('vegobjekter/{}/{}'.format(self.objekt_type, self.nvdb_id))
         foreldre = []
         if 'relasjoner' in self.data and 'foreldre' in self.data['relasjoner']:
             for i in self.data['relasjoner']['foreldre']:
@@ -228,15 +227,14 @@ class Objekt(Nvdb):
     @property
     def barn(self):
         if not self.data:
-           self.data = self._fetch_data(self, self.baseUrl, 'vegobjekter',objekt_type, nvdb_id)
+           self.data = self._fetch_data('vegobjekter/{}/{}'.format(self.objekt_type, self.nvdb_id))
         barn = []
-        tid=0
         if 'relasjoner' in self.data and 'barn' in self.data['relasjoner']:
             for i in self.data['relasjoner']['barn']:
                 objekt_type = i['type']['id']
                 for nvdb_id in i['vegobjekter']:
                     barn.append(Objekt(objekt_type, nvdb_id))
-                    end = time.time()
+
         else:
             barn = None
         return barn
@@ -244,11 +242,11 @@ class Objekt(Nvdb):
     @property
     def vegreferanser(self):
         if not self.data:
-           self.data = self._fetch_data(self, self.baseUrl, 'vegobjekter',objekt_type, nvdb_id)
+           self.data = self._fetch_data('vegobjekter/{}/{}'.format(self.objekt_type, self.nvdb_id))
         vegreferanser = []
         if 'lokasjon' in self.data and 'vegreferanser' in self.data['lokasjon']:
             for i in  self.data['lokasjon']['vegreferanser']:
-                vegreferanser.append(i['kortform'])
+                vegreferanser.append(Vegreferanse(i['kortform']))
         else:
             vegreferanser = None
         return vegreferanser
@@ -313,4 +311,40 @@ class Objekt_type(Nvdb):
             self.data = self._fetch_data(self, self.baseUrl, 'vegobjekttyper', self.objekt_type)
         realasjoner = self.data['relasjonstyper']
         return [Objekt_type(i['type']['id']) for i in realasjoner['foreldre']]
+    
+class Vegreferanse(Nvdb):
+    def __init__(self, vegreferanse, meta=None):
+        super(Vegreferanse, self).__init__()
+        self.vegreferanse = vegreferanse
+        self.data = meta
+       
+    @property
+    def detaljert(self):
+        if not self.data:
+            self.data = self._fetch_data('veg', payload={'vegreferanse':self.vegreferanse})
+        return self.data['vegreferanse']
+        
+    @property
+    def veglenke(self):
+        if not self.data:
+           self.data = self._fetch_data('veg', payload={'vegreferanse':self.vegreferanse})
+        return self.data['veglenke']
+    
+    @property
+    def geometri(self):
+        if not self.data:
+           self.data = self._fetch_data('veg', payload={'vegreferanse':self.vegreferanse})
+        return self.data['geometri']
+    
+    def __str__(self):
+        return '{}'.format(self.vegreferanse)
+       
+class Posisjon(Nvdb):
+    def __init__(self, payload):
+        super(Posisjon, self).__init__()
+        self.data = self._fetch_data('posisjon',payload)
+    
+    @property
+    def vegreferanse(self):
+        return Vegreferanse(self.data[0]['vegreferanse']['kortform'])
     
