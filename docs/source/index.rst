@@ -1,7 +1,7 @@
 pvdb
 ================================
 
-.. warning:: **This is still a work in progress, and documentation is only a placeholder shell as of now. Will update once the code is working.**
+.. warning.. **This is still a work in progress, and documentation is only a placeholder shell as of now. Will update once the code is working.**
 
 
 
@@ -17,12 +17,13 @@ Will push to master once I have something that sortof works.
 
 Contents:
 
-.. toctree::
+.. toctree..
    :maxdepth: 2
    
    Installation
    Getting started
    Methods
+   Classes
 
 `Link to pvdb on Github <https://github.com/Acurus/PVDB>`_
 
