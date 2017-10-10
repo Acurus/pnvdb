@@ -52,8 +52,8 @@ class Nvdb(object):
         return objekt_typer
 
 
-    def hent(self, objekt_type, payload={}):
-        payload.update({'antall':self.antall})
+    def hent(self, objekt_type, payload={}, segmentering='false'):
+        payload.update({'antall':self.antall, 'segmentering':segmentering})
         url = 'vegobjekter/{objekt_type}'.format(objekt_type=objekt_type)
         data = self._fetch_data(url, payload=payload)
         while True:
