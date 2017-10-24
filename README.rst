@@ -18,7 +18,9 @@ Install
 ^^^^^^^
 ::
 
-	pip install pvdb
+	pip install pnvdb
+
+Someone "stole" pvdb :(
 
 Quick Start
 ^^^^^^^^^^^

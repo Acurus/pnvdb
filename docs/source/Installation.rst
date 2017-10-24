@@ -3,4 +3,4 @@ Installation
 
 .. code-block:: bash
 
-    pip install pvdb
+    pip install pnvdb
