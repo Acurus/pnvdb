@@ -1,7 +1,7 @@
 Methods
 =======
 
-.. toctree..
+.. toctree::
    :maxdepth: 2
    
    status
@@ -18,4 +18,3 @@ Methods
    kontraktsomrader
    riksvegruter
    posisjon
-

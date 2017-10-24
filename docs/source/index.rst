@@ -17,13 +17,14 @@ Will push to master once I have something that sortof works.
 
 Contents:
 
-.. toctree..
+.. toctree::
+   :caption: Contents
    :maxdepth: 2
    
    Installation
    Getting started
    Methods
-   Classes
+   
 
 `Link to pvdb on Github <https://github.com/Acurus/PVDB>`_
 

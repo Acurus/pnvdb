@@ -1,11 +1,8 @@
 import pvdb
-import json
-import pandas as pd
-from pprint import pprint
 
 nvdb = pvdb.Nvdb(client='pvdb', contact='jankyr@vegvesen.no')
-#print(nvdb.status())
-print(nvdb.vegreferanse('1600Ev6hp12m1000'))
+print(nvdb.status())
+#print(nvdb.vegreferanse('1600Ev6hp12m1000'))
 
 #print(nvdb.omrader())
 #for i in nvdb.regioner():
