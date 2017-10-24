@@ -15,7 +15,8 @@ Read the docs at
 http://pvdb.readthedocs.io
 
 Install
-^^^^^^^^^^^^^^^::
+^^^^^^^
+::
 
 	pip install pvdb
 
