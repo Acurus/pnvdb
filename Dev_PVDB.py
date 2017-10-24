@@ -1,10 +1,12 @@
 import pvdb
 
 nvdb = pvdb.Nvdb(client='pvdb', contact='jankyr@vegvesen.no')
-print(nvdb.status())
+#print(nvdb.status())
+#pos = nvdb.posisjon(x=269815,y=7038165)
+#print(pos.vegreferanse)
 #print(nvdb.vegreferanse('1600Ev6hp12m1000'))
 
-#print(nvdb.omrader())
+print(nvdb.omrader())
 #for i in nvdb.regioner():
 #	print(i.metadata)
 #	print(i.objekt.metadata)

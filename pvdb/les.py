@@ -5,7 +5,7 @@ from .pvdb_exceptions import *
 
 class Nvdb(object):
        
-    def __init__(self, client='pvdb', contact='jankyr@vegvesen.no'):
+    def __init__(self, client='pvdb', contact=''):
         self.baseUrl = 'https://www.vegvesen.no/nvdb/api/v2'
         self.headers = {'X-Client': client,'X-Kontaktperson': contact}
         self.srid = ''
@@ -74,10 +74,7 @@ class Nvdb(object):
             return [Vegreferanse(vegref, meta=result[vegref]) for vegref in vegreferanse]
         return Vegreferanse(vegreferanse)
         
-    def omrader(self):
-        payload = {'inkluder':'alle'}
-        return self._fetch_data('omrader', payload)
-    
+   
     def regioner(self):
         payload = {'inkluder':'alle'}
         data = self._fetch_data('omrader/regioner', payload)
@@ -108,7 +105,12 @@ class Nvdb(object):
         data = self._fetch_data('omrader/riksvegruter', payload)
         return [Area(area_data) for area_data in data]
 
-    def posisjon(self, payload):
+    def posisjon(self, x=None, y=None, lat=None, lon=None):
+        if x and y:
+            payload = {'nord':y,'ost':x}
+        elif lat and lon:
+            payload = {'lat':lat,'lon':lon}
+
         return Posisjon(payload)
 
 class Area(Nvdb):
@@ -347,4 +349,3 @@ class Posisjon(Nvdb):
     @property
     def vegreferanse(self):
         return Vegreferanse(self.data[0]['vegreferanse']['kortform'])
-    
