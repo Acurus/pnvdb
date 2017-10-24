@@ -1,7 +1,6 @@
 pvdb
 ====
 
-.. warning.. **This is still a work in progress.**
 
 pvdb stands for "python veg database" and is a python wrapper for the `NVDB Rest API <https://www.vegvesen.no/nvdb/apidokumentasjon/>`_
 
@@ -10,7 +9,18 @@ Data pulled from the API is licensed under
 Norsk lisens for offentlige data `NLOD <http://data.norge.no/nlod/no/1.0>`_
 
 Getting started
-^^^^^^^^^^^^^^^
+---------------
+
+Read the docs at 
+http://pvdb.readthedocs.io
+
+Install
+^^^^^^^^^^^^^^^::
+
+	pip install pvdb
+
+Quick Start
+^^^^^^^^^^^
 
 Start with initalizing an instance of pvdb::
 
