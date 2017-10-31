@@ -1,8 +1,8 @@
-pvdb
+pnvdb
 ====
 
 
-pvdb stands for "python veg database" and is a python wrapper for the `NVDB Rest API <https://www.vegvesen.no/nvdb/apidokumentasjon/>`_
+pnvdb stands for "python veg database" and is a python wrapper for the `NVDB Rest API <https://www.vegvesen.no/nvdb/apidokumentasjon/>`_
 
 
 Data pulled from the API is licensed under
@@ -12,7 +12,7 @@ Getting started
 ---------------
 
 Read the docs at 
-http://pvdb.readthedocs.io
+http://pnvdb.readthedocs.io
 
 Install
 ^^^^^^^
@@ -20,15 +20,15 @@ Install
 
 	pip install pnvdb
 
-Someone "stole" pvdb :(
+Someone "stole" pnvdb :(
 
 Quick Start
 ^^^^^^^^^^^
 
-Start with initalizing an instance of pvdb::
+Start with initalizing an instance of pnvdb::
 
-    import pvdb
-    nvdb = pvdb.Nvdb(client='Your-App-Name', contact='Your-contact-information')
+    import pnvdb
+    nvdb = pnvdb.Nvdb(client='Your-App-Name', contact='Your-contact-information')
 
 Now we can test our connection to NVDB::
 
