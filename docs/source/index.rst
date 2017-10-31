@@ -1,9 +1,9 @@
-pvdb
-====
+pnvdb
+=====
 
 .. warning.. **This is still a work in progress.**
 
-pvdb stands for "python veg database" and is a python wrapper for the `NVDB Rest API <https://www.vegvesen.no/nvdb/apidokumentasjon/>`_
+pnvdb stands for "python veg database" and is a python wrapper for the `NVDB Rest API <https://www.vegvesen.no/nvdb/apidokumentasjon/>`_
 
 
 Data pulled from the API is licensed under
@@ -21,9 +21,10 @@ Contents:
    Installation
    Getting started
    Methods
+   Classes
    
 
-`Link to pvdb on Github <https://github.com/Acurus/PVDB>`_
+`Link to pnvdb on Github <https://github.com/Acurus/pnvdb>`_
 
 
 

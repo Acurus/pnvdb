@@ -336,7 +336,7 @@ class Vegreferanse(Nvdb):
     def geometri(self):
         if not self.data:
            self.data = self._fetch_data('veg', payload={'vegreferanse':self.vegreferanse})
-        return self.data['geometri']
+        return self.data['geometri']['wkt']
     
     def __str__(self):
         return '{}'.format(self.vegreferanse)

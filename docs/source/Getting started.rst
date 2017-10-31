@@ -1,10 +1,10 @@
 Getting started
 ===============
 
-Start with initalizing an instance of pvdb::
+Start with initalizing an instance of pnvdb::
 
-    import pvdb
-    nvdb = pvdb.Nvdb(client='Your-App-Name', contact='Your-contact-information')
+    import pnvdb
+    nvdb = pnvdb.Nvdb(client='Your-App-Name', contact='Your-contact-information')
 
 Now we can test our connection to NVDB::
 
