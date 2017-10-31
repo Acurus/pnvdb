@@ -19,13 +19,13 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
     name='pnvdb',
 
-    version='0.1.0',
+    version='0.2.0',
 
     description='A python wrapper for the NVDB REST API',
     long_description=long_description,
 
     # The project's main homepage.
-    url='http://pvdb.readthedocs.io/en/latest/',
+    url='http://pnvdb.readthedocs.io/en/latest/',
 
     # Author details
     author='Jan Tore Kyrdalen',

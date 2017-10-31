@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import requests
-from .pvdb_exceptions import *
+from .pnvdb_exceptions import *
 
 
 class Nvdb(object):
        
-    def __init__(self, client='pvdb', contact=''):
+    def __init__(self, client='pnvdb', contact=''):
         self.baseUrl = 'https://www.vegvesen.no/nvdb/api/v2'
         self.headers = {'X-Client': client,'X-Kontaktperson': contact}
         self.srid = ''

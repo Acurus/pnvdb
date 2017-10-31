@@ -2,7 +2,7 @@ pnvdb
 ====
 
 
-pnvdb stands for "python veg database" and is a python wrapper for the `NVDB Rest API <https://www.vegvesen.no/nvdb/apidokumentasjon/>`_
+pnvdb stands for "python for Nasjonal vegdatabank" and is a python wrapper for the `NVDB Rest API <https://www.vegvesen.no/nvdb/apidokumentasjon/>`_
 
 
 Data pulled from the API is licensed under
@@ -20,7 +20,6 @@ Install
 
 	pip install pnvdb
 
-Someone "stole" pnvdb :(
 
 Quick Start
 ^^^^^^^^^^^
