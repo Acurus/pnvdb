@@ -4,8 +4,6 @@ Code refference
 .. toctree::
    :caption: Contents
    :maxdepth: 2
-
-.. automodule:: pnvdb
  
 .. autoclass:: pnvdb.les.Nvdb
    :members:
