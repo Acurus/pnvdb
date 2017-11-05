@@ -17,12 +17,15 @@ Contents:
 .. toctree::
    :caption: Contents
    :maxdepth: 2
-   
+
    Installation
    Getting started
-   Methods
-   Classes
-   
+   code
+
+Indices and tables
+==================
+ 
+* :ref:`genindex`
 
 `Link to pnvdb on Github <https://github.com/Acurus/pnvdb>`_
 
