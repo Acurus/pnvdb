@@ -2,24 +2,23 @@ Code refference
 ================
 
 .. toctree::
-   :caption: Contents
    :maxdepth: 2
 
 
 .. autoclass:: pnvdb.Nvdb
    :members:
 
-.. autoclass:: pnvdb.les.Objekt
+.. autoclass:: pnvdb.models.Objekt
    :members:
 
-.. autoclass:: pnvdb.les.Objekt_type
+.. autoclass:: pnvdb.models.Objekt_type
    :members:
 
-.. autoclass:: pnvdb.les.Vegreferanse
+.. autoclass:: pnvdb.models.Vegreferanse
    :members:
 
-.. autoclass:: pnvdb.les.Posisjon
+.. autoclass:: pnvdb.models.Posisjon
    :members:
 
-.. autoclass:: pnvdb.les.Area
+.. autoclass:: pnvdb.models.Area
    :members:
