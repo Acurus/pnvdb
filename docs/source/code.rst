@@ -1,10 +1,6 @@
 Code refference
 ================
 
-.. toctree::
-   :maxdepth: 2
-
-
 .. autoclass:: pnvdb.Nvdb
    :members:
 
