@@ -11,7 +11,6 @@ Norsk lisens for offentlige data `NLOD <http://data.norge.no/nlod/no/1.0>`_
 
 
 
-
 Contents:
 
 .. toctree::
