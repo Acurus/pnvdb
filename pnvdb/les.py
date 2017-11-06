@@ -98,20 +98,22 @@ class Nvdb(object):
             >>> for bomstasjon in bomstasjoner:
             >>>     print(bomstasjon)
         """
-        payload.update({'antall':self.antall})
+        _payload = payload.copy()
+        _payload.update({'antall':self.antall})
         url = 'vegobjekter/{objekt_type}'.format(objekt_type=objekt_type)
-        data = _fetch_data(self, url, payload=payload)
+        data = _fetch_data(self, url, payload=_payload)
         while True:
-            metadata = data['metadata']
-            returnert = metadata['returnert']
+
+            returnert = data['metadata']['returnert']
             if returnert == 0:
                 break
             
-            payload.update({'start':metadata['neste']['start']})
+            _payload.update({'start':data['metadata']['neste']['start']})
             for obj in enumerate(data['objekter']):
                 yield models.Objekt(self, objekt_type, obj[1]['id'])
-            data = _fetch_data(self, url, payload)
+            data = _fetch_data(self, url, _payload)
         
+
     def vegreferanse(self, vegreferanse):
         """ Return vegreferanse object.
             PS : Only support point refferences

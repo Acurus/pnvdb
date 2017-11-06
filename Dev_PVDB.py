@@ -59,9 +59,18 @@ nvdb = pnvdb.Nvdb(client='pnvdb', contact='jankyr@vegvesen.no')
 # print(objekt.barn)
 # print(objekt.dump(format='xml'))
 
-omradefilter = {'fylke':'2'}
-objekter = nvdb.hent(581, omradefilter)
-for i in objekter:
-	for egenskap in i.egenskaper:
-		if egenskap['id'] == 5225:
-			print(egenskap['verdi'])
+#omradefilter = {'fylke':'2'}
+#objekter = nvdb.hent(581, omradefilter)
+#for i in objekter:
+#	for egenskap in i.egenskaper:
+#		if egenskap['id'] == 5225:
+#			print(egenskap['verdi'])
+
+criteria = {'fylke':'2','egenskap':'1820>=20'} # 1820 = "Takst liten bil"
+
+bomstasjoner = nvdb.hent(45, criteria)
+obj = nvdb.hent(45, criteria)
+for i in obj:
+    for egenskap in i.egenskaper:
+        if egenskap['id'] == 1078: # 1078 = "Navn bomstasjon"
+            print(egenskap['verdi'])
