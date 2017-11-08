@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .util import _fetch_data
 
 class Vegreferanse(object):

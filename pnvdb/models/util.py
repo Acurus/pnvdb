@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import requests
 from .pnvdb_exceptions import *
 class NVDBase(object):

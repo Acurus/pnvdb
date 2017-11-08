@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 from .util import _fetch_data
 from .objekt import Objekt
 
