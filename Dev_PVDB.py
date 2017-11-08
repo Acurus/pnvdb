@@ -10,9 +10,9 @@ nvdb = pnvdb.Nvdb(client='pnvdb', contact='jankyr@vegvesen.no')
 # print(vegref.veglenke)
 # print(vegref.geometri)
 
-# for i in nvdb.regioner():
-# 	print(i.metadata)
-# 	print(i.objekt.metadata)
+#for i in nvdb.regioner():
+#	print(i.metadata)
+	#print(i.objekt.metadata)
 
 # for i in nvdb.fylker():
 # 	print(i.metadata)
@@ -51,13 +51,14 @@ nvdb = pnvdb.Nvdb(client='pnvdb', contact='jankyr@vegvesen.no')
 # print(objekttype.dump(format='xml'))
 
 
-# objekt = nvdb.objekt(67,86543444)
-# print(objekt.metadata)
-# print(objekt.vegreferanser)
-# print(objekt.egengeometri)
-# print(objekt.geometri)
-# print(objekt.barn)
-# print(objekt.dump(format='xml'))
+objekt = nvdb.objekt(67,86543444)
+#print(objekt.metadata.keys())
+print(objekt.egenskaper[0].keys())
+#print(objekt.vegreferanser)
+#print(objekt.egengeometri)
+print(objekt.geometri)
+#print(objekt.barn)
+#print(objekt.dump(format='xml'))
 
 #omradefilter = {'fylke':'2'}
 #objekter = nvdb.hent(581, omradefilter)
@@ -66,11 +67,11 @@ nvdb = pnvdb.Nvdb(client='pnvdb', contact='jankyr@vegvesen.no')
 #		if egenskap['id'] == 5225:
 #			print(egenskap['verdi'])
 
-criteria = {'fylke':'2','egenskap':'1820>=20'} # 1820 = "Takst liten bil"
+#criteria = {'fylke':'2','egenskap':'1820>=20'} # 1820 = "Takst liten bil"
 
-bomstasjoner = nvdb.hent(45, criteria)
-obj = nvdb.hent(45, criteria)
-for i in obj:
-    for egenskap in i.egenskaper:
-        if egenskap['id'] == 1078: # 1078 = "Navn bomstasjon"
-            print(egenskap['verdi'])
+#bomstasjoner = nvdb.hent(45, criteria)
+#obj = nvdb.hent(45, criteria)
+#for i in obj:
+#    for egenskap in i.egenskaper:
+#        if egenskap['id'] == 1078: # 1078 = "Navn bomstasjon"
+#            print(egenskap['verdi'])

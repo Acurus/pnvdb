@@ -1,3 +1,4 @@
+
 from .util import _fetch_data
 from .objekt import Objekt
 
@@ -11,7 +12,9 @@ class Area(object):
     @property
     def metadata(self):
         """ 
-        :Attribute: Dict
+        :Attribute type: Dict
+        
+        :keys: ['nummer','navn']
         """
         metadata = self.data.copy()
         if 'kartutsnitt' in self.data:
@@ -26,7 +29,7 @@ class Area(object):
     @property
     def kartutsnitt(self):
         """ 
-        :Attribute: Well Known Text
+        :Attribute type: Well Known Text
         """
         if 'kartutsnitt' in self.data:
             return self.data['kartutsnitt']['wkt']
@@ -37,7 +40,7 @@ class Area(object):
     @property
     def senterpunkt(self):
         """
-        :Attribute: Well Known Text
+        :Attribute type: Well Known Text
         """
         if 'senterpunkt' in self.data:
             return self.data['senterpunkt']['wkt']
@@ -48,7 +51,7 @@ class Area(object):
     @property
     def objekt(self):
         """
-        :Attribute: :class:`.Objekt` of the Area
+        :Attribute type: :class:`.Objekt` of the Area
         """
         objekttype = self.data['vegobjekt']['type']
         nvdb_id = self.data['vegobjekt']['id']

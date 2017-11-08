@@ -1,6 +1,6 @@
 Installation
 ============
 
-.. code-block:: bash
+Installing is as easy as 
 
-    pip install pnvdb
+    >>> pip install pnvdb

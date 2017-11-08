@@ -12,6 +12,6 @@ class Posisjon(object):
     @property
     def vegreferanse(self):
         """
-        :Attribute: :class:`.Vegreferanse`
+        :Attribute type: :class:`.Vegreferanse`
         """
         return Vegreferanse(self.nvdb, self.data[0]['vegreferanse']['kortform'])

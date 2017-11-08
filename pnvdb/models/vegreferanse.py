@@ -11,7 +11,8 @@ class Vegreferanse(object):
     @property
     def detaljert(self):
         """
-        :Attribute: Dict
+        :Attribute type: Dict
+        :keys: ['nummer', 'kategori', 'kortform', 'status', 'meter', 'fylke', 'hp', 'kommune']
         """
         if not self.data:
             self.data = _fetch_data(self.nvdb, 'veg', payload={'vegreferanse':self.vegreferanse})
@@ -20,7 +21,8 @@ class Vegreferanse(object):
     @property
     def veglenke(self):
         """
-        :Attribute: Dict
+        :Attribute type: Dict
+        :keys: ['id', 'kortform', 'posisjon']
         """
         if not self.data:
            self.data = _fetch_data(self.nvdb, 'veg', payload={'vegreferanse':self.vegreferanse})
@@ -29,7 +31,7 @@ class Vegreferanse(object):
     @property
     def geometri(self):
         """
-        :Attribute: Well known text
+        :Attribute type: Well known text
         """
         if not self.data:
            self.data = _fetch_data(self.nvdb, 'veg', payload={'vegreferanse':self.vegreferanse})

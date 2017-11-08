@@ -12,7 +12,9 @@ class Objekt(object):
     @property
     def egengeometri(self):
         """
-        :Attribute: Well known text
+        Boolean value that tell if the object has egengeometri or not.
+
+        :Attribute type: Bool
         """
         if not self.data:
            self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'.format(self.objekt_type, self.nvdb_id))
@@ -26,7 +28,8 @@ class Objekt(object):
     @property
     def egenskaper(self):
         """
-        :Attribute: List of Dict
+        :Attribute type: List of Dict
+        :keys: ['datatype_tekst', 'id', 'datatype', 'verdi', 'navn']
         """
         if not self.data:
            self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'.format(self.objekt_type, self.nvdb_id))
@@ -40,7 +43,8 @@ class Objekt(object):
     @property
     def metadata(self):
         """
-        :Attribute: Dict
+        :Attribute type: Dict
+        :keys: ['versjon', 'sist_modifisert', 'startdato', 'type']
         """
         if not self.data:
            self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'.format(self.objekt_type, self.nvdb_id))
@@ -54,7 +58,7 @@ class Objekt(object):
     @property
     def geometri(self):
         """
-        :Attribute: Dict
+        :Attribute type: Well Known Text
         """
         if not self.data:
            self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'.format(self.objekt_type, self.nvdb_id))
@@ -66,7 +70,11 @@ class Objekt(object):
 
     def dump(self, format='json'):
         """
-        :Attribute: Dict
+        Function for dumping raw API-result for object.
+
+        :param format: Type of data to dump as. json or xml
+        :type format: string
+        :returns: str
         """
         if format.lower() == 'json':
             if not self.data:
@@ -79,7 +87,7 @@ class Objekt(object):
     @property
     def foreldre(self):
         """
-        :Attribute: List of Objekt
+        :Attribute type: List of :class:`.Objekt`
         """
         if not self.data:
            self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'.format(self.objekt_type, self.nvdb_id))
@@ -96,7 +104,7 @@ class Objekt(object):
     @property
     def barn(self):
         """
-        :Attribute: List of Objekt
+        :Attribute type: List of :class:`.Objekt`
 
         """
         if not self.data:
@@ -115,7 +123,7 @@ class Objekt(object):
     @property
     def vegreferanser(self):
         """
-        :Attribute: Dict
+        :Attribute type: :class:`.Vegreferanse`
 
         """
         if not self.data:

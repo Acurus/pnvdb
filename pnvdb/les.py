@@ -7,9 +7,12 @@ class Nvdb(object):
     """ The main class for interfacing with the API.
         
         :param client: Name of client using the API
-        :type name: str
+        :type client: str
         :param contact: Contact information of user of the API
+        :type contact: str
         :returns:  Nvdb Class
+
+        :usage:
 
         >>> import pnvdb
         >>> nvdb = pnvdb.Nvdb(client='Your-App-Name', contact='Your-contact-information')
@@ -28,11 +31,16 @@ class Nvdb(object):
     def status(self):
         """ Method for getting information about the current status of the API 
             
+            :returns: Dict
+            :keys: ['datakatalog', 'datagrunnlag']
+
+            :usage:
+
             >>> status = nvdb.status()
             >>> print(status['datakatalog']['versjon'])
             2.10
 
-            :returns: Dict
+            
         """
         return _fetch_data(self, 'status')
     
@@ -40,10 +48,12 @@ class Nvdb(object):
         """ Method for creating a spesific nvdb python Objekt
 
             :param objekt_type: nvdb objekttype id.
-            :type name: int
+            :type objekt_type: int
             :param nvdb_id: the unique nvdb id
-            :type name: int
+            :type nvdb_id: int
             :returns: :class:`.Objekt`
+
+            :usage:
 
             >>> obj = nvdb.objekt(objekt_type=67, nvdb_id=89204552)
             >>> print(obj.metadata)
@@ -57,8 +67,10 @@ class Nvdb(object):
         """ Method for creating a spesific nvdb python
 
             :param objekt_type: nvdb objekttype id.
-            :type name: int
-            :returns: :class:`.models.models.Objekt_type`
+            :type objekt_type: int
+            :returns: :class:`.Objekt_type`
+
+            :usage:
 
             >>> obj = nvdb.objekt_type(objekt_type=67)
             >>> print(obj.metadata['sosinvdbnavn'])
@@ -70,8 +82,10 @@ class Nvdb(object):
     def objekt_typer(self):
         """ Returns objekt_type of every avaliable obj type in nvdb
             
-            :returns: List of :class:`.models.models.Objekt_type`
+            :returns: List of :class:`.Objekt_type`
             
+            :usage:
+
             >>> obj_types = nvdb.objekt_typer()
             >>> print(obj_types[0].metadata['sosinvdbnavn'])
             Skjerm_3
@@ -90,16 +104,20 @@ class Nvdb(object):
             to fetch the results of the query.
             
             :param objekt_type: nvdb objekttype id.
+            :type objekt_type: int
+            :param payload: filters for the query
             :type payload: dict
             :returns: generator of :class:`.Objekt`
             
+            :usage:
+
             >>> criteria = {'fylke':'2','egenskap':'1820>=20'}
             >>> bomstasjoner = nvdb.hent(45, criteria)
             >>> for bomstasjon in bomstasjoner:
             >>>     print(bomstasjon)
         """
         _payload = payload.copy()
-        _payload.update({'antall':self.antall})
+        _payload.update({'antall':self.antall,'segmentering':'false'})
         url = 'vegobjekter/{objekt_type}'.format(objekt_type=objekt_type)
         data = _fetch_data(self, url, payload=_payload)
         while True:
@@ -121,6 +139,8 @@ class Nvdb(object):
             :param vegreferanse: The road refferences to objectify
             :type vegreferanse: string
             :returns: :class:`.Vegreferanse`
+
+            :usage:
 
             >>> print(nvdb.vegreferanse('1600Ev6hp12m1000'))
         """
@@ -144,6 +164,8 @@ class Nvdb(object):
             :type lon: float
             :returns: :class:`.Posisjon`
 
+            :usage:
+
             >>> pos = nvdb.posisjon(x=269815,y=7038165)
             >>> print(pos.vegreferanse)
         """
@@ -156,9 +178,11 @@ class Nvdb(object):
     
    
     def regioner(self):
-        """ Returns an models.Area object for all regions
+        """ Returns an Area object for all regions
             
-            :returns: list of :class:`.models.Area`
+            :returns: list of :class:`.Area`
+
+            :usage:
 
             >>> for region in nvdb.regioner():
             >>>     print(region.metadata)
@@ -168,9 +192,11 @@ class Nvdb(object):
         return [models.Area(self, models.Area_data) for models.Area_data in data]
 
     def fylker(self):
-        """ Returns an models.Area object for all fylker
+        """ Returns an mArea object for all fylker
 
-            :returns: list of :class:`.models.Area`
+            :returns: list of :class:`.Area`
+
+            :usage:
 
             >>> for region in nvdb.regioner():
             >>>     print(region.metadata)
@@ -180,9 +206,11 @@ class Nvdb(object):
         return [models.Area(self, models.Area_data) for models.Area_data in data]
 
     def vegavdelinger(self):
-        """ Returns an models.Area object for all vegavdelinger
+        """ Returns an Area object for all vegavdelinger
 
-            :returns: list of :class:`.models.Area`
+            :returns: list of :class:`.Area`
+
+            :usage:
 
             >>> for region in nvdb.regioner():
             >>>     print(region.metadata)
@@ -192,9 +220,11 @@ class Nvdb(object):
         return [models.Area(self, models.Area_data) for models.Area_data in data]
 
     def kommuner(self):
-        """ Returns an models.Area object for all kommuner
+        """ Returns an Area object for all kommuner
 
-            :returns: list of :class:`.models.Area`
+            :returns: list of :class:`.Area`
+
+            :usage:
 
             >>> for region in nvdb.regioner():
             >>>     print(region.metadata)
@@ -204,9 +234,11 @@ class Nvdb(object):
         return [models.Area(self, models.Area_data) for models.Area_data in data]
 
     def kontraktsomrader(self):
-        """ Returns an models.Area object for all kontraktsomrader
+        """ Returns an Area object for all kontraktsomrader
 
-            :returns: list of :class:`.models.Area`
+            :returns: list of :class:`.Area`
+
+            :usage:
 
             >>> for region in nvdb.regioner():
             >>>     print(region.metadata)
@@ -216,9 +248,11 @@ class Nvdb(object):
         return [models.Area(self, models.Area_data) for models.Area_data in data]
 
     def riksvegruter(self):
-        """ Returns an models.Area object for all riksvegruter
+        """ Returns an Area object for all riksvegruter
 
-            :returns: list of :class:`.models.Area`
+            :returns: list of :class:`.Area`
+
+            :usage:
 
             >>> for region in nvdb.regioner():
             >>>     print(region.metadata)

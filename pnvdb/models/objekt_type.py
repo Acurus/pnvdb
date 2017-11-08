@@ -30,7 +30,10 @@ class Objekt_type(object):
     @property
     def relasjonstyper(self):
         """
-        :Attribute: Dict
+        :Attribute type: Dict
+        :keys: ['barn', 'foreldre']
+        :keys in keys: ['type', 'relasjonstype', 'id']
+
         """
         if not self.data:
             self.data = _fetch_data(self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
@@ -39,7 +42,10 @@ class Objekt_type(object):
     @property
     def egenskapstyper(self):
         """
-        :Attribute: Dict
+        :Attribute type: list of Dicts
+        :keys: ['liste', 'navn', 'datatype_tekst', 'veiledning', 'beskrivelse', 'sensitivitet',
+                'sosinvdbnavn', 'objektliste_dato', 'feltlengde', 'sorteringsnummer', 'id',
+                'styringsparametere', 'viktighet', 'viktighet_tekst', 'datatype']
         """
         if not self.data:
             self.data = _fetch_data(self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
@@ -48,7 +54,10 @@ class Objekt_type(object):
     @property
     def styringsparametere(self):
         """
-        :Attribute: Dict
+        :Attribute type: Dict
+        :keys: ['abstrakt_type', 'sideposisjon_relevant', 'retning_relevant', 'ajourhold_splitt',
+                'må_ha_mor', 'avledet', 'sektype_20k', 'er_dataserie', 'høyde_relevant', 'dekningsgrad',
+                'overlapp, 'filtrering', 'flyttbar', 'tidsrom_relevant', 'ajourhold_i', 'kjørefelt_relevant']
         """
         if not self.data:
             self.data = _fetch_data(self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
@@ -57,7 +66,11 @@ class Objekt_type(object):
     @property
     def metadata(self):
         """
-        :Attribute: Dict
+        .. todo:: Possible bug. Returns None after reading other attributes
+
+        :Attribute type: Dict
+        :keys: ['navn', 'veiledning', 'beskrivelse', 'objektliste_dato', 'sosinvdbnavn', 'sorteringsnummer',
+                'stedfesting', 'id', 'kategorier']
         """
         if self.meta:
             return self.meta
@@ -73,7 +86,7 @@ class Objekt_type(object):
     @property
     def barn(self):
         """
-        :Attribute: list of :class:`.Objekt_type`
+        :Attribute type: list of :class:`.Objekt_type`
         """
         if not self.data:
             self.data = _fetch_data(self.nvdb, self.baseUrl, 'vegobjekttyper', self.objekt_type)
@@ -82,7 +95,7 @@ class Objekt_type(object):
     @property
     def foreldre(self):
         """
-        :Attribute: list of :class:`.Objekt_type`
+        :Attribute type: list of :class:`.Objekt_type`
         """
         if not self.data:
             self.data = _fetch_data(self.nvdb, self.baseUrl, 'vegobjekttyper', self.objekt_type)
