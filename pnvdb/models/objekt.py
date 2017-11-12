@@ -25,6 +25,29 @@ class Objekt(object):
             else:
                 egengeometri = False
         return egengeometri
+    
+
+    def egenskap(self, egensksaps_id = None, egenskaps_navn = None):
+       """
+        Function for returning egenskap based on id or name
+
+        :param egenskaps_id: Id of the property type you want returned
+        :type egenskaps_id: int
+        :param navn: namevof the property type you want returned
+        :type egenskaps_id: string
+        :returns: dict unless property is not found. Then None is returned.
+        """
+        if egenskaps_id:
+            for egenskap in self.egenskaper:
+                if egenskap['id'] == egenskaps_id:
+                    return egenskap
+        elif egenskaps_navn:
+            for egenskap in self.egenskaper:
+                if egenskap['navn'] == egenskaps_id:
+                    return egenskap
+        else:
+            return None
+
 
     @property
     def egenskaper(self):
