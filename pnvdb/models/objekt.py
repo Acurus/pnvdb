@@ -28,7 +28,7 @@ class Objekt(object):
     
 
     def egenskap(self, egensksaps_id = None, egenskaps_navn = None):
-       """
+        """
         Function for returning egenskap based on id or name
 
         :param egenskaps_id: Id of the property type you want returned
