@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+""" Provide the Area class """
 from .util import _fetch_data
 from .objekt import Objekt
 

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+""" Provide the Vegreferanse class """
 from .util import _fetch_data
 
 class Vegreferanse(object):
@@ -26,7 +27,7 @@ class Vegreferanse(object):
         :keys: ['id', 'kortform', 'posisjon']
         """
         if not self.data:
-           self.data = _fetch_data(self.nvdb, 'veg', payload={'vegreferanse':self.vegreferanse})
+            self.data = _fetch_data(self.nvdb, 'veg', payload={'vegreferanse':self.vegreferanse})
         return self.data['veglenke']
     
     @property
@@ -35,7 +36,7 @@ class Vegreferanse(object):
         :Attribute type: Well known text
         """
         if not self.data:
-           self.data = _fetch_data(self.nvdb, 'veg', payload={'vegreferanse':self.vegreferanse})
+            self.data = _fetch_data(self.nvdb, 'veg', payload={'vegreferanse':self.vegreferanse})
         return self.data['geometri']['wkt']
     
     def __str__(self):

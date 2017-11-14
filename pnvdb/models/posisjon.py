@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+""" Provide the Posisjon class """
 from .util import _fetch_data
 from .vegreferanse import Vegreferanse
 
@@ -7,7 +8,7 @@ class Posisjon(object):
     def __init__(self, nvdb, payload):
         super(Posisjon, self).__init__()
         self.nvdb = nvdb
-        self.data = _fetch_data(self.nvdb, 'posisjon',payload)
+        self.data = _fetch_data(self.nvdb, 'posisjon', payload)
         
     
     @property

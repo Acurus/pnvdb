@@ -29,7 +29,6 @@ This will get us access to a number of attributes assosiated with this object. L
 
     >>> criteria = {'fylke':'2','egenskap':'1820>=20'} # 1820 = "Takst liten bil"
 
-    >>> bomstasjoner = nvdb.hent(45, criteria)
     >>> obj = nvdb.hent(45, criteria)
     >>> for i in obj:
     >>>     for egenskap in i.egenskaper:

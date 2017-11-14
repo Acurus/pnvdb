@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-import requests
 from . import models
 from .models.util import _fetch_data
 
 class Nvdb(object):
     """ The main class for interfacing with the API.
-        
+
         :param client: Name of client using the API
         :type client: str
         :param contact: Contact information of user of the API
@@ -17,20 +16,19 @@ class Nvdb(object):
         >>> import pnvdb
         >>> nvdb = pnvdb.Nvdb(client='Your-App-Name', contact='Your-contact-information')
 
-        
     """
-       
+
     def __init__(self, client='pnvdb', contact=''):
-        self.baseUrl = 'https://www.vegvesen.no/nvdb/api/v2'
-        self.headers = {'X-Client': client,'X-Kontaktperson': contact}
+        self.base_url = 'https://www.vegvesen.no/nvdb/api/v2'
+        self.headers = {'X-Client': client, 'X-Kontaktperson': contact}
         self.srid = ''
         self.antall = 1000
 
 
 
     def status(self):
-        """ Method for getting information about the current status of the API 
-            
+        """ Method for getting information about the current status of the API
+
             :returns: Dict
             :keys: ['datakatalog', 'datagrunnlag']
 
@@ -40,10 +38,10 @@ class Nvdb(object):
             >>> print(status['datakatalog']['versjon'])
             2.10
 
-            
+
         """
         return _fetch_data(self, 'status')
-    
+
     def objekt(self, objekt_type, nvdb_id):
         """ Method for creating a spesific nvdb python Objekt
 
@@ -57,7 +55,8 @@ class Nvdb(object):
 
             >>> obj = nvdb.objekt(objekt_type=67, nvdb_id=89204552)
             >>> print(obj.metadata)
-            {'versjon': 3, 'type':P {'navn': 'Tunnelløp', 'id': 67}, 'startdato': '2014-01-17', 'sist_modifisert': '2017-10-23 15:15:50'}
+            {'versjon': 3, 'type':P {'navn': 'Tunnelløp', 'id': 67}, 'startdato': '2014-01-17',
+             'sist_modifisert': '2017-10-23 15:15:50'}
 
         """
         return models.Objekt(self, objekt_type, nvdb_id)
@@ -68,7 +67,7 @@ class Nvdb(object):
 
             :param objekt_type: nvdb objekttype id.
             :type objekt_type: int
-            :returns: :class:`.Objekt_type`
+            :returns: :class:`.ObjektType`
 
             :usage:
 
@@ -76,14 +75,14 @@ class Nvdb(object):
             >>> print(obj.metadata['sosinvdbnavn'])
             Tunnelløp_67
         """
-        return models.Objekt_type(self, objekt_type)
-    
+        return models.ObjektType(self, objekt_type)
+
 
     def objekt_typer(self):
         """ Returns objekt_type of every avaliable obj type in nvdb
-            
-            :returns: List of :class:`.Objekt_type`
-            
+
+            :returns: List of :class:`.ObjektType`
+
             :usage:
 
             >>> obj_types = nvdb.objekt_typer()
@@ -95,20 +94,20 @@ class Nvdb(object):
         objekt_typer = []
         for objekt_type in data:
             objekt_type_id = objekt_type['id']
-            objekt_typer.append(models.Objekt_type(self, objekt_type_id, meta=objekt_type))
+            objekt_typer.append(models.ObjektType(self, objekt_type_id, meta=objekt_type))
         return objekt_typer
 
 
-    def hent(self, objekt_type, payload={}):
+    def hent(self, objekt_type, payload=None):
         """ Return a generator object that can be itterated over
             to fetch the results of the query.
-            
+
             :param objekt_type: nvdb objekttype id.
             :type objekt_type: int
             :param payload: filters for the query
             :type payload: dict
             :returns: generator of :class:`.Objekt`
-            
+
             :usage:
 
             >>> criteria = {'fylke':'2','egenskap':'1820>=20'}
@@ -116,8 +115,10 @@ class Nvdb(object):
             >>> for bomstasjon in bomstasjoner:
             >>>     print(bomstasjon)
         """
-        _payload = payload.copy()
-        _payload.update({'antall':self.antall,'segmentering':'false'})
+        _payload = dict()
+        if payload:
+            _payload = payload.copy()
+        _payload.update({'antall':self.antall, 'segmentering':'false'})
         url = 'vegobjekter/{objekt_type}'.format(objekt_type=objekt_type)
         data = _fetch_data(self, url, payload=_payload)
         while True:
@@ -125,7 +126,7 @@ class Nvdb(object):
             returnert = data['metadata']['returnert']
             if returnert == 0:
                 break
-            
+
             _payload.update({'start':data['metadata']['neste']['start']})
             for obj in enumerate(data['objekter']):
                 yield models.Objekt(self, objekt_type, obj[1]['id'])
@@ -144,16 +145,17 @@ class Nvdb(object):
 
             >>> print(nvdb.vegreferanse('1600Ev6hp12m1000'))
         """
-        if type(vegreferanse) == list:
+        if isinstance(vegreferanse, list):
             payload = {'vegreferanser':','.join(vegreferanse)}
             result = _fetch_data(self, 'veg/batch', payload)
-            return [Vegreferanse(self, vegref, meta=result[vegref]) for vegref in vegreferanse]
+            return [models.Vegreferanse(self, vegref, meta=result[vegref])
+                    for vegref in vegreferanse]
         return models.Vegreferanse(self, vegreferanse)
-    
 
-    def posisjon(self, x=None, y=None, lat=None, lon=None):
+
+    def posisjon(self, x_coordinate=None, y_coordinate=None, lat=None, lon=None):
         """Returns a posisjon object for a given location
-            
+
             :param x: X-coordinate in EUREF89 UTM 33
             :type x: float
             :param y: Y-coordinate in EUREF89 UTM 33
@@ -169,17 +171,17 @@ class Nvdb(object):
             >>> pos = nvdb.posisjon(x=269815,y=7038165)
             >>> print(pos.vegreferanse)
         """
-        if x and y:
-            payload = {'nord':y,'ost':x}
+        if x_coordinate and y_coordinate:
+            payload = {'nord':y_coordinate, 'ost':x_coordinate}
         elif lat and lon:
-            payload = {'lat':lat,'lon':lon}
+            payload = {'lat':lat, 'lon':lon}
 
         return models.Posisjon(self, payload)
-    
-   
+
+
     def regioner(self):
         """ Returns an Area object for all regions
-            
+
             :returns: list of :class:`.Area`
 
             :usage:

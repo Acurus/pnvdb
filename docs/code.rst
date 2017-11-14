@@ -3,6 +3,7 @@ Code refference
 
 Nvdb
 ^^^^
+
 .. autoclass:: pnvdb.Nvdb
    :members:
 
@@ -13,7 +14,7 @@ Objekt
 
 Objekt_type
 ^^^^^^^^^^^
-.. autoclass:: pnvdb.models.Objekt_type
+.. autoclass:: pnvdb.models.ObjektType
    :members:
 
 Vegreferanse

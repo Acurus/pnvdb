@@ -1,31 +1,34 @@
 # -*- coding: utf-8 -*-
+""" Provide the ObjektType class """
 from .util import _fetch_data
 
 
-class Objekt_type(object):
+class ObjektType(object):
     """ Class for individual nvdb-object types. (Data catalogue) """
     def __init__(self, nvdb, objekt_type, meta=None):
-        super(Objekt_type, self).__init__()
+        super(ObjektType, self).__init__()
         self.nvdb = nvdb
         self.objekt_type = objekt_type
         self.data = None
         self.meta = meta
 
-    def dump(self, format='json'):
+    def dump(self, file_format='json'):
         """
         Function for dumping raw API-result for object.
 
-        :param format: Type of data to dump as. json or xml
-        :type format: string
+        :param file_format: Type of data to dump as. json or xml
+        :type file_format: string
         :returns: str
         """
-        if format.lower() == 'json':
+        if file_format.lower() == 'json':
             if not self.data:
-                self.data = _fetch_data(self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
+                self.data = _fetch_data(self.nvdb, 'vegobjekttyper/{}'
+                                        .format(self.objekt_type))
             return self.data
         
-        elif format.lower() == 'xml':
-            xml_data =_fetch_data(self.nvdb, 'vegobjekttyper/{}.xml'.format(self.objekt_type), format='xml')
+        elif file_format.lower() == 'xml':
+            xml_data =_fetch_data(self.nvdb, 'vegobjekttyper/{}.xml'
+                                  .format(self.objekt_type), file_format='xml')
             return xml_data
 
     @property
@@ -39,6 +42,21 @@ class Objekt_type(object):
         if not self.data:
             self.data = _fetch_data(self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
         return self.data['relasjonstyper']
+
+
+    def egenskapstype(self, egenskapstype_id=None):
+        """
+        Function for returning egenskap based on id
+
+        :param egenskaps_id: Id of the property type you want returned
+        :type egenskaps_id: int
+        :returns: dict unless property is not found. Then None is returned.
+        """
+        for egenskapstype in self.egenskapstyper:
+            if egenskapstype['id'] == egenskapstype_id:
+                return egenskapstype
+        return None
+
 
     @property
     def egenskapstyper(self):
@@ -57,8 +75,9 @@ class Objekt_type(object):
         """
         :Attribute type: Dict
         :keys: ['abstrakt_type', 'sideposisjon_relevant', 'retning_relevant', 'ajourhold_splitt',
-                'må_ha_mor', 'avledet', 'sektype_20k', 'er_dataserie', 'høyde_relevant', 'dekningsgrad',
-                'overlapp, 'filtrering', 'flyttbar', 'tidsrom_relevant', 'ajourhold_i', 'kjørefelt_relevant']
+                'må_ha_mor', 'avledet', 'sektype_20k', 'er_dataserie', 'høyde_relevant', 
+                'dekningsgrad', 'overlapp, 'filtrering', 'flyttbar', 'tidsrom_relevant', 
+                'ajourhold_i', 'kjørefelt_relevant']
         """
         if not self.data:
             self.data = _fetch_data(self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
@@ -70,8 +89,8 @@ class Objekt_type(object):
         .. todo:: Possible bug. Returns None after reading other attributes
 
         :Attribute type: Dict
-        :keys: ['navn', 'veiledning', 'beskrivelse', 'objektliste_dato', 'sosinvdbnavn', 'sorteringsnummer',
-                'stedfesting', 'id', 'kategorier']
+        :keys: ['navn', 'veiledning', 'beskrivelse', 'objektliste_dato', 'sosinvdbnavn', 
+                'sorteringsnummer', 'stedfesting', 'id', 'kategorier']
         """
         if self.meta:
             return self.meta
@@ -87,18 +106,19 @@ class Objekt_type(object):
     @property
     def barn(self):
         """
-        :Attribute type: list of :class:`.Objekt_type`
+        :Attribute type: list of :class:`.ObjektType`
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, self.baseUrl, 'vegobjekttyper', self.objekt_type)
+            self.data = _fetch_data(self.nvdb, 'vegobjekttyper', self.objekt_type)
         realasjoner = self.data['relasjonstyper']
-        return [Objekt_type(i['type']['id']) for i in realasjoner['barn']]
+        return [ObjektType(self.nvdb, i['type']['id']) for i in realasjoner['barn']]
+
     @property
     def foreldre(self):
         """
-        :Attribute type: list of :class:`.Objekt_type`
+        :Attribute type: list of :class:`.ObjektType`
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, self.baseUrl, 'vegobjekttyper', self.objekt_type)
+            self.data = _fetch_data(self.nvdb, 'vegobjekttyper', self.objekt_type)
         realasjoner = self.data['relasjonstyper']
-        return [Objekt_type(self.nvdb, i['type']['id']) for i in realasjoner['foreldre']]
+        return [ObjektType(self.nvdb, i['type']['id']) for i in realasjoner['foreldre']]
