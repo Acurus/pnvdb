@@ -49,9 +49,8 @@ We can search using area and property filters.
 This will return a generator object that can be itterated over.
 
     >>> criteria = {'fylke':'2','egenskap':'1820>=20'} # 1820 = "Takst liten bil"
-
-    >>> bomstasjoner = nvdb.hent(45, criteria)
-    >>> obj = nvdb.hent(45, criteria)
+    >>> objekttype = 45 # Bomstasjon
+    >>> obj = nvdb.hent(objekttype, criteria)
     >>> for i in obj:
     >>>     for egenskap in i.egenskaper:
     >>>         if egenskap['id'] == 1078: # 1078 = "Navn bomstasjon"
