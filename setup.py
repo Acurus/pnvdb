@@ -1,7 +1,4 @@
 """A setuptools based setup module.
-See:
-https://packaging.python.org/en/latest/distributing.html
-https://github.com/pypa/sampleproject
 """
 
 # Always prefer setuptools over distutils
@@ -19,13 +16,13 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
     name='pnvdb',
 
-    version='0.2.2',
+    version='0.2.3',
 
     description='A python wrapper for the NVDB REST API',
     long_description=long_description,
 
     # The project's main homepage.
-    url='http://pnvdb.readthedocs.io/en/latest/',
+    url='http://pnvdb.readthedocs.io/',
 
     # Author details
     author='Jan Tore Kyrdalen',

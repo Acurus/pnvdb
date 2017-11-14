@@ -119,10 +119,11 @@ class Nvdb(object):
         if payload:
             _payload = payload.copy()
         _payload.update({'antall':self.antall, 'segmentering':'false'})
+        
         url = 'vegobjekter/{objekt_type}'.format(objekt_type=objekt_type)
         data = _fetch_data(self, url, payload=_payload)
+        
         while True:
-
             returnert = data['metadata']['returnert']
             if returnert == 0:
                 break

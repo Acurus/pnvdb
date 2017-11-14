@@ -25,9 +25,8 @@ Indices and tables
 * :ref:`genindex`
 
 .. todo:: 
-	* Hent() bør gi None om den genererer en tom generator.
 	* Vegrefernase klassen må skrives om for å håndtere strekning.
-	* Kunne hente objekt basert på navn.
+	* Kunne hente objekt og egenskap basert på navn.
 
 
 `Link to pnvdb on Github <https://github.com/Acurus/pnvdb>`_
