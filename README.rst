@@ -54,7 +54,6 @@ This will return a generator object that can be itterated over.
 	>>> for tollstation in tollstations:
 		if tollstation.egenskap(1078): # Check for existance
 			print(tollstation.egenskap(1078)['verdi'])
-	
 	Hovinmoen - Dal
 	Dal - Boksrud
 	Minnesund - Hedmark grense
