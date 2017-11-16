@@ -48,11 +48,13 @@ This will get us access to a number of attributes assosiated with this object. L
 We can search using area and property filters.
 This will return a generator object that can be itterated over.
 
-    >>> criteria = {'fylke':'2','egenskap':'1820>=20'} # 1820 = "Takst liten bil"
-    >>> objekttype = 45 # Bomstasjon
-    >>> obj = nvdb.hent(objekttype, criteria)
-    >>> for i in obj:
-    >>>     for egenskap in i.egenskaper:
-    >>>         if egenskap['id'] == 1078: # 1078 = "Navn bomstasjon"
-    >>>             print(egenskap['verdi'])
-    
+>>> criteria = {'fylke':'2','egenskap':'1820>=20'} # 1820 = "Takst liten bil"
+>>> objekttype = 45 # Bomstasjon
+>>> tollstations = nvdb.hent(objekttype, criteria)
+>>> for tollstation in tollstations:
+	if tollstation.egenskap(1078): # Check for existance
+		print(tollstation.egenskap(1078)['verdi'])
+	
+Hovinmoen - Dal
+Dal - Boksrud
+Minnesund - Hedmark grense
