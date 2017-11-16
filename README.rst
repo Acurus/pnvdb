@@ -56,8 +56,6 @@ This will return a generator object that can be itterated over.
 			print(tollstation.egenskap(1078)['verdi'])
 	
 	Hovinmoen - Dal
-
 	Dal - Boksrud
-
 	Minnesund - Hedmark grense
 
