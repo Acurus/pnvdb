@@ -9,7 +9,22 @@ class Vegreferanse(object):
         self.vegreferanse = vegreferanse
         self.nvdb = nvdb
         self.data = meta
-       
+        if self.vegreferanse.find('-'):
+            self.strekning = True
+        else:
+            self.strekning = False
+
+    @property
+    def start(self):
+        """
+        return the start of a Vegreferanse range
+        """
+        if not self.data:
+            self.data = _fetch_data(self.nvdb, 'veg', payload={'vegreferanse':self.vegreferanse})
+        start = self.vegreferanse.split('-')[0]
+
+        return self.data['vegreferanse']
+        
     @property
     def detaljert(self):
         """
@@ -18,7 +33,10 @@ class Vegreferanse(object):
         """
         if not self.data:
             self.data = _fetch_data(self.nvdb, 'veg', payload={'vegreferanse':self.vegreferanse})
-        return self.data['vegreferanse']
+        if self.strekning:
+            return [self.start, self.slutt]
+        else:
+            return self.data['vegreferanse']
         
     @property
     def veglenke(self):
