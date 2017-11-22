@@ -155,3 +155,14 @@ class Objekt(object):
         else:
             vegreferanser = None
         return vegreferanser
+    @property
+    def stedfestinger(self):
+        """
+        :Attribute type: list of dict
+        :keys: []
+
+        """
+        if not self.data:
+            self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
+                                    .format(self.objekt_type, self.nvdb_id))
+        return data['stedfestinger']

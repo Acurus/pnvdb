@@ -3,7 +3,18 @@
 from .util import _fetch_data
 
 class Vegreferanse(object):
-    """ Class for working with road refferences. """
+    """ Class for working with road refferences.
+    ¨TODO: trenger jeg "meta"?
+    Endepunktet Veg, er ikke sentralt i denne klassen. Da det kun kan brukes
+    for punkter, og ikke strekninger.
+    Trenger jeg denne klassen? For stedfesting i datafangst brukes lenke.
+    Dog den kan jeg hente herifa..
+
+    ønsket funksjonalitet :
+    Start - fra veg Endepunktet
+    slutt - fra veg Endepunktet
+    lengde - slutt - start
+     """
     def __init__(self, nvdb, vegreferanse, meta=None):
         super(Vegreferanse, self).__init__()
         self.vegreferanse = vegreferanse
@@ -24,19 +35,8 @@ class Vegreferanse(object):
         start = self.vegreferanse.split('-')[0]
 
         return self.data['vegreferanse']
-        
-    @property
-    def detaljert(self):
-        """
-        :Attribute type: Dict
-        :keys: ['nummer', 'kategori', 'kortform', 'status', 'meter', 'fylke', 'hp', 'kommune']
-        """
-        if not self.data:
-            self.data = _fetch_data(self.nvdb, 'veg', payload={'vegreferanse':self.vegreferanse})
-        if self.strekning:
-            return [self.start, self.slutt]
-        else:
-            return self.data['vegreferanse']
+    
+    
         
     @property
     def veglenke(self):

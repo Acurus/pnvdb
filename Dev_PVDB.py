@@ -58,12 +58,12 @@ nvdb = pnvdb.Nvdb(client='pnvdb', contact='jankyr@vegvesen.no')
 # print(objekttype.dump(file_format='xml'))
 
 
-# objekt = nvdb.objekt(67,86543444)
+objekt = nvdb.objekt(67,86543444)
 # print(objekt.egenskap(1081)['verdi'])  #Navn
 # print(objekt.egenskap(1083))  #Finnes ikke
 # print(objekt.metadata.keys())
 # print(objekt.egenskaper[0].keys())
-# print(objekt.vegreferanser)
+print(objekt.vegreferanser[0].detaljert)
 # print(objekt.egengeometri)
 # print(objekt.geometri)
 # print(objekt.barn)
@@ -79,10 +79,10 @@ nvdb = pnvdb.Nvdb(client='pnvdb', contact='jankyr@vegvesen.no')
 #     break
 
 # criteria = {'fylke':'2','egenskap':'1820>=20'} # 1820 = "Takst liten bil"
-criteria = {'kommune':'0828','egenskap':'1820>=20'} # Should return no result
+#criteria = {'kommune':'0828','egenskap':'1820>=20'} # Should return no result
 
-obj = nvdb.hent(45, criteria)
-print(obj)
+#obj = nvdb.hent(45, criteria)
+#print(obj)
 
 """
 for i in obj:

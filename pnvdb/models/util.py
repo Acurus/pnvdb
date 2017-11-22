@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """ Contains various helper functions """
 import requests
-from .pnvdb_exceptions import ApiError
+from .pnvdb_exceptions import *
 
 
 def _fetch_data(nvdb, url_add, payload=None, file_format='json'):
@@ -23,4 +23,4 @@ def _check_response(resp, file_format='json'):
         return resp
     else:
         print(resp.url)
-        raise ApiError.read_api_error(resp)
+        raise ApiError(read_api_error(resp))
