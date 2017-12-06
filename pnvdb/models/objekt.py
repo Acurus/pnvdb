@@ -32,9 +32,9 @@ class Objekt(object):
         :type egenskaps_id: int
         :returns: dict unless property is not found. Then None is returned.
         """
-        egenskap = filter(lambda x: x['id']==egenskaps_id, self.egenskaper)
+        egenskap = list(filter(lambda x: x['id'] == egenskaps_id, self.egenskaper))
         if len(egenskap):
-            return egenskap
+            return egenskap[0]
         return None
 
     @property

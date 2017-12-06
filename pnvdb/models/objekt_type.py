@@ -52,10 +52,10 @@ class ObjektType(object):
         :type egenskaps_id: int
         :returns: dict unless property is not found. Then None is returned.
         """
-        egenskapstype = filter(lambda x: x['id'] == egenskapstype_id, egenskapstyper)
-        
+        egenskapstype = list(filter(lambda x: x['id'] == egenskapstype_id, self.egenskapstyper))
+        print(egenskapstype)
         if len(egenskapstype):
-            return egenskapstype
+            return egenskapstype[0]
         return None
 
 

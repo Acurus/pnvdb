@@ -4,58 +4,52 @@ from .util import _fetch_data
 
 class Vegreferanse(object):
     """ Class for working with road refferences.
-    ¨TODO: trenger jeg "meta"?
-    Endepunktet Veg, er ikke sentralt i denne klassen. Da det kun kan brukes
-    for punkter, og ikke strekninger.
-    Trenger jeg denne klassen? For stedfesting i datafangst brukes lenke.
-    Dog den kan jeg hente herifa..
-
-    ønsket funksjonalitet :
-    Start - fra veg Endepunktet
-    slutt - fra veg Endepunktet
-    lengde - slutt - start
-     """
-    def __init__(self, nvdb, vegreferanse, meta=None):
-        super(Vegreferanse, self).__init__()
+        Does not handle links as of now due to limitations in the API
+    """
+    def __init__(self, nvdb, vegreferanse):
         self.vegreferanse = vegreferanse
         self.nvdb = nvdb
-        self.data = meta
-        if self.vegreferanse.find('-'):
-            self.strekning = True
-        else:
-            self.strekning = False
+        self.fra_data = None
+        self.til_data = None
 
+        if self.vegreferanse.find('-') != -1: # Check if the refference is a stretch
+            self.fra_meter, self.til_meter = [int(value) for value in self.vegreferanse.split('m')[1].split('-')]
+            self.lengde = self.til_meter - self.fra_meter
+        else:
+            self.lengde = 0
+
+    
     @property
     def start(self):
         """
-        return the start of a Vegreferanse range
-        """
-        if not self.data:
-            self.data = _fetch_data(self.nvdb, 'veg', payload={'vegreferanse':self.vegreferanse})
-        start = self.vegreferanse.split('-')[0]
-
-        return self.data['vegreferanse']
-    
-    
-        
-    @property
-    def veglenke(self):
-        """
+        The start of the road refference
         :Attribute type: Dict
-        :keys: ['id', 'kortform', 'posisjon']
+        :keys: ['geometri', 'veglenke', 'vegreferanse']
         """
-        if not self.data:
-            self.data = _fetch_data(self.nvdb, 'veg', payload={'vegreferanse':self.vegreferanse})
-        return self.data['veglenke']
-    
+        if not self.fra_data:
+            if self.lengde:
+                vegreferanse = '{}m{}'.format(self.vegreferanse.split('m')[0], self.fra_meter)
+                self.fra_data = _fetch_data(self.nvdb, 'veg', payload={'vegreferanse':vegreferanse})
+            else:
+                self.fra_data = _fetch_data(self.nvdb, 'veg', payload={'vegreferanse':self.vegreferanse})
+        return self.fra_data
+
     @property
-    def geometri(self):
+    def slutt(self):
         """
-        :Attribute type: Well known text
+        The end of the road refference
+        :Attribute type: Dict
+        :keys: ['geometri', 'veglenke', 'vegreferanse']
         """
-        if not self.data:
-            self.data = _fetch_data(self.nvdb, 'veg', payload={'vegreferanse':self.vegreferanse})
-        return self.data['geometri']['wkt']
+        if not self.til_data:
+            if self.lengde:
+                vegreferanse = '{}m{}'.format(self.vegreferanse.split('m')[0], self.til_meter)
+                self.til_data = _fetch_data(self.nvdb, 'veg', payload={'vegreferanse':vegreferanse})
+            else:
+                self.til_data = _fetch_data(self.nvdb, 'veg', payload={'vegreferanse':self.vegreferanse})
+        return self.til_data
     
+
     def __str__(self):
         return '{}'.format(self.vegreferanse)
+        
