@@ -24,7 +24,16 @@ class Nvdb(object):
         self.srid = ''
         self.antall = 1000
 
+    def _generator(self, url, _payload, objekt_type, data):
+        while True:
+            returnert = data['metadata']['returnert']
+            if returnert == 0:
+                break
 
+            _payload.update({'start':data['metadata']['neste']['start']})
+            for obj in enumerate(data['objekter']):
+                yield models.Objekt(self, objekt_type, obj[1]['id'])
+            data = _fetch_data(self, url, _payload)
 
     def status(self):
         """ Method for getting information about the current status of the API
@@ -122,18 +131,11 @@ class Nvdb(object):
         
         url = 'vegobjekter/{objekt_type}'.format(objekt_type=objekt_type)
         data = _fetch_data(self, url, payload=_payload)
-        
-        while True:
-            returnert = data['metadata']['returnert']
-            if returnert == 0:
-                break
-
-            _payload.update({'start':data['metadata']['neste']['start']})
-            for obj in enumerate(data['objekter']):
-                yield models.Objekt(self, objekt_type, obj[1]['id'])
-            data = _fetch_data(self, url, _payload)
-        
-
+        if data['metadata']['returnert'] == 0:
+            return None
+        else:
+            return self._generator(url, _payload, objekt_type, data)
+       
     def vegreferanse(self, vegreferanse):
         """ Return vegreferanse object.
             PS : Only support point refferences
