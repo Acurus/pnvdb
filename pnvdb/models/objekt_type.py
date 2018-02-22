@@ -109,7 +109,7 @@ class ObjektType(object):
         :Attribute type: list of :class:`.ObjektType`
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'vegobjekttyper', self.objekt_type)
+            self.data = _fetch_data(self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
         realasjoner = self.data['relasjonstyper']
         return [ObjektType(self.nvdb, i['type']['id']) for i in realasjoner['barn']]
 
@@ -119,6 +119,6 @@ class ObjektType(object):
         :Attribute type: list of :class:`.ObjektType`
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'vegobjekttyper', self.objekt_type)
+            self.data = _fetch_data(self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
         realasjoner = self.data['relasjonstyper']
         return [ObjektType(self.nvdb, i['type']['id']) for i in realasjoner['foreldre']]

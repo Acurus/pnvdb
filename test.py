@@ -54,7 +54,9 @@ nvdb = pnvdb.Nvdb(client='pnvdb', contact='jankyr@vegvesen.no')
 #[pp.pprint(i.metadata) for i in objekttyper]
 
 
-#objekttype = nvdb.objekt_type(470)
+objekttype = nvdb.objekt_type(470)
+pp.pprint(objekttype.barn)
+pp.pprint(objekttype.foreldre)
 #pp.pprint(objekttype.metadata)
 #pp.pprint(objekttype.relasjonstyper)
 #pp.pprint(objekttype.styringsparametere)
@@ -67,7 +69,8 @@ nvdb = pnvdb.Nvdb(client='pnvdb', contact='jankyr@vegvesen.no')
 #pp.pprint(objekttype.dump(file_format='xml'))
 
 
-#objekt = nvdb.objekt(67,86543444)
+#objekt = nvdb.objekt(95,89266105)
+#pp.pprint(objekt.barn)
 #pp.pprint(objekt.egenskap(1081))
 #pp.pprint(objekt.egenskap(1081)['verdi'])  #Navn
 #pp.pprint(objekt.egenskap(1083))  #Finnes ikke
@@ -93,17 +96,17 @@ nvdb = pnvdb.Nvdb(client='pnvdb', contact='jankyr@vegvesen.no')
 #    break
 
 
-criteria = {'kommune':'0828','egenskap':'1820>=20'} #Should return no result
+#criteria = {'kommune':'0828','egenskap':'1820>=20'} #Should return no result
 
-obj = nvdb.hent(45, criteria)
-pp.pprint(obj)
+#obj = nvdb.hent(45, criteria)
+#pp.pprint(obj)
 
-criteria = {'fylke':'2','egenskap':'1820>=20'}# 1820 = "Takst liten bil"
-obj = nvdb.hent(45, criteria)
-pp.pprint(obj)
+#criteria = {'fylke':'2','egenskap':'1820>=20'}# 1820 = "Takst liten bil"
+#obj = nvdb.hent(45, criteria)
+#pp.pprint(obj)
 
-for i in obj:
-    pp.pprint(i)
+#for i in obj:
+#    pp.pprint(i)
 
 #for i in obj:
 #    for egenskap in i.egenskaper:
