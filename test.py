@@ -1,4 +1,4 @@
-import pprint
+mport pprint
 import pnvdb
 
 pp = pprint.PrettyPrinter(indent=2)
@@ -6,8 +6,8 @@ pp = pprint.PrettyPrinter(indent=2)
 nvdb = pnvdb.Nvdb(client='pnvdb', contact='jankyr@vegvesen.no')
 
 pp.pprint(nvdb.status())
-pos = nvdb.posisjon(x_coordinate=269815,y_coordinate=7038165)
-pp.pprint(pos.vegreferanse)
+#pos = nvdb.posisjon(x_coordinate=269815,y_coordinate=7038165)
+#pp.pprint(pos.vegreferanse)
 #vegref_point = nvdb.vegreferanse('5000Ev6hp12m1000')
 #vegref_strech = nvdb.vegreferanse('5000Ev6hp12m1000-1200')
 #pp.pprint(vegref_point)
@@ -54,8 +54,8 @@ pp.pprint(pos.vegreferanse)
 #[pp.pprint(i.metadata) for i in objekttyper]
 #
 #
-objekttype = nvdb.objekt_type(470)
-pp.pprint(objekttype)
+#objekttype = nvdb.objekt_type(470)
+#pp.pprint(objekttype)
 #pp.pprint(objekttype.barn)
 #pp.pprint(objekttype.foreldre)
 #pp.pprint(objekttype.metadata)
@@ -98,12 +98,12 @@ pp.pprint(objekttype)
 #    break
 #
 #
-#criteria = {'kommune':'0828','egenskap':'1820>=20'}# Should return no result
+#criteria = {'kommune':'0828','egenskap':'1820>=20'} #Should return no result
 #
 #obj = nvdb.hent(45, criteria)
 #pp.pprint(obj)
 #
-#criteria = {'fylke':'2','egenskap':'1820>=20'}# 1820 = "Takst liten bil"
+#criteria = {'fylke':'2','egenskap':'1820>=20'} #1820 = "Takst liten bil"
 #obj = nvdb.hent(45, criteria)
 #pp.pprint(obj)
 #
@@ -112,7 +112,7 @@ pp.pprint(objekttype)
 #
 #for i in obj:
 #    for egenskap in i.egenskaper:
-#        if egenskap['id'] == 1078:#  1078 = "Navn bomstasjon"
+#        if egenskap['id'] == 1078: # 1078 = "Navn bomstasjon"
 #            pp.pprint(egenskap['verdi'])
 #            break
 #    break
