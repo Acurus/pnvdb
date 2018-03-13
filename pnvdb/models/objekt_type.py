@@ -12,6 +12,9 @@ class ObjektType(object):
         self.data = None
         self.meta = meta
 
+    def __repr__(self):
+        return "ObjektType({})".format(self.objekt_type)
+
     def dump(self, file_format='json'):
         """
         Function for dumping raw API-result for object.

@@ -18,7 +18,9 @@ class Vegreferanse(object):
         else:
             self.lengde = 0
 
-    
+    def __repr__(self):
+        return '{}'.format(self.vegreferanse)
+
     @property
     def start(self):
         """
@@ -49,7 +51,4 @@ class Vegreferanse(object):
                 self.til_data = _fetch_data(self.nvdb, 'veg', payload={'vegreferanse':self.vegreferanse})
         return self.til_data
     
-
-    def __str__(self):
-        return '{}'.format(self.vegreferanse)
-        
+      

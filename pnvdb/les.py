@@ -32,7 +32,7 @@ class Nvdb(object):
 
             _payload.update({'start':data['metadata']['neste']['start']})
             for obj in enumerate(data['objekter']):
-                yield models.Objekt(self, objekt_type, obj[1]['id'])
+                yield models.Objekt(self, objekt_type, obj[1]['id'], obj)
             data = _fetch_data(self, url, _payload)
 
     def status(self):
@@ -107,7 +107,7 @@ class Nvdb(object):
         return objekt_typer
 
 
-    def hent(self, objekt_type, payload=None):
+    def hent(self, objekt_type, kriterie=None):
         """ Return a generator object that can be itterated over
             to fetch the results of the query.
 
@@ -120,14 +120,14 @@ class Nvdb(object):
             :usage:
 
             >>> criteria = {'fylke':'2','egenskap':'1820>=20'}
-            >>> bomstasjoner = nvdb.hent(45, criteria)
+            >>> bomstasjoner = nvdb.hent(45, kriterie=criteria)
             >>> for bomstasjon in bomstasjoner:
             >>>     print(bomstasjon)
         """
         _payload = dict()
-        if payload:
-            _payload = payload.copy()
-        _payload.update({'antall':self.antall, 'segmentering':'false'})
+        if kriterie:
+            _payload = kriterie.copy()
+        _payload.update({'antall':self.antall, 'segmentering':'false', 'inkluder':'alle'})
         
         url = 'vegobjekter/{objekt_type}'.format(objekt_type=objekt_type)
         data = _fetch_data(self, url, payload=_payload)

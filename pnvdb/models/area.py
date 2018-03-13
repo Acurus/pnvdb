@@ -10,6 +10,7 @@ class Area(object):
         self.nvdb = nvdb
         self.data = area_data
 
+
     @property
     def metadata(self):
         """ 

@@ -20,7 +20,7 @@ def _check_response(resp, file_format='json'):
     if resp.status_code == requests.codes.ok and file_format == 'json':
         return resp.json()
     elif resp.status_code == requests.codes.ok and file_format == 'xml':
-        return resp
+        return resp.text
     else:
         print(resp.url)
         raise ApiError(read_api_error(resp))
