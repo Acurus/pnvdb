@@ -24,11 +24,6 @@ Indices and tables
  
 * :ref:`genindex`
 
-.. todo:: 
-	* Kunne hente objekt og egenskap basert på navn.
-	* Bygge inn støttet for datafangst
-	* Mulighet for å jobbe med vegnett. (Mulig dette ikke kommer før api'et er oppdatert til versjon 3.)
-
 `Link to pnvdb on Github <https://github.com/Acurus/pnvdb>`_
 
 

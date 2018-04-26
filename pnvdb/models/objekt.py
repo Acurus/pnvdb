@@ -172,7 +172,7 @@ class Objekt(object):
             vegreferanser = None
         return vegreferanser
     @property
-    def stedfestinger(self):
+    def vegsegmenter(self):
         """
         :Attribute type: list of dict
         :keys: []
@@ -182,4 +182,4 @@ class Objekt(object):
             self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
                                     .format(self.objekt_type, self.nvdb_id),
                                     payload={'inkludergeometri':'utledet'})
-        return data['stedfestinger']
+        return self.data['vegsegmenter']

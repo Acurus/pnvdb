@@ -1,11 +1,12 @@
-mport pprint
+import pprint
 import pnvdb
 
 pp = pprint.PrettyPrinter(indent=2)
 
 nvdb = pnvdb.Nvdb(client='pnvdb', contact='jankyr@vegvesen.no')
 
-pp.pprint(nvdb.status())
+#pp.pprint(nvdb.status())
+
 #pos = nvdb.posisjon(x_coordinate=269815,y_coordinate=7038165)
 #pp.pprint(pos.vegreferanse)
 #vegref_point = nvdb.vegreferanse('5000Ev6hp12m1000')
@@ -55,6 +56,7 @@ pp.pprint(nvdb.status())
 #
 #
 #objekttype = nvdb.objekt_type(470)
+#pp.pprint(obj.i_objekt_lista())
 #pp.pprint(objekttype)
 #pp.pprint(objekttype.barn)
 #pp.pprint(objekttype.foreldre)

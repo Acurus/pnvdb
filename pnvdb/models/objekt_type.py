@@ -125,3 +125,11 @@ class ObjektType(object):
             self.data = _fetch_data(self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
         realasjoner = self.data['relasjonstyper']
         return [ObjektType(self.nvdb, i['type']['id']) for i in realasjoner['foreldre']]
+
+    def i_objekt_lista(self):
+        if not self.data:
+            self.data = _fetch_data(self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
+        if 'objektliste_dato' in self.data:
+            return True
+        else:
+            return False
