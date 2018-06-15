@@ -151,7 +151,7 @@ class Nvdb(object):
         if isinstance(vegreferanse, list):
             payload = {'vegreferanser':','.join(vegreferanse)}
             result = _fetch_data(self, 'veg/batch', payload)
-            return [models.Vegreferanse(self, vegref, meta=result[vegref])
+            return [models.Vegreferanse(self, vegref)
                     for vegref in vegreferanse]
         return models.Vegreferanse(self, vegreferanse)
 
