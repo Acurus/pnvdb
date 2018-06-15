@@ -30,7 +30,7 @@ class Objekt(object):
             self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
                                     .format(self.objekt_type, self.nvdb_id),
                                     payload={'inkludergeometri':'utledet'})
-        return bool(self.data['geometri']['egengeometri'] == 'true')
+        return self.data['geometri']['egengeometri']
     
 
     def egenskap(self, egenskaps_id=None):

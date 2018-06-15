@@ -5,7 +5,7 @@ pp = pprint.PrettyPrinter(indent=2)
 
 nvdb = pnvdb.Nvdb(client='pnvdb', contact='jankyr@vegvesen.no')
 
-#pp.pprint(nvdb.status())
+pp.pprint(nvdb.status())
 
 #pos = nvdb.posisjon(x_coordinate=269815,y_coordinate=7038165)
 #pp.pprint(pos.vegreferanse)
