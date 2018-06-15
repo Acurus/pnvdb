@@ -149,7 +149,6 @@ class Nvdb(object):
             >>> print(nvdb.vegreferanse('1600Ev6hp12m1000'))
         """
         if isinstance(vegreferanse, list):
-            payload = {'vegreferanser':','.join(vegreferanse)}
             return [models.Vegreferanse(self, vegref)
                     for vegref in vegreferanse]
         return models.Vegreferanse(self, vegreferanse)
