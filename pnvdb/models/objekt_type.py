@@ -133,6 +133,11 @@ class ObjektType(object):
         return [ObjektType(self.nvdb, i['type']['id']) for i in realasjoner['foreldre']]
 
     def i_objekt_lista(self):
+        """
+        Function checking of an object type is part of "Objektlista"
+       
+        :returns: bool
+        """
         if not self.data:
             self.data = _fetch_data(
                 self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
