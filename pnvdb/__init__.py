@@ -61,4 +61,4 @@ This will return a generator object that can be itterated over.
 """
 from .les import Nvdb
 
-__version__ = '0.2.6'
+__version__ = '0.2.7'
