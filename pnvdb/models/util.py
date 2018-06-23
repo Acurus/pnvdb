@@ -11,6 +11,20 @@ from .pnvdb_exceptions import ApiError, read_api_error
 
 
 def _fetch_data(nvdb, url_add, payload=None, file_format='json'):
+    """
+    function that collects data from the api
+    
+    :param nvdb: Instance off Nvdb
+    :type nvdb: :class:`.Nvdb`
+    :param url_add: The API endpoint to fetch
+    :type url_add: string
+    :param payload: arguments for the api endpoint
+    :type payload: string
+    :param file_format: one of two values 'json or xml' will return data in this format
+    :type file_format: string
+
+    :returns: data as a dictionary
+    """
     base_url = config.base_url
     if nvdb:
         headers = nvdb.headers
@@ -41,6 +55,9 @@ def _check_response(resp, file_format='json'):
 
 
 def update_name2id():
+    """
+    Function that updates CONST.py with latest info from the API
+    """
     data = _fetch_data(None, 'vegobjekttyper')
     status = _fetch_data(None, 'status')
 
@@ -56,7 +73,7 @@ def update_name2id():
 
 def name2id(objekt_type):
     """
-    Funktion that tries to find a objekt_type id from name
+    Function that tries to find a objekt_type id from name
 
     :param objekt_type: The name that should be converted
 

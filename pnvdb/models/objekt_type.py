@@ -17,7 +17,7 @@ class ObjektType(object):
         else:
             self.objekt_type = name2id(objekt_type)
         self.data = None
-        self.meta = meta
+        self.metadata
         logging.debug(
             'Objekt_type initialized with data : {}'.format(self.data))
 
@@ -106,9 +106,9 @@ class ObjektType(object):
         :keys: ['navn', 'veiledning', 'beskrivelse', 'objektliste_dato', 'sosinvdbnavn', 
                 'sorteringsnummer', 'stedfesting', 'id', 'kategorier']
         """
-        if self.meta:
-            return self.meta
-        elif not self.data:
+        #if self.meta:
+        #    return self.meta
+        if not self.data:
             self.data = _fetch_data(
                 self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
             metadata = self.data.copy()
