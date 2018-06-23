@@ -55,7 +55,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'pnvdb'
-copyright = '2017, Jan Tore Kyrdalen'
+copyright = '2018, Jan Tore Kyrdalen'
 author = 'Jan Tore Kyrdalen'
 
 # The version info for the project you're documenting, acts as replacement for
