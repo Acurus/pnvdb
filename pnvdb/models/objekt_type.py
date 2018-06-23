@@ -5,6 +5,7 @@ from .util import _fetch_data
 
 class ObjektType(object):
     """ Class for individual nvdb-object types. (Data catalogue) """
+
     def __init__(self, nvdb, objekt_type, meta=None):
         super(ObjektType, self).__init__()
         self.nvdb = nvdb
@@ -28,10 +29,10 @@ class ObjektType(object):
                 self.data = _fetch_data(self.nvdb, 'vegobjekttyper/{}'
                                         .format(self.objekt_type))
             return self.data
-        
+
         elif file_format.lower() == 'xml':
-            xml_data =_fetch_data(self.nvdb, 'vegobjekttyper/{}.xml'
-                                  .format(self.objekt_type), file_format='xml')
+            xml_data = _fetch_data(self.nvdb, 'vegobjekttyper/{}.xml'
+                                   .format(self.objekt_type), file_format='xml')
             return xml_data
 
     @property
@@ -43,9 +44,9 @@ class ObjektType(object):
 
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
+            self.data = _fetch_data(
+                self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
         return self.data['relasjonstyper']
-
 
     def egenskapstype(self, egenskapstype_id=None):
         """
@@ -55,11 +56,11 @@ class ObjektType(object):
         :type egenskaps_id: int
         :returns: dict unless property is not found. Then None is returned.
         """
-        egenskapstype = list(filter(lambda x: x['id'] == egenskapstype_id, self.egenskapstyper))
+        egenskapstype = list(
+            filter(lambda x: x['id'] == egenskapstype_id, self.egenskapstyper))
         if len(egenskapstype):
             return egenskapstype[0]
         return None
-
 
     @property
     def egenskapstyper(self):
@@ -70,9 +71,10 @@ class ObjektType(object):
                 'styringsparametere', 'viktighet', 'viktighet_tekst', 'datatype']
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
+            self.data = _fetch_data(
+                self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
         return self.data['egenskapstyper']
-    
+
     @property
     def styringsparametere(self):
         """
@@ -83,7 +85,8 @@ class ObjektType(object):
                 'ajourhold_i', 'kjørefelt_relevant']
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
+            self.data = _fetch_data(
+                self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
         return self.data['styringsparametere']
 
     @property
@@ -98,7 +101,8 @@ class ObjektType(object):
         if self.meta:
             return self.meta
         elif not self.data:
-            self.data = _fetch_data(self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
+            self.data = _fetch_data(
+                self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
             metadata = self.data.copy()
             del metadata['egenskapstyper']
             del metadata['relasjonstyper']
@@ -112,7 +116,8 @@ class ObjektType(object):
         :Attribute type: list of :class:`.ObjektType`
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
+            self.data = _fetch_data(
+                self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
         realasjoner = self.data['relasjonstyper']
         return [ObjektType(self.nvdb, i['type']['id']) for i in realasjoner['barn']]
 
@@ -122,13 +127,15 @@ class ObjektType(object):
         :Attribute type: list of :class:`.ObjektType`
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
+            self.data = _fetch_data(
+                self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
         realasjoner = self.data['relasjonstyper']
         return [ObjektType(self.nvdb, i['type']['id']) for i in realasjoner['foreldre']]
 
     def i_objekt_lista(self):
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
+            self.data = _fetch_data(
+                self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
         if 'objektliste_dato' in self.data:
             return True
         else:

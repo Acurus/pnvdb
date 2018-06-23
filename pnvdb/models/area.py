@@ -1,21 +1,22 @@
 # -*- coding: utf-8 -*-
 """ Provide the Area class """
-from .util import _fetch_data
 from .objekt import Objekt
+from .util import _fetch_data
+
 
 class Area(object):
-    """ Class for area objects. """ 
+    """ Class for area objects. """
+
     def __init__(self, nvdb, area_data):
         super(Area, self).__init__()
         self.nvdb = nvdb
         self.data = area_data
 
-
     @property
     def metadata(self):
         """ 
         :Attribute type: Dict
-        
+
         :keys: ['nummer','navn']
         """
         metadata = self.data.copy()
@@ -27,7 +28,6 @@ class Area(object):
             del metadata['vegobjekt']
         return metadata
 
-
     @property
     def kartutsnitt(self):
         """ 
@@ -37,8 +37,7 @@ class Area(object):
             return self.data['kartutsnitt']['wkt']
         else:
             return None
-    
-    
+
     @property
     def senterpunkt(self):
         """
@@ -48,7 +47,6 @@ class Area(object):
             return self.data['senterpunkt']['wkt']
         else:
             return None
-    
 
     @property
     def objekt(self):

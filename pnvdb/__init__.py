@@ -60,4 +60,5 @@ This will return a generator object that can be itterated over.
     >>>             print(egenskap['verdi'])
 """
 from .les import Nvdb
+
 __version__ = '0.2.6'

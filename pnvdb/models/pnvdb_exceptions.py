@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 """Provide the error handling class """
 
+
 class NvdbError(Exception):
     """Base class for exceptions in this module."""
     pass
+
 
 class ApiError(NvdbError):
     def __init__(self, message):

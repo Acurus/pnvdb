@@ -2,6 +2,7 @@
 from . import models
 from .models.util import _fetch_data
 
+
 class Nvdb(object):
     """ The main class for interfacing with the API.
 
