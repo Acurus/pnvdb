@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-from . import models
-from .models.util import _fetch_data, update_name2id
+import logging
+
+from . import config, models
 from .const import last_seen_version
-from . import config
+from .models.util import _fetch_data, update_name2id
 
 
 class Nvdb(object):
@@ -29,9 +30,9 @@ class Nvdb(object):
 
         status = _fetch_data(self, 'status')
         if last_seen_version != float(status['datakatalog']['versjon']):
-            print(last_seen_version, status['datakatalog']['versjon'])
             update_name2id()
-            print('updated')
+            logging.info('Updated name2id values from version: {} to version {}'.
+                         format(last_seen_version, status['datakatalog']['versjon']))
 
     def _generator(self, url, _payload, objekt_type, data):
         while True:
@@ -39,7 +40,7 @@ class Nvdb(object):
             if returnert == 0:
                 break
 
-            _payload.update({'start':data['metadata']['neste']['start']})
+            _payload.update({'start': data['metadata']['neste']['start']})
             for obj in enumerate(data['objekter']):
                 yield models.Objekt(self, objekt_type, obj[1]['id'], obj)
             data = _fetch_data(self, url, _payload)
@@ -79,7 +80,6 @@ class Nvdb(object):
         """
         return models.Objekt(self, objekt_type, nvdb_id)
 
-
     def objekt_type(self, objekt_type):
         """ Method for creating a spesific nvdb python
 
@@ -94,7 +94,6 @@ class Nvdb(object):
             Tunnelløp_67
         """
         return models.ObjektType(self, objekt_type)
-
 
     def objekt_typer(self):
         """ Returns objekt_type of every avaliable obj type in nvdb
@@ -112,9 +111,9 @@ class Nvdb(object):
         objekt_typer = []
         for objekt_type in data:
             objekt_type_id = objekt_type['id']
-            objekt_typer.append(models.ObjektType(self, objekt_type_id, meta=objekt_type))
+            objekt_typer.append(models.ObjektType(
+                self, objekt_type_id, meta=objekt_type))
         return objekt_typer
-
 
     def hent(self, objekt_type, kriterie=None):
         """ Return a generator object that can be itterated over
@@ -136,15 +135,16 @@ class Nvdb(object):
         _payload = dict()
         if kriterie:
             _payload = kriterie.copy()
-        _payload.update({'antall':self.antall, 'segmentering':'false', 'inkluder':'alle'})
-        
+        _payload.update(
+            {'antall': self.antall, 'segmentering': 'false', 'inkluder': 'alle'})
+
         url = 'vegobjekter/{objekt_type}'.format(objekt_type=objekt_type)
         data = _fetch_data(self, url, payload=_payload)
         if data['metadata']['returnert'] == 0:
             return None
         else:
             return self._generator(url, _payload, objekt_type, data)
-       
+
     def vegreferanse(self, vegreferanse):
         """ Return vegreferanse object.
             PS : Only support point refferences
@@ -161,7 +161,6 @@ class Nvdb(object):
             return [models.Vegreferanse(self, vegref)
                     for vegref in vegreferanse]
         return models.Vegreferanse(self, vegreferanse)
-
 
     def posisjon(self, x_coordinate=None, y_coordinate=None, lat=None, lon=None):
         """Returns a posisjon object for a given location
@@ -182,12 +181,11 @@ class Nvdb(object):
             >>> print(pos.vegreferanse)
         """
         if x_coordinate and y_coordinate:
-            payload = {'nord':y_coordinate, 'ost':x_coordinate}
+            payload = {'nord': y_coordinate, 'ost': x_coordinate}
         elif lat and lon:
-            payload = {'lat':lat, 'lon':lon}
+            payload = {'lat': lat, 'lon': lon}
 
         return models.Posisjon(self, payload)
-
 
     def regioner(self):
         """ Returns an Area object for all regions
@@ -199,7 +197,7 @@ class Nvdb(object):
             >>> for region in nvdb.regioner():
             >>>     print(region.metadata)
         """
-        payload = {'inkluder':'alle'}
+        payload = {'inkluder': 'alle'}
         data = _fetch_data(self, 'omrader/regioner', payload)
         return [models.Area(self, models.Area_data) for models.Area_data in data]
 
@@ -213,7 +211,7 @@ class Nvdb(object):
             >>> for region in nvdb.regioner():
             >>>     print(region.metadata)
         """
-        payload = {'inkluder':'alle'}
+        payload = {'inkluder': 'alle'}
         data = _fetch_data(self, 'omrader/fylker', payload)
         return [models.Area(self, models.Area_data) for models.Area_data in data]
 
@@ -227,7 +225,7 @@ class Nvdb(object):
             >>> for region in nvdb.regioner():
             >>>     print(region.metadata)
         """
-        payload = {'inkluder':'alle'}
+        payload = {'inkluder': 'alle'}
         data = _fetch_data(self, 'omrader/vegavdelinger', payload)
         return [models.Area(self, models.Area_data) for models.Area_data in data]
 
@@ -241,7 +239,7 @@ class Nvdb(object):
             >>> for region in nvdb.regioner():
             >>>     print(region.metadata)
         """
-        payload = {'inkluder':'alle'}
+        payload = {'inkluder': 'alle'}
         data = _fetch_data(self, 'omrader/kommuner', payload)
         return [models.Area(self, models.Area_data) for models.Area_data in data]
 
@@ -255,7 +253,7 @@ class Nvdb(object):
             >>> for region in nvdb.regioner():
             >>>     print(region.metadata)
         """
-        payload = {'inkluder':'alle'}
+        payload = {'inkluder': 'alle'}
         data = _fetch_data(self, 'omrader/kontraktsomrader', payload)
         return [models.Area(self, models.Area_data) for models.Area_data in data]
 
@@ -269,6 +267,6 @@ class Nvdb(object):
             >>> for region in nvdb.regioner():
             >>>     print(region.metadata)
         """
-        payload = {'inkluder':'alle'}
+        payload = {'inkluder': 'alle'}
         data = _fetch_data(self, 'omrader/riksvegruter', payload)
         return [models.Area(self, models.Area_data) for models.Area_data in data]

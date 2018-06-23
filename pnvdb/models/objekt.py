@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """ Provide the Objekt class """
+import logging
+
 from .util import _fetch_data, name2id
 from .vegreferanse import Vegreferanse
 
@@ -19,6 +21,7 @@ class Objekt(object):
             self.data = data[1]
         else:
             self.data = data
+        logging.debug('Objekt initialized with data : {}'.format(self.data))
 
     def __repr__(self):
         return "Objekt({}, {})".format(self.objekt_type, self.nvdb_id)

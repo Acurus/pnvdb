@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 """ Contains various helper functions """
+import json
+import logging
+
 import requests
+
 from .. import config
 from ..const import NAME2ID
-import json
-
 from .pnvdb_exceptions import ApiError, read_api_error
 
 
@@ -17,8 +19,8 @@ def _fetch_data(nvdb, url_add, payload=None, file_format='json'):
     url = '{base_url}/{url_add}'.format(base_url=base_url, url_add=url_add)
     resp = requests.get(url, params=payload, headers=headers)
 
-    # print(resp.headers) # For debugging
-    # print(resp.url) # For debugging
+    logging.debug(resp.headers)
+    logging.debug(resp.url)
     data = _check_response(resp, file_format)
     return data
 
@@ -37,22 +39,25 @@ def _check_response(resp, file_format='json'):
         print(resp.url)
         raise ApiError(read_api_error(resp))
 
+
 def update_name2id():
     data = _fetch_data(None, 'vegobjekttyper')
     status = _fetch_data(None, 'status')
-    
+
     name2id = {}
     for objekt in data:
         name2id[objekt['navn'].lower()] = objekt['id']
-    with open("pnvdb/const.py",'w') as f:
-        f.write('last_seen_version =  {}\n\n'.format(status['datakatalog']['versjon']))
+    with open("pnvdb/const.py", 'w') as f:
+        f.write('last_seen_version =  {}\n\n'.format(
+            status['datakatalog']['versjon']))
         f.write('NAME2ID = ')
-        json.dump(name2id, f,indent=4)
+        json.dump(name2id, f, indent=4)
+
 
 def name2id(objekt_type):
     """
     Funktion that tries to find a objekt_type id from name
-    
+
     :param objekt_type: The name that should be converted
 
     :type objekt_type: string
@@ -63,10 +68,3 @@ def name2id(objekt_type):
     except:
         print('Not found')
     return objekt_id
-        
-        
-        
-        
-
-
-

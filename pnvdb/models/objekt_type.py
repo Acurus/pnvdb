@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """ Provide  the ObjektType class """
-from .util import _fetch_data, name2id
-from ..const import NAME2ID
 import json
+import logging
+
+from .util import _fetch_data, name2id
+
 
 class ObjektType(object):
     """ Class for individual nvdb-object types. (Data catalogue) """
@@ -15,9 +17,9 @@ class ObjektType(object):
         else:
             self.objekt_type = name2id(objekt_type)
         self.data = None
-        self.meta = meta 
-    
-      
+        self.meta = meta
+        logging.debug(
+            'Objekt_type initialized with data : {}'.format(self.data))
 
     def __repr__(self):
         return "ObjektType({})".format(self.objekt_type)
@@ -141,7 +143,7 @@ class ObjektType(object):
     def i_objekt_lista(self):
         """
         Function checking of an object type is part of "Objektlista"
-       
+
         :returns: bool
         """
         if not self.data:
@@ -151,4 +153,3 @@ class ObjektType(object):
             return True
         else:
             return False
-
