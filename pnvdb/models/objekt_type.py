@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-""" Provide the ObjektType class """
-from .util import _fetch_data
-
+""" Provide  the ObjektType class """
+from .util import _fetch_data, name2id
+from ..const import NAME2ID
+import json
 
 class ObjektType(object):
     """ Class for individual nvdb-object types. (Data catalogue) """
@@ -9,9 +10,14 @@ class ObjektType(object):
     def __init__(self, nvdb, objekt_type, meta=None):
         super(ObjektType, self).__init__()
         self.nvdb = nvdb
-        self.objekt_type = objekt_type
+        if isinstance(objekt_type, int):
+            self.objekt_type = objekt_type
+        else:
+            self.objekt_type = name2id(objekt_type)
         self.data = None
-        self.meta = meta
+        self.meta = meta 
+    
+      
 
     def __repr__(self):
         return "ObjektType({})".format(self.objekt_type)
@@ -145,3 +151,4 @@ class ObjektType(object):
             return True
         else:
             return False
+

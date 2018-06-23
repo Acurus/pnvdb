@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """ Provide the Objekt class """
-from .util import _fetch_data
+from .util import _fetch_data, name2id
 from .vegreferanse import Vegreferanse
 
 
@@ -9,7 +9,11 @@ class Objekt(object):
 
     def __init__(self, nvdb, objekt_type, nvdb_id, data=None):
         self.nvdb = nvdb
-        self.objekt_type = objekt_type
+        if isinstance(objekt_type, int):
+            self.objekt_type = objekt_type
+        else:
+            self.objekt_type = name2id(objekt_type)
+
         self.nvdb_id = nvdb_id
         if data:
             self.data = data[1]

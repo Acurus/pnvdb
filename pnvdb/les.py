@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from . import models
-from .models.util import _fetch_data
+from .models.util import _fetch_data, update_name2id
+from .const import last_seen_version
+from . import config
 
 
 class Nvdb(object):
@@ -20,10 +22,16 @@ class Nvdb(object):
     """
 
     def __init__(self, client='pnvdb', contact=''):
-        self.base_url = 'https://www.vegvesen.no/nvdb/api/v2'
+        self.base_url = config.base_url
         self.headers = {'X-Client': client, 'X-Kontaktperson': contact}
         self.srid = ''
         self.antall = 1000
+
+        status = _fetch_data(self, 'status')
+        if last_seen_version != float(status['datakatalog']['versjon']):
+            print(last_seen_version, status['datakatalog']['versjon'])
+            update_name2id()
+            print('updated')
 
     def _generator(self, url, _payload, objekt_type, data):
         while True:
@@ -46,7 +54,7 @@ class Nvdb(object):
 
             >>> status = nvdb.status()
             >>> print(status['datakatalog']['versjon'])
-            2.10
+            2.13
 
 
         """

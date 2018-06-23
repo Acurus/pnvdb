@@ -5,7 +5,12 @@ pp = pprint.PrettyPrinter(indent=2)
 
 nvdb = pnvdb.Nvdb(client='pnvdb', contact='jankyr@vegvesen.no')
 
-pp.pprint(nvdb.status())
+#pp.pprint(nvdb.status())
+
+obj = nvdb.objekt_type(87)
+pp.pprint(obj)
+obj = nvdb.objekt_type('Belysningspunkt')
+pp.pprint(obj)
 
 #pos = nvdb.posisjon(x_coordinate=269815,y_coordinate=7038165)
 #pp.pprint(pos.vegreferanse)
@@ -119,3 +124,5 @@ pp.pprint(nvdb.status())
 #            break
 #    break
 #print(pnvdb.__version__)
+
+
