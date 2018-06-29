@@ -23,7 +23,7 @@ class Nvdb(object):
     """
 
     def __init__(self, client='pnvdb', contact=''):
-        self.base_url = config.base_url
+        self.base_url = config.les_base_url
         self.headers = {'X-Client': client, 'X-Kontaktperson': contact}
         self.srid = ''
         self.antall = 1000
