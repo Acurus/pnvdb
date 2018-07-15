@@ -15,12 +15,19 @@ class Datafangst(object):
         #res = requests.get(url, headers=self.headers, auth=(username, password))
         
 
-
-class Endringssett(object):
+class FeatureCollection(object):
     ''' Class for defining a set of objects ready to push to datafangst'''
-    pass
+    def __init__(self):
+        self.features = []
+    
+    def add_feature(self, feature):
+        self.features.append(feature.__repr__())
+    
+    def push(self):
+        feature_collection = geojson.FeatureCollection(self.features)
+        return feature_collection
 
-class Df_Objekt(object):
+class Feature(object):
     '''Class for defining objects ready to push to Datafangst'''
     def __init__(self, objekt_type, coordinates, tag):
         self._objekt_type = objekt_type
@@ -45,7 +52,7 @@ class Df_Objekt(object):
     def __repr__(self):
         feature = geojson.Feature(geometry=self._coordinates,
                                   properties=self.properties)
-        return str(feature)
+        return geojson.dumps(feature)
         
 
 

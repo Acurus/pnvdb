@@ -10,7 +10,7 @@ class ObjektType(object):
     """ Class for individual nvdb-object types. (Data catalogue) """
 
     def __init__(self, nvdb, objekt_type, meta=None):
-        super(ObjektType, self).__init__()
+        #super(ObjektType, self).__init__()
         self.nvdb = nvdb
         if isinstance(objekt_type, int):
             self.objekt_type = objekt_type
