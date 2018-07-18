@@ -1,4 +1,5 @@
 from . import config
+from pnvdb.var import auth
 import requests
 import geojson
 """
@@ -54,9 +55,19 @@ class FeatureCollection(object):
         self.features.append(feature)
     
     def push(self):
+        
+        headers = {
+                    'Content-Type': "application/geo+json",
+                    'Accept': "application/json"
+                }
+        url = "https://datafangst.kantega.no/api/v1/contract/{contractId}/featurecollection".format(contractId='7168c19c-e637-48fd-9771-61eb43c53d6f')
         feature_collection = geojson.FeatureCollection(self.features)
-        return feature_collection
-
+        response = requests.post(url, data=geojson.dumps(feature_collection).encode('utf8'), headers=headers,auth=(auth.username, auth.password))
+        return (response.status_code, response.text)
+        
+        #fc = geojson.FeatureCollection(self.features)
+        #return geojson.dumps(fc, sort_keys=True)
+        
 class Feature(object):
     '''Class for defining objects ready to push to Datafangst'''
     def __init__(self, objekt_type, coordinates, tag):
@@ -66,12 +77,13 @@ class Feature(object):
         self.coordinates(coordinates)
         self.properties["typeId"] = objekt_type
         self.properties["tag"] = tag
+        self.properties["dataCatalogVersion"] = "2.13"
 
     def coordinates(self, geometry):
         self._coordinates = geojson.Polygon(geometry)
 
     def attribute(self, attribute_id, attribute_value):
-        self.properties[str(attribute_id)] = attribute_value
+        self.properties['attributes'] = {str(attribute_id):attribute_value}
 
     def comment(self, comment):
         self.properties["comment"] = comment
