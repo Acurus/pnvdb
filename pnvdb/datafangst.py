@@ -2,71 +2,45 @@ from . import config
 from pnvdb.var import auth
 import requests
 import geojson
-"""
-{
-"type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [ [10.39241731, 63.43053048],
-            [10.39495434, 63.43043698],
-            [10.39579151, 63.42898665],
-            [10.39272171, 63.42909269],
-            [10.39241731, 63.43053048] ]
-        ]
-      },
-      "properties": {
-        "tag": "Forsterkningslag#1",
-        "dataCatalogVersion": "2.06",
-        "typeId": 227,
-        "comment": "Usikker på måledatoen",
-        "attributes": {
-          "5543": "20160802"
-         }
-       }
-    }
-  ]
-}
+import json
 
-"""
 class Datafangst(object):
     def __init__(self, username=None, password=None, contractId=None):
         self.base_url = config.datafangst_base_url
-        #self.headers = {'X-OpenAM-Username': username,
-        #  'X-OpenAM-Password': password, 
-        #  'Content-Type': 'application/geojson'}
-        self.headers = {'Content-Type': 'application/geojson'}
+        self.headers = {
+                    'Content-Type': "application/geo+json",
+                    'Accept': "application/json"
+                  }
+        self.url = "{baseurl}/{contractId}/featurecollection".format(baseurl=self.base_url, contractId=contractId)
         
-        
-        url = '{base_url}/api/v1/contract/{contractId}'.format(base_url=self.base_url, contractId=contractId)
-        #res = requests.get(url, headers=self.headers, auth=(username, password))
-        
+    def feature_collection(self):
+        return FeatureCollection(self.url, self.headers)
+
+    def feature(self, objekt_type, coordinates, tag):
+        return Feature(objekt_type, coordinates, tag)
 
 class FeatureCollection(object):
     ''' Class for defining a set of objects ready to push to datafangst'''
-    def __init__(self):
+    def __init__(self, url, headers):
         self.features = []
+        self.status_src = None
+        self.url = url
+        self.headers = headers
     
     def add_feature(self, feature):
         #self.features.append(feature.__repr__())
         self.features.append(feature)
     
     def push(self):
-        
-        headers = {
-                    'Content-Type': "application/geo+json",
-                    'Accept': "application/json"
-                }
-        url = "https://datafangst.kantega.no/api/v1/contract/{contractId}/featurecollection".format(contractId='7168c19c-e637-48fd-9771-61eb43c53d6f')
         feature_collection = geojson.FeatureCollection(self.features)
-        response = requests.post(url, data=geojson.dumps(feature_collection).encode('utf8'), headers=headers,auth=(auth.username, auth.password))
-        return (response.status_code, response.text)
+        response = requests.post(self.url, data=geojson.dumps(feature_collection).encode('utf8'),
+                                 headers=self.headers,auth=(auth.username, auth.password))
+        self.status_src = json.loads(response.text)['resources'][1]['src']
+        return self.status()
         
-        #fc = geojson.FeatureCollection(self.features)
-        #return geojson.dumps(fc, sort_keys=True)
+    def status(self):
+        return requests.get(self.status_src, auth=(auth.username, auth.password)).text
+
         
 class Feature(object):
     '''Class for defining objects ready to push to Datafangst'''
@@ -80,7 +54,13 @@ class Feature(object):
         self.properties["dataCatalogVersion"] = "2.13"
 
     def coordinates(self, geometry):
-        self._coordinates = geojson.Polygon(geometry)
+        if isinstance(geometry, list):
+            if geometry[0] == geometry[-1]:
+                self._coordinates = geojson.Polygon([geometry])
+            else:
+                self._coordinates = geojson.LineString(geometry)
+        else:
+            self._coordinates = geojson.Point(geometry)
 
     def attribute(self, attribute_id, attribute_value):
         self.properties['attributes'] = {str(attribute_id):attribute_value}
