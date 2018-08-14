@@ -39,7 +39,10 @@ class FeatureCollection(object):
         return self.status()
         
     def status(self):
-        return requests.get(self.status_src, auth=(auth.username, auth.password)).text
+        if self.status:
+            return requests.get(self.status_src, auth=(auth.username, auth.password)).text
+        else:
+            return None
 
         
 class Feature(object):
