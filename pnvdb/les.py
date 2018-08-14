@@ -3,7 +3,7 @@ import logging
 
 from . import config, models
 from .const import last_seen_version
-from .models.util import _fetch_data, update_name2id
+from .models.util import _fetch_data, update_CONST
 
 
 class Nvdb(object):
@@ -13,6 +13,8 @@ class Nvdb(object):
         :type client: str
         :param contact: Contact information of user of the API
         :type contact: str
+        :param autoupdate: Indicated wether constants should be up to date with latest API-Version. Default value = True
+        :type autoupdate: Bool
         :returns:  Nvdb Class
 
         :usage:
@@ -22,16 +24,16 @@ class Nvdb(object):
 
     """
 
-    def __init__(self, client='pnvdb', contact=''):
-        self.base_url = config.les_base_url
+    def __init__(self, client='pnvdb', contact='', autoupdate=True):
+        self.base_url = config.lesapi_base_url
         self.headers = {'X-Client': client, 'X-Kontaktperson': contact}
         self.srid = ''
         self.antall = 1000
 
         status = _fetch_data(self, 'status')
-        if last_seen_version != float(status['datakatalog']['versjon']):
-            update_name2id()
-            logging.info('Updated name2id values from version: {} to version {}'.
+        if autoupdate and last_seen_version != float(status['datakatalog']['versjon']) :
+            update_CONST()
+            logging.info('Updated name2id and kommune values from version: {} to version {}'.
                          format(last_seen_version, status['datakatalog']['versjon']))
 
     def _generator(self, url, _payload, objekt_type, data):

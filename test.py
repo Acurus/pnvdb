@@ -5,7 +5,7 @@ import pnvdb
 
 logfile = 'pnvdb.log'
 logging.basicConfig(filename=logfile,
-                    level=logging.INFO,
+                    level=logging.DEBUG,
                     format='%(asctime)s %(levelname)s: %(message)s',
                     datefmt='%d/%m/%Y %I:%M:%S %p')
 
@@ -15,18 +15,17 @@ pp = pprint.PrettyPrinter(indent=2)
 
 nvdb = pnvdb.Nvdb(client='pnvdb', contact='jankyr@vegvesen.no')
 
-obj = nvdb.objekt_type(87)
+#obj = nvdb.objekt_type(87)
 
-pp.pprint(obj.barn)
-pp.pprint(obj.metadata)
+#pp.pprint(obj.barn)
 #pp.pprint(obj.metadata)
 #
 #pp.pprint(nvdb.status())
 #
 #obj = nvdb.objekt_type(87)
 #pp.pprint(obj)
-#obj = nvdb.objekt_type('Belysningspunkt')
-#pp.pprint(obj)
+obj = nvdb.objekt_type('Belysningspunkt')
+pp.pprint(obj)
 #
 #pos = nvdb.posisjon(x_coordinate=269815, y_coordinate=7038165)
 #pp.pprint(pos.vegreferanse)
@@ -92,8 +91,8 @@ pp.pprint(obj.metadata)
 #pp.pprint(objekttype.dump(file_format='xml'))
 #
 #
-#objekt = nvdb.objekt(67, 89204552)
-#pp.pprint(objekt)
+objekt = nvdb.objekt(67, 89204552)
+pp.pprint(objekt)
 #pp.pprint(objekt.barn)
 #pp.pprint(objekt.egenskap(1081))
 #pp.pprint(objekt.egenskap(1081)['verdi'])  # Navn
@@ -103,6 +102,7 @@ pp.pprint(obj.metadata)
 #pp.pprint(objekt.vegreferanser[0].lengde)
 #pp.pprint(objekt.vegreferanser[0].start['vegreferanse'])
 #pp.pprint(objekt.vegreferanser[0].slutt['vegreferanse'])
+pp.pprint(objekt.kommuner)
 #
 #
 #pp.pprint(objekt.egengeometri)
