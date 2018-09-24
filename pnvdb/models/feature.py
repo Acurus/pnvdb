@@ -14,7 +14,7 @@ class Feature(object):
         self.properties['attributes'] = {}
 
     def coordinates(self, geometry):
-        """ Method for setting the geometry of the feature¨
+        """ Method for setting the geometry of the feature
             
             :param coordinates: Coordinates describing the feature geometry
             :type coordinates: list of tuples or singel tuple for points
