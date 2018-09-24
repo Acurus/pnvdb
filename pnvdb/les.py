@@ -31,8 +31,13 @@ class Nvdb(object):
         self.antall = 1000
 
         status = _fetch_data(self, 'status')
-        if autoupdate and last_seen_version != float(status['datakatalog']['versjon']) :
-            update_CONST()
+        if autoupdate and last_seen_version != float(status['datakatalog']['versjon']):
+            try:
+                1/0
+                update_CONST()
+            except:
+                print('Autoupdate of the CONST.py file failed.\nTry initializing with adminstrative privleleges, or set autoupdate = False')
+
             logging.info('Updated name2id and kommune values from version: {} to version {}'.
                          format(last_seen_version, status['datakatalog']['versjon']))
 

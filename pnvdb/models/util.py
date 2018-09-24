@@ -50,7 +50,6 @@ def _check_response(resp, file_format='json'):
     elif resp.status_code == 200 and file_format == 'xml':
         return resp.text
     else:
-        print(resp.url)
         raise ApiError(read_api_error(resp))
 
 
@@ -71,7 +70,7 @@ def update_CONST():
         kommuner[kommune['nummer']] = kommune
 
 
-    with open("pnvdb/const.py", 'w') as f:
+    with open("../const.py", 'w') as f:
         f.write('last_seen_version =  {}\n\n'.format(
             status['datakatalog']['versjon']))
         f.write('NAME2ID = ')
