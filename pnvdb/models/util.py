@@ -25,7 +25,7 @@ def _fetch_data(nvdb, url_add, payload=None, file_format='json'):
 
     :returns: data as a dictionary
     """
-    base_url = config.base_url
+    base_url = config.lesapi_base_url
     if nvdb:
         headers = nvdb.headers
     else:
@@ -50,25 +50,35 @@ def _check_response(resp, file_format='json'):
     elif resp.status_code == 200 and file_format == 'xml':
         return resp.text
     else:
-        print(resp.url)
         raise ApiError(read_api_error(resp))
 
 
-def update_name2id():
+def update_CONST():
     """
     Function that updates CONST.py with latest info from the API
     """
-    data = _fetch_data(None, 'vegobjekttyper')
     status = _fetch_data(None, 'status')
-
+    
+    name_data = _fetch_data(None, 'vegobjekttyper')
     name2id = {}
-    for objekt in data:
+    for objekt in name_data:
         name2id[objekt['navn'].lower()] = objekt['id']
-    with open("pnvdb/const.py", 'w') as f:
+    
+    kommune_data = _fetch_data(None, 'omrader/kommuner')
+    kommuner = {}
+    for kommune in kommune_data:
+        kommuner[kommune['nummer']] = kommune
+
+
+    with open("../const.py", 'w') as f:
         f.write('last_seen_version =  {}\n\n'.format(
             status['datakatalog']['versjon']))
         f.write('NAME2ID = ')
         json.dump(name2id, f, indent=4)
+        f.write('\n')
+        f.write('KOMMUNER =')
+        json.dump(kommuner, f, indent=4)
+
 
 
 def name2id(objekt_type):

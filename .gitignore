@@ -25,7 +25,7 @@ var/
 *.egg
  
 #VS code
-vs/
+.vs/
 .vscode/
 
 # PyInstaller

@@ -36,7 +36,7 @@ class Objekt(object):
         if not self.data:
             self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
                                     .format(self.objekt_type, self.nvdb_id),
-                                    payload={'inkludergeometri': 'utledet'})
+                                    payload={'inkludergeometri': 'utledet', 'inkluder':'alle'})
         return self.data['geometri']['egengeometri']
 
     def egenskap(self, egenskaps_id=None):
@@ -62,7 +62,7 @@ class Objekt(object):
         if not self.data:
             self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
                                     .format(self.objekt_type, self.nvdb_id),
-                                    payload={'inkludergeometri': 'utledet'})
+                                    payload={'inkludergeometri': 'utledet', 'inkluder':'alle'})
         if 'egenskaper' in self.data:
             egenskaper = self.data['egenskaper']
         else:
@@ -78,7 +78,7 @@ class Objekt(object):
         if not self.data:
             self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
                                     .format(self.objekt_type, self.nvdb_id),
-                                    payload={'inkludergeometri': 'utledet'})
+                                    payload={'inkludergeometri': 'utledet', 'inkluder':'alle'})
         if 'metadata' in self.data:
             metadata = self.data['metadata']
         else:
@@ -93,7 +93,7 @@ class Objekt(object):
         if not self.data:
             self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
                                     .format(self.objekt_type, self.nvdb_id),
-                                    payload={'inkludergeometri': 'utledet'})
+                                    payload={'inkludergeometri': 'utledet', 'inkluder':'alle'})
         if 'geometri' in self.data:
             geometri = self.data['geometri']['wkt']
         else:
@@ -112,7 +112,7 @@ class Objekt(object):
             if not self.data:
                 self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
                                         .format(self.objekt_type, self.nvdb_id),
-                                        payload={'inkludergeometri': 'utledet'})
+                                        payload={'inkludergeometri': 'utledet', 'inkluder':'alle'})
             return self.data
         elif file_format.lower() == 'xml':
             xml_data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}.xml'
@@ -127,7 +127,7 @@ class Objekt(object):
         if not self.data:
             self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
                                     .format(self.objekt_type, self.nvdb_id),
-                                    payload={'inkludergeometri': 'utledet'})
+                                    payload={'inkludergeometri': 'utledet', 'inkluder':'alle'})
         foreldre = []
         if 'relasjoner' in self.data and 'foreldre' in self.data['relasjoner']:
             for i in self.data['relasjoner']['foreldre']:
@@ -138,26 +138,7 @@ class Objekt(object):
             foreldre = None
         return foreldre
 
-    @property
-    def barn(self):
-        """
-        :Attribute type: List of :class:`.Objekt`
-
-        """
-        if not self.data:
-            self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
-                                    .format(self.objekt_type, self.nvdb_id),
-                                    payload={'inkludergeometri': 'utledet'})
-        barn = []
-        if 'relasjoner' in self.data and 'barn' in self.data['relasjoner']:
-            for i in self.data['relasjoner']['barn']:
-                objekt_type = i['type']['id']
-                for nvdb_id in i['vegobjekter']:
-                    barn.append(Objekt(self.nvdb, objekt_type, nvdb_id))
-
-        else:
-            barn = None
-        return barn
+    
 
     @property
     def vegreferanser(self):
@@ -168,7 +149,7 @@ class Objekt(object):
         if not self.data:
             self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
                                     .format(self.objekt_type, self.nvdb_id),
-                                    payload={'inkludergeometri': 'utledet'})
+                                    payload={'inkludergeometri': 'utledet', 'inkluder':'alle'})
         vegreferanser = []
         if 'lokasjon' in self.data and 'vegreferanser' in self.data['lokasjon']:
             for i in self.data['lokasjon']['vegreferanser']:
@@ -187,5 +168,44 @@ class Objekt(object):
         if not self.data:
             self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
                                     .format(self.objekt_type, self.nvdb_id),
-                                    payload={'inkludergeometri': 'utledet'})
+                                    payload={'inkludergeometri': 'utledet', 'inkluder':'alle'})
         return self.data['vegsegmenter']
+
+    @property
+    def kommuner(self):
+        """
+        :Attribute type: list of dict
+        :keys: [fylke, navn, nummer, region, vegavdeling]
+
+        """
+        if not self.data:
+            self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
+                                    .format(self.objekt_type, self.nvdb_id),
+                                    payload={'inkludergeometri': 'utledet', 'inkluder':'alle'})
+        from ..const import KOMMUNER
+        alle_kommuner = KOMMUNER
+        kommuner = []
+        for kommune_nr in self.data['lokasjon']['kommuner']:
+            kommuner.append(alle_kommuner[str(kommune_nr)])
+        return kommuner
+    
+    @property
+    def barn(self):
+        """
+        :Attribute type: List of :class:`.Objekt`
+
+        """
+        if not self.data:
+            self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
+                                    .format(self.objekt_type, self.nvdb_id),
+                                    payload={'inkludergeometri': 'utledet', 'inkluder':'alle'})
+        barn = []
+        if 'relasjoner' in self.data and 'barn' in self.data['relasjoner']:
+            for i in self.data['relasjoner']['barn']:
+                objekt_type = i['type']['id']
+                for nvdb_id in i['vegobjekter']:
+                    barn.append(Objekt(self.nvdb, objekt_type, nvdb_id))
+
+        else:
+            barn = None
+        return barn

@@ -58,3 +58,38 @@ This will return a generator object that can be itterated over.
 	Dal - Boksrud
 	Minnesund - Hedmark grense
 
+Add data to datafangst::
+
+	>>> datafangst = pnvdb.Datafangst(username, password, contractId)
+	>>> a_point = (10.39241731, 63.43053048) # Geometry
+	
+initialize the feature
+
+	>>> skiltpunkt = datafangst.feature(96, point, "Skilt")
+
+Add attribute data to the feature
+
+    >>> skiltpunkt.attribute(1876,4605)
+	>>> skiltpunkt.attribute(1877,1)
+	>>> skiltpunkt.attribute(1671,2435)
+	>>> skiltpunkt.attribute(1887,1)
+    
+Add a comment
+
+	>>> skiltpunkt.comment("Fra Pnvdb")
+
+Initialize a feature collection to hold the feautures
+
+	>>> datafangst_collection = datafangst.feature_collection()
+	
+Add the feature we build
+
+	>>> datafangst_collection.add_feature(skiltpunkt)
+	
+Push the feature to datafangst
+
+	>>> datafangst_collection.push()
+
+Query the status of the transaction with datafangst
+
+	>>> print(datafangst_collection.status())

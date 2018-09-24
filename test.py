@@ -17,8 +17,8 @@ nvdb = pnvdb.Nvdb(client='pnvdb', contact='jankyr@vegvesen.no')
 
 obj = nvdb.objekt_type(87)
 
-pp.pprint(obj.barn)
-pp.pprint(obj.metadata)
+#pp.pprint(obj.barn)
+#pp.pprint(obj.metadata)
 #pp.pprint(obj.metadata)
 #
 #pp.pprint(nvdb.status())
