@@ -46,7 +46,7 @@ initialize the feature
 
 Add attribute data to the feature
 
-    >>> skiltpunkt.attribute(1876,4605)
+	>>> skiltpunkt.attribute(1876,4605)
 	>>> skiltpunkt.attribute(1877,1)
 	>>> skiltpunkt.attribute(1671,2435)
 	>>> skiltpunkt.attribute(1887,1)
