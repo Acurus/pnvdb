@@ -3,9 +3,13 @@ Code refference
 
 Nvdb
 ^^^^
-
 .. autoclass:: pnvdb.Nvdb
    :members:
+
+Datafangst
+^^^^^^^^^
+.. autoclass:: pnvdb.Datafangst
+    :members:
 
 Objekt
 ^^^^^^
@@ -30,4 +34,14 @@ Posisjon
 Area
 ^^^^
 .. autoclass:: pnvdb.models.Area
+   :members:
+
+Feature
+^^^^^^^
+.. autoclass:: pnvdb.models.Feature
+   :members:
+
+FeatureClass
+^^^^^^^^^^^^
+.. autoclass:: pnvdb.models.FeatureClass
    :members:
