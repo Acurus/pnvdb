@@ -11,7 +11,7 @@ class Datafangst(object):
         :type password: str
         :param contractId: Datafangst contract ID
         :type contractId: str
-        :returns: Datafangst Class
+        :returns: :class:`.Datafangst`
 
         :usage:
 
@@ -33,6 +33,7 @@ class Datafangst(object):
     def feature_collection(self):
         """
         Method for initializing and working with a datafangst feature collection
+        
         :returns: :class:`.FeatureCollection`
         """
         return models.FeatureCollection(self.url, self.username, self.password, self.headers)
@@ -40,12 +41,14 @@ class Datafangst(object):
     def feature(self, objekt_type, coordinates, tag):
         """
         Method for initialzing and working with a datafangst feature
+        
         :param objekt_type: NVDB object type of the feature
         :type objekt_type: int
         :param coordinates: Coordinates describing the feature geometry
         :type coordinates: list of tuples or singel tuple for points
         :param tag: Identifying tag for the feature. Identical tags will be made uniqe with a number.
         :type tag: str
+        
         :returns: :class:`.Feature`
         """
         return models.Feature(objekt_type, coordinates, tag)

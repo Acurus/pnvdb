@@ -15,6 +15,7 @@ class Feature(object):
 
     def coordinates(self, geometry):
         """ Method for setting the geometry of the feature¨
+            
             :param coordinates: Coordinates describing the feature geometry
             :type coordinates: list of tuples or singel tuple for points
         """
@@ -28,6 +29,7 @@ class Feature(object):
 
     def attribute(self, attribute_id, attribute_value):
         """ Method for adding an attribute to the feature
+            
             :param attribute_id: nvdb attribute ID
             :type attribute_id: int
             :param attribute_value: value for the attribute
@@ -37,6 +39,7 @@ class Feature(object):
 
     def comment(self, comment):
         """ Method for adding an commnet to the feature
+            
             :param comment: The comment to add to the feature
             :type comment: str
         """

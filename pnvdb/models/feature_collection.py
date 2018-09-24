@@ -22,6 +22,7 @@ class FeatureCollection(object):
 
     def push(self):
         """ Method that pushes the FeatureCollection to datafangst
+            
             :returns: xml respons from datafangst
         """
         feature_collection = geojson.FeatureCollection(self.features)
@@ -37,6 +38,7 @@ class FeatureCollection(object):
     def status(self):
         """ Method for polling the status of the instance from datafangst
             returns None if data not pushed to datafangst
+            
             :returns: xml respons from datafangst
         """
         if self.status_src:

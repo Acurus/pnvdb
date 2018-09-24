@@ -8,7 +8,7 @@ Nvdb
    :members:
 
 Datafangst
-^^^^^^^^^
+^^^^^^^^^^
 .. autoclass:: pnvdb.Datafangst
    :members:
 
@@ -42,7 +42,7 @@ Feature
 .. autoclass:: pnvdb.models.Feature
    :members:
 
-FeatureClass
-^^^^^^^^^^^^
-.. autoclass:: pnvdb.models.FeatureClass
+FeatureCollection
+^^^^^^^^^^^^^^^^^
+.. autoclass:: pnvdb.models.FeatureCollection
    :members:

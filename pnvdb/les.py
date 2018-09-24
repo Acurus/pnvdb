@@ -63,8 +63,6 @@ class Nvdb(object):
             >>> status = nvdb.status()
             >>> print(status['datakatalog']['versjon'])
             2.13
-
-
         """
         return _fetch_data(self, 'status')
 
