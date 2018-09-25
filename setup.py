@@ -16,7 +16,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
     name='pnvdb',
 
-    version='0.3.0',
+    version='0.3.1',
 
     description='A python wrapper for the NVDB REST API',
     long_description=long_description,
@@ -60,7 +60,7 @@ setup(
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
-    packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+    packages=find_packages(exclude=['contrib', 'docs', 'tests', 'var']),
 
     # Alternatively, if you want to distribute just a my_module.py, uncomment
     # this:
@@ -70,5 +70,5 @@ setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['requests'],
+    install_requires=['requests','geojson'],
 )
