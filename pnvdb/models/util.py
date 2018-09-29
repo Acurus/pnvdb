@@ -6,7 +6,6 @@ import logging
 import requests
 
 from .. import config
-from ..const import NAME2ID
 from .pnvdb_exceptions import ApiError, read_api_error
 
 
@@ -53,45 +52,14 @@ def _check_response(resp, file_format='json'):
         raise ApiError(read_api_error(resp))
 
 
-def update_CONST():
+def build_name2id(nvdb):
     """
-    Function that updates CONST.py with latest info from the API
+    Function that updates nvdb_name2id
     """
-    status = _fetch_data(None, 'status')
-    
+    nvdb.name2id = {}
     name_data = _fetch_data(None, 'vegobjekttyper')
-    name2id = {}
+    nvdb_objekter = {}
     for objekt in name_data:
-        name2id[objekt['navn'].lower()] = objekt['id']
+        nvdb_objekter[objekt['navn'].lower()] = objekt['id']
     
-    kommune_data = _fetch_data(None, 'omrader/kommuner')
-    kommuner = {}
-    for kommune in kommune_data:
-        kommuner[kommune['nummer']] = kommune
-
-
-    with open("../const.py", 'w') as f:
-        f.write('last_seen_version =  {}\n\n'.format(
-            status['datakatalog']['versjon']))
-        f.write('NAME2ID = ')
-        json.dump(name2id, f, indent=4)
-        f.write('\n')
-        f.write('KOMMUNER =')
-        json.dump(kommuner, f, indent=4)
-
-
-
-def name2id(objekt_type):
-    """
-    Function that tries to find a objekt_type id from name
-
-    :param objekt_type: The name that should be converted
-
-    :type objekt_type: string
-    :returns: int
-    """
-    try:
-        objekt_id = NAME2ID[objekt_type.lower()]
-    except:
-        print('Not found')
-    return objekt_id
+    nvdb.name2id['nvdb_objekter'] = nvdb_objekter

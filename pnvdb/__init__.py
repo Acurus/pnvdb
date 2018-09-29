@@ -61,4 +61,4 @@ This will return a generator object that can be itterated over.
 """
 from .les import Nvdb
 from .datafangst import Datafangst
-__version__ = '0.3.2'
+__version__ = '0.3.3'

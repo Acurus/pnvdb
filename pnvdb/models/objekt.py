@@ -2,7 +2,7 @@
 """ Provide the Objekt class """
 import logging
 
-from .util import _fetch_data, name2id
+from .util import _fetch_data, build_name2id
 from .vegreferanse import Vegreferanse
 
 
@@ -14,7 +14,15 @@ class Objekt(object):
         if isinstance(objekt_type, int):
             self.objekt_type = objekt_type
         else:
-            self.objekt_type = name2id(objekt_type)
+            if isinstance(self.nvdb.name2id, dict):
+                self.objekt_type = self.nvdb.name2id['nvdb_objekter'][objekt_type.lower()]
+            else:
+                build_name2id(self.nvdb)
+                try:
+                    self.objekt_type = self.nvdb.name2id['nvdb_objekter'][objekt_type.lower()]
+                except KeyError:
+                    logging.error('Objekt_type not found: {}'.format(objekt_type))
+                    return None
 
         self.nvdb_id = nvdb_id
         if data:

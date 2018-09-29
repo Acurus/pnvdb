@@ -2,8 +2,7 @@
 import logging
 
 from . import config, models
-from .const import last_seen_version
-from .models.util import _fetch_data, update_CONST
+from .models.util import _fetch_data
 
 
 class Nvdb(object):
@@ -29,8 +28,10 @@ class Nvdb(object):
         self.headers = {'X-Client': client, 'X-Kontaktperson': contact}
         self.srid = ''
         self.antall = 1000
-
+        self.name2id = None
+        """
         status = _fetch_data(self, 'status')
+        
         if autoupdate and last_seen_version != float(status['datakatalog']['versjon']):
             try:
                 update_CONST()
@@ -39,7 +40,7 @@ class Nvdb(object):
 
             logging.info('Updated name2id and kommune values from version: {} to version {}'.
                          format(last_seen_version, status['datakatalog']['versjon']))
-
+        """
     def _generator(self, url, _payload, objekt_type, data):
         while True:
             returnert = data['metadata']['returnert']

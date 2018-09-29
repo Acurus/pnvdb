@@ -5,7 +5,7 @@ import pnvdb
 
 logfile = 'pnvdb.log'
 logging.basicConfig(filename=logfile,
-                    level=logging.INFO,
+                    level=logging.ERROR,
                     format='%(asctime)s %(levelname)s: %(message)s',
                     datefmt='%d/%m/%Y %I:%M:%S %p')
 
@@ -15,17 +15,12 @@ pp = pprint.PrettyPrinter(indent=2)
 
 nvdb = pnvdb.Nvdb(client='pnvdb', contact='jankyr@vegvesen.no')
 
-obj = nvdb.objekt_type(87)
 
-#pp.pprint(obj.barn)
-#pp.pprint(obj.metadata)
-#pp.pprint(obj.metadata)
-#
-#pp.pprint(nvdb.status())
-#
-#obj = nvdb.objekt_type(87)
-#pp.pprint(obj)
-#obj = nvdb.objekt_type('Belysningspunkt')
+pp.pprint(nvdb.status())
+
+obj = nvdb.objekt_type(87)
+pp.pprint(obj)
+#obj = nvdb.objekt_type('belysningspunkt')
 #pp.pprint(obj)
 #
 #pos = nvdb.posisjon(x_coordinate=269815, y_coordinate=7038165)

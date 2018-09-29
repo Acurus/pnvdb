@@ -3,19 +3,27 @@
 import json
 import logging
 
-from .util import _fetch_data, name2id
+from .util import _fetch_data, build_name2id
 
 
 class ObjektType(object):
     """ Class for individual nvdb-object types. (Data catalogue) """
 
     def __init__(self, nvdb, objekt_type, meta=None):
-        #super(ObjektType, self).__init__()
         self.nvdb = nvdb
         if isinstance(objekt_type, int):
             self.objekt_type = objekt_type
         else:
-            self.objekt_type = name2id(objekt_type)
+            if isinstance(self.nvdb.name2id, dict):
+                self.objekt_type = self.nvdb.name2id['nvdb_objekter'][objekt_type.lower()]
+            else:
+                build_name2id(self.nvdb)
+                try:
+                    self.objekt_type = self.nvdb.name2id['nvdb_objekter'][objekt_type.lower()]
+                except KeyError:
+                    logging.error('Objekt_type not found: {}'.format(objekt_type))
+                    return None
+        
         self.data = None
         self.metadata
         logging.debug(
