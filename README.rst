@@ -1,9 +1,11 @@
+.. image:: https://img.shields.io/pypi/v/nine.svg   :alt: PyPI   :target: https://pypi.org/project/pnvdb/
+
 pnvdb
 ====
 
 
 
-.. image:: https://img.shields.io/pypi/v/nine.svg   :alt: PyPI   :target: https://pypi.org/project/pnvdb/
+
 
 
 pnvdb stands for "python for Nasjonal vegdatabank" and is a python wrapper for the `NVDB Rest API <https://www.vegvesen.no/nvdb/apidokumentasjon/>`_
