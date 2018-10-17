@@ -1,5 +1,3 @@
-.. image:: https://img.shields.io/pypi/v/nine.svg   :alt: PyPI   :target: https://pypi.org/project/pnvdb/
-
 pnvdb
 ====
 
