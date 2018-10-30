@@ -1,6 +1,6 @@
-﻿certifi==2018.8.24
+certifi==2018.8.24
 chardet==3.0.4
 geojson==2.4.0
 idna==2.7
-requests==2.20.0
+requests>=2.20.0
 urllib3==1.23
