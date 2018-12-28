@@ -39,16 +39,17 @@ if __name__ == '__main__':
     feature3 = datafangst.feature(15, poly, 'Gras')
     feature3.attribute(4129,5092)
     feature3.comment("Fra Pnvdb")
+    print(feature1.attribute)
 
-    datafangst_collection = datafangst.feature_collection()
+    #datafangst_collection = datafangst.feature_collection()
 
-    datafangst_collection.add_feature(feature1)
-    datafangst_collection.add_feature(feature2)
-    datafangst_collection.add_feature(feature3)
+    #datafangst_collection.add_feature(feature1)
+    #datafangst_collection.add_feature(feature2)
+    #datafangst_collection.add_feature(feature3)
     
-    pushed = datafangst_collection.push()
+    #pushed = datafangst_collection.push()
     #datafangst_collection.status()
-    time.sleep(3)
-    print(datafangst_collection.status())
+    #time.sleep(3)
+    #print(datafangst_collection.status())
 
 

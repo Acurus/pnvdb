@@ -1,5 +1,8 @@
 import geojson
 
+from ..les import Nvdb
+
+
 class Feature(object):
     '''Class for defining objects ready to push to Datafangst'''
 
@@ -10,8 +13,13 @@ class Feature(object):
         self.coordinates(coordinates)
         self.properties["typeId"] = objekt_type
         self.properties["tag"] = tag
-        self.properties["dataCatalogVersion"] = "2.13"
+        self.properties["dataCatalogVersion"] = self._current_datakatalog()
         self.properties['attributes'] = {}
+
+    def _current_datakatalog(self):
+        """ Returns current datakatalog version """
+        status = Nvdb.status(None)
+        return status['datakatalog']['versjon']
 
     def coordinates(self, geometry):
         """ Method for setting the geometry of the feature
@@ -57,5 +65,3 @@ class Feature(object):
         feature = geojson.Feature(geometry=self._coordinates,
                                   properties=self.properties)
         return geojson.dumps(feature)
-
-
