@@ -1,7 +1,5 @@
 import geojson
 
-from ..les import Nvdb
-
 
 class Feature(object):
     '''Class for defining objects ready to push to Datafangst'''
@@ -18,6 +16,7 @@ class Feature(object):
 
     def _current_datakatalog(self):
         """ Returns current datakatalog version """
+        from ..les import Nvdb
         status = Nvdb.status(None)
         return status['datakatalog']['versjon']
 

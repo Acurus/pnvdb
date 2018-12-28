@@ -33,7 +33,7 @@ class FeatureCollection(object):
             self.status_src = json.loads(response.text)['resources'][1]['src']
             return self.status()
         else:
-            return {'Status Code: {}'.format(response.status_code)}
+            response.raise_for_status()
 
     def status(self):
         """ Method for polling the status of the instance from datafangst
