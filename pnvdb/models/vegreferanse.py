@@ -1,62 +1,119 @@
 # -*- coding: utf-8 -*-
 """ Provide the Vegreferanse class """
 from .util import _fetch_data
+import logging
 
 
 class Vegreferanse(object):
     """ Class for working with road refferences.
-        Does not handle links as of now due to limitations in the API
     """
 
     def __init__(self, nvdb, vegreferanse):
         self.vegreferanse = vegreferanse
         self.nvdb = nvdb
-        self.fra_data = None
-        self.til_data = None
+        
+        self.data = None
+        logging.debug('Initialized vegreferanse: {}'.format(self.vegreferanse))
+        
 
-        # Check if the refference is a stretch
-        if self.vegreferanse.find('-') != -1:
-            self.fra_meter, self.til_meter = [
-                int(value) for value in self.vegreferanse.split('m')[1].split('-')]
-            self.lengde = self.til_meter - self.fra_meter
+    @property
+    def fylke(self):
+        """
+        The county of the road refference
+        :Attribute type: int
+        """
+        if not self.data:
+            self.data = _fetch_data(self.nvdb, 'veg', payload={
+                                        'vegreferanse': self.vegreferanse})
+        return self.data['vegreferanse']['fylke']
+    
+    @property
+    def kommune(self):
+        """
+        The kommune of the road refference
+        :Attribute type: int
+        """
+        if not self.data:
+            self.data = _fetch_data(self.nvdb, 'veg', payload={
+                                        'vegreferanse': self.vegreferanse})
+        return self.data['vegreferanse']['kommune']
+    
+    @property
+    def kategori(self):
+        """
+        The kategori of the road refference
+        :Attribute type: String
+        """
+        if not self.data:
+            self.data = _fetch_data(self.nvdb, 'veg', payload={
+                                        'vegreferanse': self.vegreferanse})
+        return self.data['vegreferanse']['kategori']
+    
+    @property
+    def status(self):
+        """
+        The status of the road refference
+        :Attribute type: String
+        """
+        if not self.data:
+            self.data = _fetch_data(self.nvdb, 'veg', payload={
+                                        'vegreferanse': self.vegreferanse})
+        return self.data['vegreferanse']['status']
+    
+    @property
+    def nummer(self):
+        """
+        The nummer of the road refference
+        :Attribute type: int
+        """
+        if not self.data:
+            self.data = _fetch_data(self.nvdb, 'veg', payload={
+                                        'vegreferanse': self.vegreferanse})
+        return self.data['vegreferanse']['nummer']
+    
+    @property
+    def hp(self):
+        """
+        The hp of the road refference
+        :Attribute type: int
+        """
+        if not self.data:
+            self.data = _fetch_data(self.nvdb, 'veg', payload={
+                                        'vegreferanse': self.vegreferanse})
+        return self.data['vegreferanse']['hp']
+    
+    @property
+    def meter(self):
+        """
+        The meter of the road refference
+        :Attribute type: int
+        """
+        if not self.data:
+            self.data = _fetch_data(self.nvdb, 'veg', payload={
+                                        'vegreferanse': self.vegreferanse})
+        return self.data['vegreferanse']['meter']
+    
+    @property
+    def geometri(self):
+        if not self.data:
+            self.data = _fetch_data(self.nvdb, 'veg', payload={
+                                        'vegreferanse': self.vegreferanse})
+        return self.data['geometri']['wkt']
+
+    @property
+    def xyz(self):
+        import re
+        if not self.data:
+            self.data = _fetch_data(self.nvdb, 'veg', payload={
+                                        'vegreferanse': self.vegreferanse})
+        wkt = self.data['geometri']['wkt']
+        reg_res = re.findall(r'\d+\.?\d*', wkt)
+        if len(reg_res) < 3:
+            x,y = reg_res
+            z = None
         else:
-            self.lengde = 0
-
+            x,y,z = reg_res
+        return x,y,z
+    
     def __repr__(self):
         return '{}'.format(self.vegreferanse)
-
-    @property
-    def start(self):
-        """
-        The start of the road refference
-        :Attribute type: Dict
-        :keys: ['geometri', 'veglenke', 'vegreferanse']
-        """
-        if not self.fra_data:
-            if self.lengde:
-                vegreferanse = '{}m{}'.format(
-                    self.vegreferanse.split('m')[0], self.fra_meter)
-                self.fra_data = _fetch_data(self.nvdb, 'veg', payload={
-                                            'vegreferanse': vegreferanse})
-            else:
-                self.fra_data = _fetch_data(self.nvdb, 'veg', payload={
-                                            'vegreferanse': self.vegreferanse})
-        return self.fra_data
-
-    @property
-    def slutt(self):
-        """
-        The end of the road refference
-        :Attribute type: Dict
-        :keys: ['geometri', 'veglenke', 'vegreferanse']
-        """
-        if not self.til_data:
-            if self.lengde:
-                vegreferanse = '{}m{}'.format(
-                    self.vegreferanse.split('m')[0], self.til_meter)
-                self.til_data = _fetch_data(self.nvdb, 'veg', payload={
-                                            'vegreferanse': vegreferanse})
-            else:
-                self.til_data = _fetch_data(self.nvdb, 'veg', payload={
-                                            'vegreferanse': self.vegreferanse})
-        return self.til_data

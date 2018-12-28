@@ -16,19 +16,29 @@ pp = pprint.PrettyPrinter(indent=2)
 nvdb = pnvdb.Nvdb(client='pnvdb', contact='jankyr@vegvesen.no')
 
 
-pp.pprint(nvdb.status())
+#pp.pprint(nvdb.status())
 
-obj = nvdb.objekt_type(87)
-pp.pprint(obj)
+#obj = nvdb.objekt_type(87)
+#pp.pprint(obj)
 #obj = nvdb.objekt_type('belysningspunkt')
 #pp.pprint(obj)
 #
 #pos = nvdb.posisjon(x_coordinate=269815, y_coordinate=7038165)
 #pp.pprint(pos.vegreferanse)
-#vegref_point = nvdb.vegreferanse('5000Ev6hp12m1000')
-#vegref_strech = nvdb.vegreferanse('5000Ev6hp12m1000-1200')
-#pp.pprint(vegref_point)
-#pp.pprint(vegref_strech)
+vegref = nvdb.vegreferanse('5000Ev6hp12m1000')
+
+pp.pprint(vegref)
+pp.pprint(vegref.fylke)
+pp.pprint(vegref.kommune)
+pp.pprint(vegref.kategori)
+pp.pprint(vegref.status)
+pp.pprint(vegref.nummer)
+pp.pprint(vegref.hp)
+pp.pprint(vegref.meter)
+pp.pprint(vegref.geometri)
+pp.pprint(vegref.xyz)
+
+
 #
 #pp.pprint(vegref_point.start)
 #pp.pprint(vegref_point.slutt)
@@ -87,8 +97,8 @@ pp.pprint(obj)
 #pp.pprint(objekttype.dump(file_format='xml'))
 #
 #
-#objekt = nvdb.objekt(67, 89204552)
-#pp.pprint(objekt)
+objekt = nvdb.objekt(67, 89204552)
+pp.pprint(objekt)
 #pp.pprint(objekt.barn)
 #pp.pprint(objekt.egenskap(1081))
 #pp.pprint(objekt.egenskap(1081)['verdi'])  # Navn
@@ -98,7 +108,7 @@ pp.pprint(obj)
 #pp.pprint(objekt.vegreferanser[0].lengde)
 #pp.pprint(objekt.vegreferanser[0].start['vegreferanse'])
 #pp.pprint(objekt.vegreferanser[0].slutt['vegreferanse'])
-#
+pp.pprint(objekt.xyz)
 #
 #pp.pprint(objekt.egengeometri)
 #pp.pprint(objekt.geometri)
