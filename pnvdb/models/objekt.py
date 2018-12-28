@@ -12,7 +12,7 @@ class Objekt(object):
     def __init__(self, nvdb, objekt_type, nvdb_id, data=None):
         self.nvdb = nvdb
         if isinstance(objekt_type, int):
-            self.objekt_type = objekt_type
+            self.objekt_type = int(objekt_type)
         else:
             if isinstance(self.nvdb.name2id, dict):
                 self.objekt_type = self.nvdb.name2id['nvdb_objekter'][objekt_type.lower()]
@@ -24,7 +24,7 @@ class Objekt(object):
                     logging.error('Objekt_type not found: {}'.format(objekt_type))
                     return None
 
-        self.nvdb_id = nvdb_id
+        self.nvdb_id = int(nvdb_id)
         if data:
             self.data = data[1]
         else:

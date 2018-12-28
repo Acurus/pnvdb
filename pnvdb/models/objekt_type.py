@@ -12,7 +12,7 @@ class ObjektType(object):
     def __init__(self, nvdb, objekt_type, meta=None):
         self.nvdb = nvdb
         if isinstance(objekt_type, int):
-            self.objekt_type = objekt_type
+            self.objekt_type = int(objekt_type)
         else:
             if isinstance(self.nvdb.name2id, dict):
                 self.objekt_type = self.nvdb.name2id['nvdb_objekter'][objekt_type.lower()]

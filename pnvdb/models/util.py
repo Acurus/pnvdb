@@ -60,6 +60,6 @@ def build_name2id(nvdb):
     name_data = _fetch_data(None, 'vegobjekttyper')
     nvdb_objekter = {}
     for objekt in name_data:
-        nvdb_objekter[objekt['navn'].lower()] = objekt['id']
+        nvdb_objekter[objekt['navn'].lower()] = int(objekt['id'])
     
     nvdb.name2id['nvdb_objekter'] = nvdb_objekter
