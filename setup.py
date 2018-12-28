@@ -16,7 +16,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
     name='pnvdb',
 
-    version='0.3.3',
+    version='0.4.0',
 
     description='A python wrapper for the NVDB REST API',
     long_description=long_description,

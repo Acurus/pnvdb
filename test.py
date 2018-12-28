@@ -5,7 +5,8 @@ import pnvdb
 
 logfile = 'pnvdb.log'
 logging.basicConfig(filename=logfile,
-                    level=logging.ERROR,
+                    filemode='w',
+                    level=logging.DEBUG,
                     format='%(asctime)s %(levelname)s: %(message)s',
                     datefmt='%d/%m/%Y %I:%M:%S %p')
 
@@ -14,8 +15,8 @@ logging.basicConfig(filename=logfile,
 pp = pprint.PrettyPrinter(indent=2)
 
 nvdb = pnvdb.Nvdb(client='pnvdb', contact='jankyr@vegvesen.no')
-#
-#
+
+
 #pp.pprint(nvdb.status())
 #obj = nvdb.objekt_type(87)
 #pp.pprint(obj)
@@ -91,51 +92,52 @@ nvdb = pnvdb.Nvdb(client='pnvdb', contact='jankyr@vegvesen.no')
 #
 #
 #objekt = nvdb.objekt(67, 89204552)
-objekt = nvdb.objekt('tunnelløp', 89204552)
-pp.pprint(objekt)
-pp.pprint(objekt.barn)
-pp.pprint(objekt.egenskap(1081))
-pp.pprint(objekt.egenskap(1081)['verdi'])  # Navn
-pp.pprint(objekt.egenskap(1083))  # Finnes ikke
-pp.pprint(objekt.metadata.keys())
-pp.pprint(objekt.egenskaper[0].keys())
-pp.pprint(objekt.vegreferanser)
+#objekt = nvdb.objekt('tunnelløp', 89204552)
+#pp.pprint(objekt)
+#pp.pprint(objekt.barn)
+#pp.pprint(objekt.egenskap(1081))
+#pp.pprint(objekt.egenskap(1081)['verdi'])  # Navn
+#pp.pprint(objekt.egenskap(1083))  # Finnes ikke
+#pp.pprint(objekt.metadata.keys())
+#pp.pprint(objekt.egenskaper[0].keys())
+#pp.pprint(objekt.vegreferanser)
+#
+#
+#
+#
+#pp.pprint(objekt.egengeometri)
+#pp.pprint(objekt.geometri)
+#pp.pprint(objekt.barn)
+#pp.pprint(objekt.dump(file_format='xml'))
+#
+#omradefilter = {'fylke': '2'}
+#objekter = nvdb.hent(581, omradefilter)
+#for i in objekter:
+#    for egenskap in i.egenskaper:
+#        if egenskap['id'] == 5225:
+#            pp.pprint(egenskap['verdi'])
+#            break
+#    break
+#
+#
+## Should return no result
+#criteria = {'kommune': '0828', 'egenskap': '1820>=20'}
+#
+#obj = nvdb.hent(45, criteria)
+#pp.pprint(obj)
+#
+#criteria = {'fylke': '2', 'egenskap': '1820>=20'}  # 1820 = "Takst liten bil"
+#obj = nvdb.hent(45, criteria)
+#pp.pprint(obj)
+#
+#for i in obj:
+#    pp.pprint(i)
+#
+#for i in obj:
+#    for egenskap in i.egenskaper:
+#        if egenskap['id'] == 1078:  # 1078 = "Navn bomstasjon"
+#            pp.pprint(egenskap['verdi'])
+#            break
+#    break
+#print(pnvdb.__version__)
 
-
-
-
-pp.pprint(objekt.egengeometri)
-pp.pprint(objekt.geometri)
-pp.pprint(objekt.barn)
-pp.pprint(objekt.dump(file_format='xml'))
-
-omradefilter = {'fylke': '2'}
-objekter = nvdb.hent(581, omradefilter)
-for i in objekter:
-    for egenskap in i.egenskaper:
-        if egenskap['id'] == 5225:
-            pp.pprint(egenskap['verdi'])
-            break
-    break
-
-
-# Should return no result
-criteria = {'kommune': '0828', 'egenskap': '1820>=20'}
-
-obj = nvdb.hent(45, criteria)
-pp.pprint(obj)
-
-criteria = {'fylke': '2', 'egenskap': '1820>=20'}  # 1820 = "Takst liten bil"
-obj = nvdb.hent(45, criteria)
-pp.pprint(obj)
-
-for i in obj:
-    pp.pprint(i)
-
-for i in obj:
-    for egenskap in i.egenskaper:
-        if egenskap['id'] == 1078:  # 1078 = "Navn bomstasjon"
-            pp.pprint(egenskap['verdi'])
-            break
-    break
-print(pnvdb.__version__)
