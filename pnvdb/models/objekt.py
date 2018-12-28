@@ -34,6 +34,12 @@ class Objekt(object):
     def __repr__(self):
         return "Objekt({}, {})".format(self.objekt_type, self.nvdb_id)
 
+    def _update_data(self):
+        self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
+                        .format(self.objekt_type, self.nvdb_id),
+                        payload={'inkludergeometri': 'utledet', 'inkluder':'alle'})
+        
+
     @property
     def egengeometri(self):
         """
@@ -42,9 +48,7 @@ class Objekt(object):
         :returns: Bool. If it's not found it will return None
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
-                                    .format(self.objekt_type, self.nvdb_id),
-                                    payload={'inkludergeometri': 'utledet', 'inkluder':'alle'})
+            self._update_data()
         
         if 'egengeometri' in self.data['geometri']:
             egengeometri = self.data['geometri']['egengeometri']
@@ -74,9 +78,8 @@ class Objekt(object):
         :keys: ['datatype_tekst', 'id', 'datatype', 'verdi', 'navn']
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
-                                    .format(self.objekt_type, self.nvdb_id),
-                                    payload={'inkludergeometri': 'utledet', 'inkluder':'alle'})
+            self._update_data()
+
         if 'egenskaper' in self.data:
             egenskaper = self.data['egenskaper']
         else:
@@ -90,9 +93,8 @@ class Objekt(object):
         :keys: ['versjon', 'sist_modifisert', 'startdato', 'type']
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
-                                    .format(self.objekt_type, self.nvdb_id),
-                                    payload={'inkludergeometri': 'utledet', 'inkluder':'alle'})
+            self._update_data()
+            
         if 'metadata' in self.data:
             metadata = self.data['metadata']
         else:
@@ -105,9 +107,8 @@ class Objekt(object):
         :Attribute type: Well Known Text
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
-                                    .format(self.objekt_type, self.nvdb_id),
-                                    payload={'inkludergeometri': 'utledet', 'inkluder':'alle'})
+            self._update_data()
+            
         if 'geometri' in self.data:
             geometri = self.data['geometri']['wkt']
         else:
@@ -124,9 +125,8 @@ class Objekt(object):
         """
         if file_format.lower() == 'json':
             if not self.data:
-                self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
-                                        .format(self.objekt_type, self.nvdb_id),
-                                        payload={'inkludergeometri': 'utledet', 'inkluder':'alle'})
+                self._update_data()
+            
             return self.data
         elif file_format.lower() == 'xml':
             xml_data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}.xml'
@@ -139,9 +139,8 @@ class Objekt(object):
         :Attribute type: List of :class:`.Objekt`
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
-                                    .format(self.objekt_type, self.nvdb_id),
-                                    payload={'inkludergeometri': 'utledet', 'inkluder':'alle'})
+            self._update_data()
+            
         foreldre = []
         if 'relasjoner' in self.data and 'foreldre' in self.data['relasjoner']:
             for i in self.data['relasjoner']['foreldre']:
@@ -161,13 +160,12 @@ class Objekt(object):
 
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
-                                    .format(self.objekt_type, self.nvdb_id),
-                                    payload={'inkludergeometri': 'utledet', 'inkluder':'alle'})
+            self._update_data()
+            
         vegreferanser = []
         if 'lokasjon' in self.data and 'vegreferanser' in self.data['lokasjon']:
             for i in self.data['lokasjon']['vegreferanser']:
-                vegreferanser.append(Vegreferanse(self.nvdb, i['kortform']))
+                vegreferanser.append(i['kortform'])
         else:
             vegreferanser = None
         return vegreferanser
@@ -180,9 +178,8 @@ class Objekt(object):
 
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
-                                    .format(self.objekt_type, self.nvdb_id),
-                                    payload={'inkludergeometri': 'utledet', 'inkluder':'alle'})
+            self._update_data()
+            
         return self.data['vegsegmenter']
 
     @property
@@ -193,9 +190,8 @@ class Objekt(object):
 
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
-                                    .format(self.objekt_type, self.nvdb_id),
-                                    payload={'inkludergeometri': 'utledet', 'inkluder':'alle'})
+            self._update_data()
+            
         from ..const import KOMMUNER
         alle_kommuner = KOMMUNER
         kommuner = []
@@ -210,9 +206,8 @@ class Objekt(object):
 
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
-                                    .format(self.objekt_type, self.nvdb_id),
-                                    payload={'inkludergeometri': 'utledet', 'inkluder':'alle'})
+            self._update_data()
+            
         barn = []
         if 'relasjoner' in self.data and 'barn' in self.data['relasjoner']:
             for i in self.data['relasjoner']['barn']:

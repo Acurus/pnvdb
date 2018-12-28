@@ -30,6 +30,10 @@ class ObjektType(object):
 
     def __repr__(self):
         return "ObjektType({})".format(self.objekt_type)
+    def _update_data(self):
+        self.data = _fetch_data(
+            self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
+
 
     def dump(self, file_format='json'):
         """
@@ -59,8 +63,8 @@ class ObjektType(object):
 
         """
         if not self.data:
-            self.data = _fetch_data(
-                self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
+            self._update_data()
+
         return self.data['relasjonstyper']
 
     def egenskapstype(self, egenskapstype_id=None):
@@ -86,8 +90,8 @@ class ObjektType(object):
                 'styringsparametere', 'viktighet', 'viktighet_tekst', 'datatype']
         """
         if not self.data:
-            self.data = _fetch_data(
-                self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
+            self._update_data()
+            
         return self.data['egenskapstyper']
 
     @property
@@ -100,8 +104,8 @@ class ObjektType(object):
                 'ajourhold_i', 'kjørefelt_relevant']
         """
         if not self.data:
-            self.data = _fetch_data(
-                self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
+            self._update_data()
+            
         return self.data['styringsparametere']
 
     @property
@@ -116,8 +120,8 @@ class ObjektType(object):
         #if self.meta:
         #    return self.meta
         if not self.data:
-            self.data = _fetch_data(
-                self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
+            self._update_data()
+            
             metadata = self.data.copy()
             del metadata['egenskapstyper']
             del metadata['relasjonstyper']
@@ -131,8 +135,8 @@ class ObjektType(object):
         :Attribute type: list of :class:`.ObjektType`
         """
         if not self.data:
-            self.data = _fetch_data(
-                self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
+            self._update_data()
+            
         realasjoner = self.data['relasjonstyper']
         return [ObjektType(self.nvdb, i['type']['id']) for i in realasjoner['barn']]
 
@@ -142,8 +146,8 @@ class ObjektType(object):
         :Attribute type: list of :class:`.ObjektType`
         """
         if not self.data:
-            self.data = _fetch_data(
-                self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
+            self._update_data()
+            
         realasjoner = self.data['relasjonstyper']
         return [ObjektType(self.nvdb, i['type']['id']) for i in realasjoner['foreldre']]
 
@@ -154,8 +158,8 @@ class ObjektType(object):
         :returns: bool
         """
         if not self.data:
-            self.data = _fetch_data(
-                self.nvdb, 'vegobjekttyper/{}'.format(self.objekt_type))
+            self._update_data()
+            
         if 'objektliste_dato' in self.data:
             return True
         else:

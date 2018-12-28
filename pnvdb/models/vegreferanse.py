@@ -15,6 +15,9 @@ class Vegreferanse(object):
         self.data = None
         logging.debug('Initialized vegreferanse: {}'.format(self.vegreferanse))
         
+    def _update_data(self):
+        self.data = _fetch_data(self.nvdb, 'veg', payload={
+                            'vegreferanse': self.vegreferanse})
 
     @property
     def fylke(self):
@@ -23,8 +26,8 @@ class Vegreferanse(object):
         :Attribute type: int
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'veg', payload={
-                                        'vegreferanse': self.vegreferanse})
+            self._update_data()
+
         return self.data['vegreferanse']['fylke']
     
     @property
@@ -34,8 +37,8 @@ class Vegreferanse(object):
         :Attribute type: int
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'veg', payload={
-                                        'vegreferanse': self.vegreferanse})
+            self._update_data()
+            
         return self.data['vegreferanse']['kommune']
     
     @property
@@ -45,8 +48,8 @@ class Vegreferanse(object):
         :Attribute type: String
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'veg', payload={
-                                        'vegreferanse': self.vegreferanse})
+            self._update_data()
+            
         return self.data['vegreferanse']['kategori']
     
     @property
@@ -56,8 +59,8 @@ class Vegreferanse(object):
         :Attribute type: String
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'veg', payload={
-                                        'vegreferanse': self.vegreferanse})
+            self._update_data()
+            
         return self.data['vegreferanse']['status']
     
     @property
@@ -67,8 +70,8 @@ class Vegreferanse(object):
         :Attribute type: int
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'veg', payload={
-                                        'vegreferanse': self.vegreferanse})
+            self._update_data()
+            
         return self.data['vegreferanse']['nummer']
     
     @property
@@ -78,8 +81,8 @@ class Vegreferanse(object):
         :Attribute type: int
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'veg', payload={
-                                        'vegreferanse': self.vegreferanse})
+            self._update_data()
+            
         return self.data['vegreferanse']['hp']
     
     @property
@@ -89,23 +92,23 @@ class Vegreferanse(object):
         :Attribute type: int
         """
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'veg', payload={
-                                        'vegreferanse': self.vegreferanse})
+            self._update_data()
+            
         return self.data['vegreferanse']['meter']
     
     @property
     def geometri(self):
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'veg', payload={
-                                        'vegreferanse': self.vegreferanse})
+            self._update_data()
+            
         return self.data['geometri']['wkt']
 
     @property
     def xyz(self):
         import re
         if not self.data:
-            self.data = _fetch_data(self.nvdb, 'veg', payload={
-                                        'vegreferanse': self.vegreferanse})
+            self._update_data()
+            
         wkt = self.data['geometri']['wkt']
         reg_res = re.findall(r'\d+\.?\d*', wkt)
         if len(reg_res) < 3:
