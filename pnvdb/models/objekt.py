@@ -29,7 +29,7 @@ class Objekt(object):
             self.data = data[1]
         else:
             self.data = data
-        logging.debug('Objekt initialized with data : {}'.format(self.data))
+        logging.debug("Initialized: Objekt({}, {})".format(self.objekt_type, self.nvdb_id))
 
     def __repr__(self):
         return "Objekt({}, {})".format(self.objekt_type, self.nvdb_id)

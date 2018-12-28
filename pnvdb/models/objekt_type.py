@@ -26,8 +26,7 @@ class ObjektType(object):
         
         self.data = None
         self.metadata
-        logging.debug(
-            'Objekt_type initialized with data : {}'.format(self.data))
+        logging.debug("Initialized: ObjektType({})".format(self.objekt_type))
 
     def __repr__(self):
         return "ObjektType({})".format(self.objekt_type)
