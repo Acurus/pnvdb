@@ -39,13 +39,19 @@ class Objekt(object):
         """
         Boolean value that tell if the object has egengeometri or not.
 
-        :Attribute type: Bool
+        :returns: Bool. If it's not found it will return None
         """
         if not self.data:
             self.data = _fetch_data(self.nvdb, 'vegobjekter/{}/{}'
                                     .format(self.objekt_type, self.nvdb_id),
                                     payload={'inkludergeometri': 'utledet', 'inkluder':'alle'})
-        return self.data['geometri']['egengeometri']
+        
+        if 'egengeometri' in self.data['geometri']:
+            egengeometri = self.data['geometri']['egengeometri']
+        else:
+            egengeometri = None
+        
+        return egengeometri
 
     def egenskap(self, egenskaps_id=None):
         """
