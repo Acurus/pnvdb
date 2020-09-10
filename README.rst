@@ -4,7 +4,7 @@ pnvdb
 
 
 
-
+**THIS IS NOT UPDATED FOR V3 OF THE API**
 
 pnvdb stands for "python for Nasjonal vegdatabank" and is a python wrapper for the `NVDB Rest API <https://www.vegvesen.no/nvdb/apidokumentasjon/>`_
 
